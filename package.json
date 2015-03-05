@@ -1,0 +1,21 @@
+{
+  "name": "crunch-js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "es6-map": "^0.1.1",
+    "es6-set": "^0.1.1",
+    "lodash": "^3.3.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify index.js -o crunch-js"
+  },
+  "author": "",
+  "license": "ISC"
+}
