@@ -47,6 +47,11 @@
             multiplies by 100 before rounding, thus accepting decimal proportion
             values without first multiplying in the link or controller.
         </p>
+        <p>
+            Whenever iterating in an ng-repeat, be sure either that objects
+            over which you are repeating are guaranteed to be unique, or specify
+            `track by $index`.
+        </p>
         <table cr-table cube="exampleCube()">
             <thead>
                 <tr>
@@ -60,7 +65,7 @@
                     <th>
                         {{ xtab.rowLabels[$index] }}
                     </th>
-                    <td ng-repeat="value in row">
+                    <td ng-repeat="value in row track by $index">
                         {{ value | number : 1 }}
                     </td>
             </tbody>
