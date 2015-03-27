@@ -47,7 +47,7 @@
             multiplies by 100 before rounding, thus accepting decimal proportion
             values without first multiplying in the link or controller.
         </p>
-        <cr-table cube="exampleCube()">
+        <table cr-table cube="exampleCube()">
             <thead>
                 <tr>
                     <th ng-repeat="label in xtab.columnLabels track by $index">
@@ -64,6 +64,6 @@
                         {{ value | number : 1 }}
                     </td>
             </tbody>
-        </cr-table>
+        </table>
     </body>
 </html>

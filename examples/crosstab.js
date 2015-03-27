@@ -1,9 +1,9 @@
 
 var app = angular.module('crosstabDemo', [
-    ,'cube'
-    ,'stats'
-    ,'ndarrayOps'
-    ,'unpack'
+    'cube',
+    'stats',
+    'ndarrayOps',
+    'unpack'
 ])
 
 app.service('exampleCube', function(){
@@ -21,10 +21,10 @@ app.service('exampleCube', function(){
 // is hard to read and an explicit $inject array is preferable
 app.directive('crTable', ['cube', 'stats', 'ndarrayOps', 'unpack', function(cube, stats, ops, unpack){
     return {
-        restrict: 'E'
-        ,scope: {
+        restrict: 'A',
+        scope: {
             cube: '='
-        }
+        },
         link: function($scope, $element, $attrs){
             var cube = $scope.cube
 
@@ -34,8 +34,8 @@ app.directive('crTable', ['cube', 'stats', 'ndarrayOps', 'unpack', function(cube
             var columnPercentages = ops.muls(stats.propTable(cube, 1), 100)
 
             $scope.xtab = {
-                rowLabels: cube.labels[0]
-                columnLabels: cube.labels[1]
+                rowLabels: cube.labels[0],
+                columnLabels: cube.labels[1],
                 rows: unpack(columnPercentages) // row-major array-of-arrays
             }
 
@@ -45,7 +45,6 @@ app.directive('crTable', ['cube', 'stats', 'ndarrayOps', 'unpack', function(cube
             // multiple-response variable or a categorical array.
             // The result is always an ndarray whose get method returns a Number
             $scope.total = stats.margin(cube).get(0,0)
-
         }
     }
 }])
