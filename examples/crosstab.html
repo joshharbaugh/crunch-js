@@ -1,0 +1,69 @@
+<html ng-app="crosstabDemo">
+    <head>
+        <title>Crosstab demo</title>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js">
+        </script>
+        <script src="crunch-js.js"></script>
+        <script src="crosstab.js"></script>
+    </head>
+    <body>
+        <h2>The crunchjs cube</h2>
+        <p>
+            Crunch-js cube and stats modules prepare scijs ndarrays, which can
+            be easily converted into javascript arrays and placed on an Angular
+            scope like any other model.
+        </p>
+        <p>
+            A Crunch cube result is an ndarray with information about the
+            _dimensions_ and _measures_ that constitute it, such as which
+            indices on each dimension correspond to output belonging to
+            missing categories, values, or ranges. (The _measures_ are
+            computed for every cell defined by the _dimensions_.) Here, we focus
+            on the “cube_count” measure, which returns a (possibly weighted)
+            count for all cells defined by the conditioning _dimensions_; in
+            short, the canonical definition of a contingency table or crosstab.
+        </p>
+        <p>
+            This example demonstrates mainly the _stats_ module for manipulating
+            the crunchjs cube object. The stats module knows about dimensions
+            and measures, can calculate margins, totals, and p-values, and
+            convert the raw cell counts into proportions or percentages.
+        </p>
+        <h2>Putting a table on <tt>$scope</tt> and binding its values</h2>
+        <p>
+            At the top of the page we bootstrapped an angular module containing
+            a directive definition for a crTable. In another example, we show
+            how to prepare a cube query and turn it into the crunchjs cube that
+            we start with here. In the present example, the exampleCube service
+            returns one and in the directive we assume the result is either
+            synchronous or inside the callback to a resolved promise.
+        </p>
+        <p>
+            The object on scope is constrained by the needs of the markup in
+            a top-down approach. For a simple table with labeled row and column
+            headers, we need to provide an object with rowLabels, columnLabels,
+            and rows. The number filter is an angular builtin whose argument is
+            decimal places to round to. You could define a percent filter that
+            multiplies by 100 before rounding, thus accepting decimal proportion
+            values without first multiplying in the link or controller.
+        </p>
+        <cr-table cube="exampleCube()">
+            <thead>
+                <tr>
+                    <th ng-repeat="label in xtab.columnLabels track by $index">
+                        {{ label }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat"row in xtab.rows track by $index">
+                    <th>
+                        {{ xtab.rowLabels[$index] }}
+                    </th>
+                    <td ng-repeat="value in row">
+                        {{ value | number : 1 }}
+                    </td>
+            </tbody>
+        </cr-table>
+    </body>
+</html>
