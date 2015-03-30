@@ -1,10 +1,13 @@
 'use strict'
 
+
+
 module.exports = function(grunt) {
 
     grunt.initConfig({
         pkg : grunt.file.readJSON('package.json'),
         tests : {
+            src : 'lib/**/tests/*-spec.js',
             supportFiles : 'test-support/index.js',
             supportFilesBuild : 'build/test-support.js'
         },
@@ -38,6 +41,27 @@ module.exports = function(grunt) {
                     '<%= grunt.option("file") %>'
                 ],
                 dest : '<%= pkg.buildFile %>'
+            },
+
+            features : {
+                options : {
+                    external : ['angular', 'angular-mocks']
+                },
+                src : [
+                    '<%= tests.src %>'
+                ],
+                dest : '<%= pkg.buildFile %>',
+                filter : function(filepath) {
+                    var features = grunt.option('features') || ''
+                        , featuresList = features.split(',')
+                        ;
+
+                    console.assert(featuresList.length, 'You should provide at least one feature')
+
+                    return grunt.file.isFile(filepath) && featuresList.some(function(feat) {
+                        return filepath.split('/')[1] === feat
+                    })
+                }
             }
         },
 
@@ -61,9 +85,15 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-browserify')
     grunt.loadNpmTasks('grunt-karma')
 
-    grunt.registerTask('test:single', 'Run a single unit test suite', [
+    grunt.registerTask('test:single', 'Run a single unit test file', [
         'browserify:testSupport',
         'browserify:singleTest',
+        'karma:dev'
+    ])
+
+    grunt.registerTask('test:features', 'Run unit test suite for a specified feature', [
+        'browserify:testSupport',
+        'browserify:features',
         'karma:dev'
     ])
 }

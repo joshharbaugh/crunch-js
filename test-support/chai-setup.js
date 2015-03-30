@@ -5,6 +5,7 @@ var chai = require('chai')
     ;
 
 chai.use(things)
+
 window.expect = chai.expect
 
 chai.should()

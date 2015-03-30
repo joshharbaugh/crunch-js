@@ -5,7 +5,8 @@
   "main": "index.js",
   "directories": {
     "test": "tests",
-    "build": "build"
+    "build": "build",
+    "src":"lib"
   },
   "assets": {
     "angular": "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js",
