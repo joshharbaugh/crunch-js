@@ -20,6 +20,9 @@ module.exports = function(grunt) {
             }
         },
         browserify : {
+            options : {
+                watch : true
+            },
             testSupport : {
                 options : {
                     alias : [
@@ -43,7 +46,7 @@ module.exports = function(grunt) {
                 dest : '<%= pkg.buildFile %>'
             },
 
-            features : {
+            featuresTests : {
                 options : {
                     external : ['angular', 'angular-mocks']
                 },
@@ -62,6 +65,16 @@ module.exports = function(grunt) {
                         return filepath.split('/')[1] === feat
                     })
                 }
+            },
+
+            allTests : {
+                options : {
+                    external : ['angular', 'angular-mocks']
+                },
+                src : [
+                    '<%= tests.src %>'
+                ],
+                dest : '<%= pkg.buildFile %>'
             }
         },
 
@@ -93,7 +106,13 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test:features', 'Run unit test suite for a specified feature', [
         'browserify:testSupport',
-        'browserify:features',
+        'browserify:featuresTests',
+        'karma:dev'
+    ])
+
+    grunt.registerTask('test:all', 'Run unit test suite for a specified feature', [
+        'browserify:testSupport',
+        'browserify:allTests',
         'karma:dev'
     ])
 }
