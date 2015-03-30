@@ -1,16 +1,26 @@
 'use strict'
 
-
+var filterTestFile = require('./lib/filter-test-file')
+    ;
 
 module.exports = function(grunt) {
 
     grunt.initConfig({
         pkg : grunt.file.readJSON('package.json'),
         tests : {
-            src : 'lib/**/tests/*-spec.js',
+            src : './src/**/*-spec.js',
             supportFiles : 'test-support/index.js',
-            supportFilesBuild : 'build/test-support.js'
+            supportFilesBuild : '<%= pkg.directories.build %>/test-support.js'
         },
+        clean : {
+            dev : {
+                src : ['<%= pkg.directories.build %>']
+            },
+            dist : {
+                src : ['<%= pkg.directories.dist %>']
+            }
+        }
+        ,
         jshint : {
             options : {
                 jshintrc: true
@@ -20,9 +30,6 @@ module.exports = function(grunt) {
             }
         },
         browserify : {
-            options : {
-                watch : true
-            },
             testSupport : {
                 options : {
                     alias : [
@@ -36,18 +43,9 @@ module.exports = function(grunt) {
                 dest : '<%= tests.supportFilesBuild %>'
             },
 
-            singleTest : {
+            dev : {
                 options : {
-                    external : ['angular', 'angular-mocks']
-                },
-                src : [
-                    '<%= grunt.option("file") %>'
-                ],
-                dest : '<%= pkg.buildFile %>'
-            },
-
-            featuresTests : {
-                options : {
+                    watch : true,
                     external : ['angular', 'angular-mocks']
                 },
                 src : [
@@ -55,26 +53,14 @@ module.exports = function(grunt) {
                 ],
                 dest : '<%= pkg.buildFile %>',
                 filter : function(filepath) {
-                    var features = grunt.option('features') || ''
-                        , featuresList = features.split(',')
+                    var options = {
+                            file:     grunt.option('file'),
+                            features: grunt.option('features')
+                        }
                         ;
 
-                    console.assert(featuresList.length, 'You should provide at least one feature')
-
-                    return grunt.file.isFile(filepath) && featuresList.some(function(feat) {
-                        return filepath.split('/')[1] === feat
-                    })
+                    return filterTestFile(filepath, options)
                 }
-            },
-
-            allTests : {
-                options : {
-                    external : ['angular', 'angular-mocks']
-                },
-                src : [
-                    '<%= tests.src %>'
-                ],
-                dest : '<%= pkg.buildFile %>'
             }
         },
 
@@ -94,25 +80,15 @@ module.exports = function(grunt) {
         }
     })
 
+    grunt.loadNpmTasks('grunt-contrib-clean')
     grunt.loadNpmTasks('grunt-contrib-jshint')
     grunt.loadNpmTasks('grunt-browserify')
     grunt.loadNpmTasks('grunt-karma')
 
-    grunt.registerTask('test:single', 'Run a single unit test file', [
+    grunt.registerTask('test', 'Run test suites', [
+        'clean:dev',
         'browserify:testSupport',
-        'browserify:singleTest',
-        'karma:dev'
-    ])
-
-    grunt.registerTask('test:features', 'Run unit test suite for a specified feature', [
-        'browserify:testSupport',
-        'browserify:featuresTests',
-        'karma:dev'
-    ])
-
-    grunt.registerTask('test:all', 'Run unit test suite for a specified feature', [
-        'browserify:testSupport',
-        'browserify:allTests',
+        'browserify:dev',
         'karma:dev'
     ])
 }

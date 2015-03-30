@@ -6,7 +6,7 @@
   "directories": {
     "test": "tests",
     "build": "build",
-    "src":"lib"
+    "src": "src"
   },
   "assets": {
     "angular": "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js",
@@ -24,6 +24,7 @@
     "browserify": "^9.0.3",
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.6.0",
+    "grunt-contrib-clean": "^0.6.0",
     "grunt-karma": "^0.10.1",
     "jshint": "^2.6.3",
     "karma": "^0.12.31",
