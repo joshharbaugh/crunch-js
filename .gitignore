@@ -1,2 +1,5 @@
 node_modules
 crunch-js.js
+.idea
+.idea/*
+*.swp
