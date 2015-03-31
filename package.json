@@ -7,7 +7,8 @@
     "test": "tests",
     "build": "build",
     "src": "src",
-    "dist": "dist"
+    "dist": "dist",
+    "tmp": "tmp"
   },
   "assets": {
     "angular": "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js",
@@ -31,13 +32,12 @@
     "ndarray-sort": "~1.0.0",
     "ndarray-unpack": "~1.0.0",
     "ndarray-scratch": "1.1.1",
-    "ndgemm": "0.0.0",
+    "ndgemm": "~0.0.0",
     "ndarray-fill": "1.0.1",
     "gaussian": "1.0.0",
     "es6-map": "^0.1.1",
     "es6-set": "^0.1.1",
     "zeros": "~0.0.0",
-    "ndgemm": "~0.0.0",
     "simulate-event": "0.0.3"
   },
   "devDependencies": {
@@ -46,6 +46,7 @@
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.6.0",
     "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-uglify": "^0.8.1",
     "grunt-karma": "^0.10.1",
     "html2js-browserify": "0.0.2",
     "jshint": "^2.6.3",

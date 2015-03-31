@@ -4,3 +4,5 @@ crunch-js.js
 .idea/*
 *.swp
 build
+dist
+examples/crunch.js

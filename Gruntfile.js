@@ -14,6 +14,7 @@ module.exports = function(grunt) {
         },
         dist : {
             srcJs : 'index.js',
+            distTmpFile : '<%= pkg.directories.tmp %>/crunch.js',
             distFile : '<%= pkg.directories.dist%>/crunch.js'
         },
         clean : {
@@ -22,6 +23,9 @@ module.exports = function(grunt) {
             },
             dist : {
                 src : ['<%= pkg.directories.dist %>']
+            },
+            tmp : {
+                src : ['<%= pkg.directories.tmp %>']
             }
         }
         ,
@@ -67,9 +71,9 @@ module.exports = function(grunt) {
 
                     return filterTestFile(filepath, options)
                 }
-            }
+            },
 
-            , dist : {
+            dist : {
                 options : {
                     transform : ['browserify-ng-html2js']
                 }
@@ -77,7 +81,15 @@ module.exports = function(grunt) {
                 src : [
                     '<%= dist.srcJs %>'
                 ],
-                dest : '<%= dist.distFile %>'
+                dest : '<%= dist.distTmpFile %>'
+            }
+        },
+
+        uglify : {
+            dist : {
+                files : {
+                    '<%= dist.distFile %>' : ['<%= dist.distTmpFile %>']
+                }
             }
         },
 
@@ -108,6 +120,7 @@ module.exports = function(grunt) {
         }
     })
 
+    grunt.loadNpmTasks('grunt-contrib-uglify')
     grunt.loadNpmTasks('grunt-contrib-clean')
     grunt.loadNpmTasks('grunt-contrib-jshint')
     grunt.loadNpmTasks('grunt-browserify')
@@ -126,6 +139,8 @@ module.exports = function(grunt) {
         'browserify:dev',
         'karma:prod',
         'clean',
-        'browserify:dist'
+        'browserify:dist',
+        'uglify:dist',
+        'clean:tmp'
     ])
 }
