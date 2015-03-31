@@ -9,7 +9,6 @@ function buildModule(moduleName) {
         ,show = require('ndarray-show')
         ,unpack = require('ndarray-unpack')
         ,pack = require('ndarray-pack')
-        ,zeros = require('zeros')
         ,scratch = require('ndarray-scratch')
         ,fill = require('ndarray-fill')
         ,normalDist = require('gaussian')
@@ -40,9 +39,6 @@ function buildModule(moduleName) {
     mod.factory('ndarrayPack', function() {
         return pack
     })
-    mod.factory('zeros', function(){
-        return zeros
-    })
     mod.factory('ndarrayScratch', function(){
         return scratch
     })
@@ -64,7 +60,6 @@ function buildModule(moduleName) {
     mod.factory('measure', require('./measure'))
     mod.factory('cube', require('./cube'))
     mod.factory('crFindVariables', require('./cr-find-variables'))
-    mod.factory('iXtabCubes', require('./i-xtab-cubes'))
     mod.factory('displayCube', require('./display-cube'))
     mod.factory('stats', require('./stats'))
     mod.factory('Tabulated', require('./tabulated'))

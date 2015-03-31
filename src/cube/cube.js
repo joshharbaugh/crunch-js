@@ -4,15 +4,15 @@ module.exports = CubeFactory
 
 CubeFactory.$inject = [
     '$log'
-    ,'$q'
-    ,'lodash'
-    ,'dimension'
-    ,'measure'
+    , '$q'
+    , 'lodash'
+    , 'dimension'
+    , 'measure'
 ]
 
-function CubeFactory($log, $q, _, dimension, measure){
+function CubeFactory($log, $q, _, dimension, measure) {
 
-    var Cube = function(measures, meta, margins){
+    var Cube = function(measures, meta, margins) {
         var shape = meta.shape
         var validShape = meta.validShape
 
@@ -24,11 +24,6 @@ function CubeFactory($log, $q, _, dimension, measure){
         this.nMissing = meta.nMissing
         this.weightId = meta.weightId
         this.appliedFilters = _.cloneDeep(meta.appliedFilters)
-
-        if(_.isObject(margins)) {
-            this.margins = margins
-        }
-
         _.extend(this, measures)
 
         return this
@@ -36,26 +31,26 @@ function CubeFactory($log, $q, _, dimension, measure){
 
     Object.defineProperties(Cube.prototype, {
         'labels': {
-            'get' : function(){
-                return this._dimensions.map(function(dim){
+            'get': function() {
+                return this._dimensions.map(function(dim) {
                     return dim.labels
                 })
             }
-        }
-        ,'subscripts': {
-            'get' : function(){
-                return this._dimensions.map(function(dim){
+        },
+        'subscripts': {
+            'get': function() {
+                return this._dimensions.map(function(dim) {
                     return dim.validSubscripts
                 })
             }
         }
     })
 
-    Cube.fromCrCube = function(crunchCube){
+    Cube.fromCrCube = function(crunchCube) {
         var raw = crunchCube
         var meta = {
-            measures : Object.keys(raw.result.measures)
-            ,query: raw.query
+            measures: Object.keys(raw.result.measures),
+            query: raw.query
         }
         var result = {}
 
@@ -63,7 +58,7 @@ function CubeFactory($log, $q, _, dimension, measure){
             return dimension.fromData(dim)
         })
 
-        if(meta.measures.indexOf('mean') > -1) {
+        if (meta.measures.indexOf('mean') > -1) {
             dims.push(dimension.aggregateDimension('Mean'))
         }
 
@@ -74,9 +69,9 @@ function CubeFactory($log, $q, _, dimension, measure){
 
         var measures = _.mapValues(raw.result.measures, function(m, type) {
             return measure.fromData({
-                type : type
-                , data : m.data
-                , meta : meta
+                type: type,
+                data: m.data,
+                meta: meta
             })
         })
 
@@ -85,12 +80,12 @@ function CubeFactory($log, $q, _, dimension, measure){
         return $q.when(result)
     }
 
-    function gatherMetadata(result, dims, meta){
+    function gatherMetadata(result, dims, meta) {
         meta.nMissing = result.measures[meta.measures[0]].n_missing || 0
-        // Not yet clear use case where other measures different n_missing
+            // Not yet clear use case where other measures different n_missing
         meta.n = result.n - meta.nMissing
 
-        meta.shape = dims.map(function(dim){
+        meta.shape = dims.map(function(dim) {
             return dim.length
         })
 
@@ -98,14 +93,14 @@ function CubeFactory($log, $q, _, dimension, measure){
             return dim.missing
         })
 
-        meta.validShape = dims.map(function(dim){
+        meta.validShape = dims.map(function(dim) {
             return dim.validLength
         })
-        if(meta.validShape.length===1){
+        if (meta.validShape.length === 1) {
             meta.validShape.push(1)
         }
 
-        meta.labels = dims.map(function(dim){
+        meta.labels = dims.map(function(dim) {
             return dim.labels
         })
 
@@ -113,18 +108,38 @@ function CubeFactory($log, $q, _, dimension, measure){
     }
 
     function prod() {
-        return _.reduce(arguments, function(a, b) {
-            return _.flatten(_.map(a, function(x) {
-                return _.map(b, function(y) {
-                    return x.concat([y])
-                })
-            }), true)
-        }, [ [] ])
+        var args = [].slice.call(arguments)
+            ,end = args.length - 1;
+
+        var result = []
+
+        function addTo(curr, start) {
+            var first = args[start],
+                last = (start === end)
+
+            for (var i = 0; i < first.length; ++i) {
+                var copy = curr.slice()
+                copy.push(first[i])
+
+                if (last) {
+                    result.push(copy)
+                } else {
+                    addTo(copy, start + 1)
+                }
+            }
+        }
+
+        if (args.length) {
+            addTo([], 0)
+        } else {
+            result.push([])
+        }
+        return result
     }
 
     Cube.prod = prod
 
-    Cube.prototype.ravelLabels = function(){
+    Cube.prototype.ravelLabels = function() {
         return prod.apply(this, this.labels)
     }
 

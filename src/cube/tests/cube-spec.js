@@ -6,7 +6,6 @@ var mocks = require('angular-mocks')
     , ndarray = require('ndarray')
     , ops = require('ndarray-ops')
     , show = require('ndarray-show')
-    , zeros = require('zeros')
     , unpack = require('ndarray-unpack')
     ;
 
@@ -51,23 +50,6 @@ describe('cube', function(){
             ops.sum(sut.count.cube.pick(0)).should.equal(1755)
             ops.sum(sut.count.cube.pick(1)).should.equal(2771)
             ops.sum(sut.count.cube).should.equal(4526)
-        })
-        it('2d cell percentaging with ops should be correct and not change the cube', function(){
-            var result = zeros(sut.count.cube.shape.slice())
-            ops.divs(result, sut.count.cube, ops.sum(sut.count.cube))
-            //console.log(show(sut.cube))
-            ops.mulseq(result, 100)
-            ops.sum(result).should.eql(100)
-            sut.count.cube.get(0,0).should.equal(601)
-        })
-        it('marginal totals should exist', function(){
-            var result0 = sut.margins['0']
-            result0.data.should.eql([1755, 2771])
-            var result1 = sut.margins['1']
-            result1.data.should.eql([933, 585, 918, 792, 584, 714])
-        })
-        it('should divide by margins', function(){
-
         })
     })
 
