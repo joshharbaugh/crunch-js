@@ -1,13 +1,18 @@
 
 var app = angular.module('crVariablesDemo', [
-    'crunchJS'
+    'crunchJS',
+    'crunchJSTemplates'
 ])
 
 app.config(function($httpProvider) {
+    'use strict'
+
     $httpProvider.defaults.withCredentials = true
 })
 
 app.factory('signin', function($http, Shoji) {
+    'use strict'
+
     return function(email, password) {
         return Shoji('***REMOVED***').map().then(function(api) {
             return $http({
@@ -22,16 +27,21 @@ app.factory('signin', function($http, Shoji) {
     }
 })
 
-app.run(function(signin, currentDataset, iFetchHierarchicalVariables) {
+app.controller('AppCtrl', function($scope, signin, currentDataset,
+    iFetchHierarchicalVariables,
+    HierarchicalVariablesList) {
+    'use strict'
+
     signin('***REMOVED***', '***REMOVED***').then(function() {
         currentDataset.set('***REMOVED***/')
         currentDataset.fetch().then(function(ds) {
             iFetchHierarchicalVariables({ datasetId : ds.self }).then(function(hierarchicalVariables) {
-                hierarchicalVariables.slice(0,3).forEach(function(variable) {
-                    console.log(variable.name)
+                $scope.hierarchicalVariablesList = HierarchicalVariablesList.create({
+                    hierarchicalVariables : hierarchicalVariables
                 })
             })
         })
     })
 
 })
+
