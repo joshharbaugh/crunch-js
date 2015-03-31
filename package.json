@@ -4,15 +4,40 @@
   "description": "",
   "main": "index.js",
   "directories": {
-    "test": "tests"
+    "test": "tests",
+    "build": "build",
+    "src": "src",
+    "dist": "dist"
   },
+  "assets": {
+    "angular": "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js",
+    "angularMocks": "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular-mocks.js",
+    "jquery": "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"
+  },
+  "buildFile": "./build/build.js",
   "dependencies": {
+    "chai": "^2.2.0",
+    "chai-things": "^0.2.0",
     "es6-map": "^0.1.1",
     "es6-set": "^0.1.1",
-    "lodash": "^3.3.1"
+    "lodash": "^3.3.1",
+    "machina": "0.3.5",
+    "simulate-event": "0.0.3"
   },
   "devDependencies": {
-    "browserify": "^9.0.3"
+    "browserify": "^9.0.3",
+    "browserify-ng-html2js": "^1.0.0",
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.6.0",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-karma": "^0.10.1",
+    "html2js-browserify": "0.0.2",
+    "jshint": "^2.6.3",
+    "karma": "^0.12.31",
+    "karma-chrome-launcher": "^0.1.7",
+    "karma-firefox-launcher": "^0.1.4",
+    "karma-mocha": "^0.1.10",
+    "mocha": "^2.2.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
