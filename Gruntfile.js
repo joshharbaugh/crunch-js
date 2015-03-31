@@ -13,9 +13,16 @@ module.exports = function(grunt) {
             supportFilesBuild : '<%= pkg.directories.build %>/test-support.js'
         },
         dist : {
-            srcJs : 'index.js',
-            distTmpFile : '<%= pkg.directories.tmp %>/crunch.js',
-            distFile : '<%= pkg.directories.dist%>/crunch.js'
+            js : {
+                src : 'index.js',
+                tmp : '<%= pkg.directories.tmp %>/crunch.js',
+                dest: '<%= pkg.directories.dist %>/crunch.js'
+            },
+            html : {
+                src : '<%= pkg.directories.src %>/**/*.html',
+                tmp : '<%= pkg.directories.tmp %>/templates.js',
+                dest: '<%= pkg.directories.dist %>/templates.js'
+            }
         },
         clean : {
             dev : {
@@ -37,14 +44,22 @@ module.exports = function(grunt) {
                 src : ['lib/**/*.js']
             }
         },
+
+        createTplBundle : {
+            dist : {
+                src:  ['<%= dist.html.src %>'],
+                dest: '<%= dist.html.tmp %>'
+            }
+        },
+
         browserify : {
-            options : {
-                alias : [
-                    './test-support/angular-shim.js:angular',
-                    './test-support/angular-mocks-shim.js:angular-mocks'
-                ]
-            },
             testSupport : {
+                options : {
+                    alias : [
+                        './test-support/angular-shim.js:angular',
+                        './test-support/angular-mocks-shim.js:angular-mocks'
+                    ]
+                },
                 src : [
                     '<%= tests.supportFiles %>'
                 ],
@@ -75,20 +90,37 @@ module.exports = function(grunt) {
 
             dist : {
                 options : {
-                    transform : ['browserify-ng-html2js']
-                }
-                ,
+                    alias : [
+                        './test-support/angular-shim.js:angular',
+                        './test-support/angular-mocks-shim.js:angular-mocks'
+                    ]
+                },
                 src : [
-                    '<%= dist.srcJs %>'
+                    '<%= dist.js.src %>'
                 ],
-                dest : '<%= dist.distTmpFile %>'
+                dest : '<%= dist.js.tmp %>'
+            }
+
+            , distTpl : {
+                options : {
+                    external : ['angular', 'angular-mocks'],
+                    transform : ['html2js-browserify']
+                },
+                src : ['<%= dist.html.tmp %>'],
+                dest : '<%= dist.html.tmp %>'
             }
         },
 
         uglify : {
             dist : {
                 files : {
-                    '<%= dist.distFile %>' : ['<%= dist.distTmpFile %>']
+                    '<%= dist.js.dest %>' : ['<%= dist.js.tmp %>']
+                }
+            }
+
+            , distTpl : {
+                files : {
+                    '<%= dist.html.dest %>' : ['<%= dist.html.tmp %>']
                 }
             }
         },
@@ -121,8 +153,10 @@ module.exports = function(grunt) {
 
         copy : {
             examples : {
-                src : ['<%= dist.distFile %>'],
-                dest : 'examples/crunch.js'
+                files: {
+                    'examples/crunch.js' : ['<%= dist.js.dest %>'],
+                    'examples/templates.js' : ['<%= dist.html.dest %>']
+                }
             }
         }
     })
@@ -134,6 +168,28 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-browserify')
     grunt.loadNpmTasks('grunt-karma')
 
+    grunt.registerMultiTask('createTplBundle', function buildTemplates() {
+        var buildModuleTpl = grunt.file.read('./lib/templates-builder.tpl')
+            ;
+
+        this.files.forEach(function(fileCfg) {
+            var dest = fileCfg.dest
+                , sources = fileCfg.src
+                , bundle
+                ;
+
+            bundle = grunt.template.process(buildModuleTpl, {
+                data : {
+                    tpls : sources.map(function(source) {
+                        return { name : source.replace('src', ''), path : source }
+                    })
+                }
+            })
+
+            grunt.file.write(dest, bundle)
+        })
+    })
+
     grunt.registerTask('test', 'Run test suites', [
         'clean:dev',
         'browserify:testSupport',
@@ -141,14 +197,25 @@ module.exports = function(grunt) {
         'karma:dev'
     ])
 
-    grunt.registerTask('build', 'Creates a new build', [
-        'clean',
+    grunt.registerTask('buildTemplates', [
+        'createTplBundle',
+        'browserify:distTpl',
+        'uglify:distTpl'
+    ])
+
+    grunt.registerTask('buildJS', [
         'browserify:testSupport',
         'browserify:dev',
         'karma:prod',
-        'clean',
         'browserify:dist',
-        'uglify:dist',
+        'uglify:dist'
+    ])
+
+    grunt.registerTask('build', 'Creates a new build', [
+        'clean',
+        'buildJS',
+        'buildTemplates',
+        'clean:dev',
         'clean:tmp',
         'copy:examples'
     ])
