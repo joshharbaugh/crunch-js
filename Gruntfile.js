@@ -117,12 +117,20 @@ module.exports = function(grunt) {
                     singleRun: true
                 }
             }
+        },
+
+        copy : {
+            examples : {
+                src : ['<%= dist.distFile %>'],
+                dest : 'examples/crunch.js'
+            }
         }
     })
 
     grunt.loadNpmTasks('grunt-contrib-uglify')
     grunt.loadNpmTasks('grunt-contrib-clean')
     grunt.loadNpmTasks('grunt-contrib-jshint')
+    grunt.loadNpmTasks('grunt-contrib-copy')
     grunt.loadNpmTasks('grunt-browserify')
     grunt.loadNpmTasks('grunt-karma')
 
@@ -141,6 +149,7 @@ module.exports = function(grunt) {
         'clean',
         'browserify:dist',
         'uglify:dist',
-        'clean:tmp'
+        'clean:tmp',
+        'copy:examples'
     ])
 }
