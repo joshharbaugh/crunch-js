@@ -1,0 +1,51 @@
+{
+  "derived": false,
+  "references": {
+    "alias": "Dept",
+    "discarded": false,
+    "header_order": 2,
+    "name": "Dept"
+  },
+  "type": {
+    "categories": [
+      {
+        "id": 1,
+        "missing": false,
+        "name": "A",
+        "numeric_value": null
+      },
+      {
+        "id": 2,
+        "missing": false,
+        "name": "B",
+        "numeric_value": null
+      },
+      {
+        "id": 3,
+        "missing": false,
+        "name": "C",
+        "numeric_value": null
+      },
+      {
+        "id": 4,
+        "missing": false,
+        "name": "D",
+        "numeric_value": null
+      },
+      {
+        "id": 5,
+        "missing": false,
+        "name": "E",
+        "numeric_value": null
+      },
+      {
+        "id": 6,
+        "missing": false,
+        "name": "F",
+        "numeric_value": null
+      }
+    ],
+    "class": "categorical",
+    "ordinal": false
+  }
+}

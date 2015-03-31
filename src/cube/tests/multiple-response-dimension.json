@@ -1,0 +1,136 @@
+{
+    "derived": true,
+    "references": {
+        "alias": "MR",
+        "description": "",
+        "discarded": false,
+        "header_order": 3,
+        "name": "MR"
+    },
+    "type": {
+        "class": "enum",
+        "elements": [
+            {
+                "value": {
+                    "derived": false,
+                    "id": "b332a08bf30641dca73e90485ce2b9c6",
+                    "references": {
+                        "alias": "A",
+                        "description": "",
+                        "discarded": false,
+                        "header_order": 3,
+                        "is_subvar": true,
+                        "name": "A"
+                    },
+                    "type": {
+                        "class": "boolean",
+                        "missing_reasons": {
+                            "No Data": -1
+                        },
+                        "missing_rules": {}
+                    }
+                },
+                "id": 1,
+                "missing": false
+            },
+            {
+                "value": {
+                    "derived": false,
+                    "id": "27d1dccfaa5f41b3bd594d5fd97b145a",
+                    "references": {
+                        "alias": "B",
+                        "description": "",
+                        "discarded": false,
+                        "header_order": 4,
+                        "is_subvar": true,
+                        "name": "B",
+                        "view": {
+                            "column_width": null,
+                            "include_missing": false,
+                            "show_counts": false,
+                            "show_numeric_value": false
+                        }
+                    },
+                    "type": {
+                        "class": "boolean",
+                        "missing_reasons": {
+                            "No Data": -1
+                        },
+                        "missing_rules": {}
+                    }
+                },
+                "id": 2,
+                "missing": false
+            },
+            {
+                "value": {
+                    "derived": false,
+                    "id": "f259bf78f20c42b2a91ca6e050089298",
+                    "references": {
+                        "alias": "C",
+                        "description": "",
+                        "discarded": false,
+                        "header_order": 5,
+                        "is_subvar": true,
+                        "name": "C",
+                        "view": {
+                            "column_width": null,
+                            "include_missing": false,
+                            "show_counts": false,
+                            "show_numeric_values": false
+                        }
+                    },
+                    "type": {
+                        "class": "boolean",
+                        "missing_reasons": {
+                            "No Data": -1
+                        },
+                        "missing_rules": {}
+                    }
+                },
+                "id": 3,
+                "missing": false
+            },
+            {
+                "value": null,
+                "id": -1,
+                "missing": true
+            },
+            {
+                "value": {
+                    "derived": true,
+                    "id": "__none__",
+                    "references": {},
+                    "type": {
+                        "class": "boolean",
+                        "missing_reasons": {
+                            "No Data": -1
+                        },
+                        "missing_rules": {}
+                    }
+                },
+                "id": -127,
+                "missing": false
+            },
+            {
+                "value": {
+                    "derived": true,
+                    "id": "__any__",
+                    "references": {},
+                    "type": {
+                        "class": "boolean",
+                        "missing_reasons": {
+                            "No Data": -1
+                        },
+                        "missing_rules": {}
+                    }
+                },
+                "id": 0,
+                "missing": false
+            }
+        ],
+        "subtype": {
+            "class": "variable"
+        }
+    }
+}

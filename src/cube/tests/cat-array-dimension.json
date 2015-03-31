@@ -1,0 +1,135 @@
+{
+    "derived": true,
+    "references": {
+        "alias": "arr",
+        "description": "",
+        "dichotomous": true,
+        "discarded": false,
+        "format": {
+            "summary": {
+                "digits": 2
+            }
+        },
+        "header_order": 1,
+        "is_subvar": false,
+        "name": "arr",
+        "view": {
+            "column_width": null,
+            "include_missing": false,
+            "show_counts": false,
+            "show_numeric_values": false
+        }
+    },
+    "type": {
+        "class": "enum",
+        "elements": [
+            {
+                "value": {
+                    "derived": false,
+                    "id": "93bb37df967b4596997a61f6eb1dfacb",
+                    "references": {
+                        "alias": "Y",
+                        "description": "",
+                        "dichotomous": true,
+                        "discarded": false,
+                        "format": {
+                            "summary": {
+                                "digits": 2
+                            }
+                        },
+                        "header_order": 1,
+                        "is_subvar": true,
+                        "name": " (1)",
+                        "view": {
+                            "column_width": null,
+                            "include_missing": false,
+                            "show_counts": false,
+                            "show_numeric_values": false
+                        }
+                    },
+                    "type": {
+                        "categories": [
+                            {
+                                "id": 0,
+                                "missing": false,
+                                "name": "0",
+                                "numeric_value": 0
+                            },
+                            {
+                                "id": 1,
+                                "missing": false,
+                                "name": "1",
+                                "numeric_value": 1
+                            },
+                            {
+                                "id": -1,
+                                "missing": true,
+                                "name": "No Data",
+                                "numeric_value": null
+                            }
+                        ],
+                        "class": "categorical",
+                        "ordinal": false
+                    }
+                },
+                "id": 1,
+                "missing": false
+            },
+            {
+                "value": {
+                    "derived": false,
+                    "id": "a1d43f771962465082aa2d8700176f42",
+                    "references": {
+                        "alias": "Z",
+                        "description": "",
+                        "dichotomous": true,
+                        "discarded": false,
+                        "format": {
+                            "summary": {
+                                "digits": 2
+                            }
+                        },
+                        "header_order": 2,
+                        "is_subvar": true,
+                        "name": " (2)",
+                        "view": {
+                            "column_width": null,
+                            "include_missing": false,
+                            "show_counts": false,
+                            "show_numeric_values": false
+                        }
+                    },
+                    "type": {
+                        "categories": [
+                            {
+                                "id": 0,
+                                "missing": false,
+                                "name": "0",
+                                "numeric_value": 0
+                            },
+                            {
+                                "id": 1,
+                                "missing": false,
+                                "name": "1",
+                                "numeric_value": 1
+                            },
+                            {
+                                "id": -1,
+                                "missing": true,
+                                "name": "No Data",
+                                "numeric_value": null
+                            }
+                        ],
+                        "class": "categorical",
+                        "ordinal": false
+                    }
+                },
+                "id": 2,
+                "missing": false
+            }
+        ],
+        "subtype": {
+            "class": "variable"
+        }
+    }
+}
