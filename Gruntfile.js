@@ -101,7 +101,7 @@ module.exports = function(grunt) {
 
             prod : {
                 options : {
-                    browsers:  ['Chrome', 'Firefox'],
+                    browsers:  ['Chrome'],
                     singleRun: true
                 }
             }
