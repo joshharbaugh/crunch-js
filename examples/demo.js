@@ -1,9 +1,6 @@
 
 var app = angular.module('crVariablesDemo', [
-    'shoji',
-    'resources',
-    'dataset-context',
-    'hierarchical-variables'
+    'crunchJS'
 ])
 
 app.config(function($httpProvider) {
