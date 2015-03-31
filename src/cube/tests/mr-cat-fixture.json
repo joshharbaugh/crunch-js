@@ -1,0 +1,355 @@
+{
+    "element": "shoji:view",
+    "self": "***REMOVED***/api/datasets/e5b429c0b4c2474da8d9b2da7eef538f/cube/?query=%7B%22dimensions%22:%5B%7B%22function%22:%22selected_array%22,%22args%22:%5B%7B%22variable%22:%22https:%2F%2F***REMOVED***%2Fapi%2Fdatasets%2Fe5b429c0b4c2474da8d9b2da7eef538f%2Fvariables%2F150e1893130842dcb0bbc641ed427dec%2F%22%7D%5D%7D,%7B%22each%22:%22https:%2F%2F***REMOVED***%2Fapi%2Fdatasets%2Fe5b429c0b4c2474da8d9b2da7eef538f%2Fvariables%2F150e1893130842dcb0bbc641ed427dec%2F%22%7D,%7B%22variable%22:%22https:%2F%2F***REMOVED***%2Fapi%2Fdatasets%2Fe5b429c0b4c2474da8d9b2da7eef538f%2Fvariables%2F4bee1c80402f4dd0a9e70db36541c2ca%2F%22%7D%5D,%22measures%22:%7B%22count%22:%7B%22function%22:%22cube_count%22%7D%7D%7D",
+    "value": {
+        "applied_filters": [],
+        "description": "A Crunch Cube of data for this dataset.",
+        "margins": {
+            "0": {
+                "data": [
+                    3,
+                    4,
+                    0,
+                    0,
+                    1,
+                    5
+                ]
+            },
+            "1": {
+                "data": [
+                    1,
+                    1,
+                    1,
+                    1,
+                    1,
+                    0,
+                    1,
+                    0,
+                    0
+                ]
+            },
+            "data": [
+                6
+            ]
+        },
+        "result": {
+            "dimensions": [
+                {
+                    "derived": true,
+                    "references": {
+                        "alias": "mymrset",
+                        "description": "My multiple response set",
+                        "dichotomous": true,
+                        "discarded": false,
+                        "format": {
+                            "summary": {
+                                "digits": 2
+                            }
+                        },
+                        "header_order": 4,
+                        "id": "150e1893130842dcb0bbc641ed427dec",
+                        "is_subvar": false,
+                        "name": "mymrset",
+                        "view": {
+                            "column_width": null,
+                            "include_missing": false,
+                            "include_noneoftheabove": false,
+                            "show_counts": false
+                        }
+                    },
+                    "type": {
+                        "class": "enum",
+                        "elements": [
+                            {
+                                "id": 1,
+                                "missing": false,
+                                "value": {
+                                    "derived": false,
+                                    "id": "333bd955657044bd87adea986658abce",
+                                    "references": {
+                                        "alias": "bool1",
+                                        "description": "Response #1",
+                                        "dichotomous": true,
+                                        "discarded": false,
+                                        "format": null,
+                                        "header_order": 4,
+                                        "is_subvar": true,
+                                        "name": "Response #1",
+                                        "view": null
+                                    },
+                                    "type": {
+                                        "class": "boolean",
+                                        "missing_reasons": {
+                                            "No Data": -1
+                                        },
+                                        "missing_rules": {}
+                                    }
+                                }
+                            },
+                            {
+                                "id": 2,
+                                "missing": false,
+                                "value": {
+                                    "derived": false,
+                                    "id": "096c5fe7276a4d90bbf655ec1e62c00d",
+                                    "references": {
+                                        "alias": "bool2",
+                                        "description": "Response #2",
+                                        "dichotomous": true,
+                                        "discarded": false,
+                                        "format": null,
+                                        "header_order": 5,
+                                        "is_subvar": true,
+                                        "name": "Response #2",
+                                        "view": null
+                                    },
+                                    "type": {
+                                        "class": "boolean",
+                                        "missing_reasons": {
+                                            "No Data": -1
+                                        },
+                                        "missing_rules": {}
+                                    }
+                                }
+                            },
+                            {
+                                "id": 3,
+                                "missing": false,
+                                "value": {
+                                    "derived": false,
+                                    "id": "1383757538804c8e9dfaddaca75ea5a6",
+                                    "references": {
+                                        "alias": "bool3",
+                                        "description": "Response #3",
+                                        "dichotomous": true,
+                                        "discarded": false,
+                                        "format": null,
+                                        "header_order": 6,
+                                        "is_subvar": true,
+                                        "name": "Response #3",
+                                        "view": {
+                                            "column_width": null,
+                                            "include_missing": false,
+                                            "show_counts": false,
+                                            "show_numeric_values": false
+                                        }
+                                    },
+                                    "type": {
+                                        "class": "boolean",
+                                        "missing_reasons": {
+                                            "No Data": -1
+                                        },
+                                        "missing_rules": {}
+                                    }
+                                }
+                            },
+                            {
+                                "id": -1,
+                                "missing": true,
+                                "value": null
+                            },
+                            {
+                                "id": -127,
+                                "missing": false,
+                                "value": {
+                                    "derived": true,
+                                    "id": "__none__",
+                                    "references": {},
+                                    "type": {
+                                        "class": "boolean",
+                                        "missing_reasons": {
+                                            "No Data": -1
+                                        },
+                                        "missing_rules": {}
+                                    }
+                                }
+                            },
+                            {
+                                "id": 0,
+                                "missing": false,
+                                "value": {
+                                    "derived": true,
+                                    "id": "__any__",
+                                    "references": {},
+                                    "type": {
+                                        "class": "boolean",
+                                        "missing_reasons": {
+                                            "No Data": -1
+                                        },
+                                        "missing_rules": {}
+                                    }
+                                }
+                            }
+                        ],
+                        "subtype": {
+                            "class": "variable"
+                        }
+                    }
+                },
+                {
+                    "derived": false,
+                    "references": {
+                        "alias": "x",
+                        "description": "Numeric variable with value labels",
+                        "discarded": false,
+                        "header_order": 0,
+                        "name": "x"
+                    },
+                    "type": {
+                        "categories": [
+                            {
+                                "id": 1,
+                                "missing": false,
+                                "name": "red",
+                                "numeric_value": 1
+                            },
+                            {
+                                "id": 2,
+                                "missing": false,
+                                "name": "green",
+                                "numeric_value": 2
+                            },
+                            {
+                                "id": 3,
+                                "missing": false,
+                                "name": "blue",
+                                "numeric_value": 3
+                            },
+                            {
+                                "id": 4,
+                                "missing": false,
+                                "name": "4",
+                                "numeric_value": 4
+                            },
+                            {
+                                "id": 9,
+                                "missing": false,
+                                "name": "9",
+                                "numeric_value": 9
+                            },
+                            {
+                                "id": 7,
+                                "missing": true,
+                                "name": "7",
+                                "numeric_value": 7
+                            },
+                            {
+                                "id": 8,
+                                "missing": true,
+                                "name": "8",
+                                "numeric_value": 8
+                            },
+                            {
+                                "id": 99,
+                                "missing": true,
+                                "name": "99",
+                                "numeric_value": 99
+                            },
+                            {
+                                "id": -1,
+                                "missing": true,
+                                "name": "No Data",
+                                "numeric_value": null
+                            }
+                        ],
+                        "class": "categorical",
+                        "ordinal": false
+                    }
+                }
+            ],
+            "element": "crunch:cube",
+            "measures": {
+                "count": {
+                    "data": [
+                        1,
+                        1,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        1,
+                        0,
+                        1,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        1,
+                        1,
+                        1,
+                        0,
+                        1,
+                        0,
+                        1,
+                        0,
+                        0
+                    ],
+                    "metadata": {
+                        "derived": true,
+                        "references": {},
+                        "type": {
+                            "class": "numeric",
+                            "integer": true,
+                            "missing_reasons": {
+                                "No Data": -1
+                            },
+                            "missing_rules": {}
+                        }
+                    },
+                    "n_missing": 1
+                }
+            },
+            "missing": 1,
+            "n": 6
+        },
+        "sources": [
+            {
+                "args": [
+                    {
+                        "variable": "***REMOVED***/api/datasets/e5b429c0b4c2474da8d9b2da7eef538f/variables/150e1893130842dcb0bbc641ed427dec/"
+                    }
+                ],
+                "function": "selected_array"
+            },
+            {
+                "each": "***REMOVED***/api/datasets/e5b429c0b4c2474da8d9b2da7eef538f/variables/150e1893130842dcb0bbc641ed427dec/"
+            },
+            {
+                "variable": "***REMOVED***/api/datasets/e5b429c0b4c2474da8d9b2da7eef538f/variables/4bee1c80402f4dd0a9e70db36541c2ca/"
+            }
+        ],
+        "weight_url": null
+    }
+}

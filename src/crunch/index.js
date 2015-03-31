@@ -3,9 +3,14 @@
 module.exports = function buildModule() {
     var angular = require('angular')
         , features = [
-            require('../machina-angular')
-            , require('../shoji')
+            require('../shoji')
+            , require('../machina-angular')
             , require('../traversable')
+            , require('../drag-and-drop')
+            , require('../hierarchical-variables')
+            , require('../hierarchical-variables-list')
+            , require('../analysis')
+            , require('../cube')
         ]
         ;
 
