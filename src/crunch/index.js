@@ -5,6 +5,7 @@ module.exports = function buildModule() {
         , features = [
             require('../shoji')
             , require('../resources')
+            , require('../messaging')
             , require('../machina-angular')
             , require('../current-dataset')
             , require('../traversable')
@@ -13,6 +14,7 @@ module.exports = function buildModule() {
             , require('../hierarchical-variables-list')
             , require('../analysis')
             , require('../cube')
+            , require('../start-from')
         ]
         ;
 
