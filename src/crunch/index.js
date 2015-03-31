@@ -4,6 +4,7 @@ module.exports = function buildModule() {
     var angular = require('angular')
         , features = [
             require('../shoji')
+            , require('../resources')
             , require('../machina-angular')
             , require('../traversable')
             , require('../drag-and-drop')
