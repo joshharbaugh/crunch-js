@@ -6,6 +6,7 @@ module.exports = function buildModule() {
             require('../shoji')
             , require('../resources')
             , require('../machina-angular')
+            , require('../current-dataset')
             , require('../traversable')
             , require('../drag-and-drop')
             , require('../hierarchical-variables')
