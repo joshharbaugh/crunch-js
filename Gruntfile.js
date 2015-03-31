@@ -8,9 +8,12 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pkg : grunt.file.readJSON('package.json'),
         tests : {
-            src : './src/**/*-spec.js',
+            src : '<%= pkg.directories.src %>/**/*-spec.js',
             supportFiles : 'test-support/index.js',
             supportFilesBuild : '<%= pkg.directories.build %>/test-support.js'
+        },
+        dist : {
+            srcJs : 'index.js'
         },
         clean : {
             dev : {
@@ -30,13 +33,13 @@ module.exports = function(grunt) {
             }
         },
         browserify : {
+            options : {
+                alias : [
+                    './test-support/angular-shim.js:angular',
+                    './test-support/angular-mocks-shim.js:angular-mocks'
+                ]
+            },
             testSupport : {
-                options : {
-                    alias : [
-                        './test-support/angular-shim.js:angular',
-                        './test-support/angular-mocks-shim.js:angular-mocks'
-                    ]
-                },
                 src : [
                     '<%= tests.supportFiles %>'
                 ],
@@ -46,7 +49,9 @@ module.exports = function(grunt) {
             dev : {
                 options : {
                     watch : true,
-                    external : ['angular', 'angular-mocks']
+                    external : ['angular', 'angular-mocks'],
+                    transform : ['html2js-browserify']
+
                 },
                 src : [
                     '<%= tests.src %>'
@@ -62,19 +67,43 @@ module.exports = function(grunt) {
                     return filterTestFile(filepath, options)
                 }
             }
+
+            , distJs : {
+                src : [
+                    '<%= dist.srcJs %>'
+                ],
+                dest : '<%= pkg.buildFile %>'
+            }
+
+            , distTemplates : {
+                src : [
+                    '<%= dist.srcHtml %>'
+                ],
+                dest : '<%= pkg.buildTemplatesFile %>'
+            }
         },
 
         karma : {
+            options : {
+                configFile: 'karma.conf.js',
+                files: [
+                    '<%= pkg.assets.angular %>',
+                    '<%= pkg.assets.angularMocks %>',
+                    '<%= tests.supportFilesBuild %>',
+                    '<%= pkg.buildFile %>'
+                ]
+            },
+
             dev : {
-                options: {
-                    configFile: 'karma.conf.js',
-                    files: [
-                        '<%= pkg.assets.angular %>',
-                        '<%= pkg.assets.angularMocks %>',
-                        '<%= tests.supportFilesBuild %>',
-                        '<%= pkg.buildFile %>'
-                    ],
+                options : {
                     browsers: ['Chrome']
+                }
+            },
+
+            prod : {
+                options : {
+                    browsers:  ['Chrome', 'Firefox'],
+                    singleRun: true
                 }
             }
         }
@@ -90,5 +119,14 @@ module.exports = function(grunt) {
         'browserify:testSupport',
         'browserify:dev',
         'karma:dev'
+    ])
+
+    grunt.registerTask('build', 'Creates a new build', [
+        'clean',
+        'browserify:testSupport',
+        'browserify:dev',
+        'karma:prod',
+        'clean',
+        'browserify:distJs'
     ])
 }

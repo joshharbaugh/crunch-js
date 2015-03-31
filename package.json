@@ -6,7 +6,8 @@
   "directories": {
     "test": "tests",
     "build": "build",
-    "src": "src"
+    "src": "src",
+    "dist": "dist"
   },
   "assets": {
     "angular": "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js",
@@ -18,7 +19,9 @@
     "chai-things": "^0.2.0",
     "es6-map": "^0.1.1",
     "es6-set": "^0.1.1",
-    "lodash": "^3.3.1"
+    "lodash": "^3.3.1",
+    "machina": "0.3.5",
+    "simulate-event": "0.0.3"
   },
   "devDependencies": {
     "browserify": "^9.0.3",
@@ -26,6 +29,7 @@
     "grunt-browserify": "^3.6.0",
     "grunt-contrib-clean": "^0.6.0",
     "grunt-karma": "^0.10.1",
+    "html2js-browserify": "0.0.2",
     "jshint": "^2.6.3",
     "karma": "^0.12.31",
     "karma-chrome-launcher": "^0.1.7",
