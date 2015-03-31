@@ -26,7 +26,6 @@ function MeasureFactory(_, ndarray) {
             , data = config.data
             , isMissing
             , validData
-
         isMissing = prod.apply(this, missing)
         .map(function(indices){
             return indices.some(function(missing){
@@ -44,14 +43,34 @@ function MeasureFactory(_, ndarray) {
 
         this.cube = ndarray(validData, validShape)
     }
-    function prod() { // avoid circular dependency
-        return _.reduce(arguments, function(a, b) {
-            return _.flatten(_.map(a, function(x) {
-                return _.map(b, function(y) {
-                    return x.concat([y])
-                })
-            }), true)
-        }, [ [] ])
+    function prod() {
+        var args = [].slice.call(arguments)
+            ,end = args.length - 1;
+
+        var result = []
+
+        function addTo(curr, start) {
+            var first = args[start],
+                last = (start === end)
+
+            for (var i = 0; i < first.length; ++i) {
+                var copy = curr.slice()
+                copy.push(first[i])
+
+                if (last) {
+                    result.push(copy)
+                } else {
+                    addTo(copy, start + 1)
+                }
+            }
+        }
+
+        if (args.length) {
+            addTo([], 0)
+        } else {
+            result.push([])
+        }
+        return result
     }
     return {
         fromData : function(config) {

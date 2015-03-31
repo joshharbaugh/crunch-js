@@ -128,10 +128,10 @@ describe('cube stats', function(){
         })
         it('percentaging', function(){
             var row = unpack(sut.propTable(rawcube, 0))
-            row.should.eql([[0,1],[NaN,NaN],[NaN,NaN]]) // from div/0 on margin
             var col = unpack(sut.propTable(rawcube, 1))
-            col.should.eql([[0,0.5],[0,0],[0,0]])
             var cell = unpack(sut.propTable(rawcube))
+            col.should.eql([[0,0.5],[0,0],[0,0]])
+            row.should.eql([[0,1],[NaN,NaN],[NaN,NaN]]) // from div/0 on margin
             cell.should.eql([[0,0.25],[0,0],[0,0]])
         })
     })
