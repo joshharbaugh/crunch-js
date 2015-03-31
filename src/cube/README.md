@@ -14,7 +14,6 @@ js object, for display and persistence as a ‘saved analysis’.
 - `nMissing` — the number of missing observations encountered during calculation
 - `weightId` — the id of the weight variable used in calculation
 - `appliedFilters` — array of ids of filters used
-- `margins` — if margins were supplied (for MR), the objects provided
 
 ### Measures
 
@@ -58,15 +57,3 @@ result, using the `fromCrCube` method. Each variable type used as a dimension
 yields slightly different metadata, for which dimension subclasses are used to
 construct cubes of the correct valid _shape_ and with usable _labels_. Each
 measure, of identical valid shape, is stored in the whaam cube keyed by name.
-
-### ‘Xtab’ shim
-
-Given a whaam cube and variables, this service creates an object identical to
-the one used for display from the legacy server endpoints, so as not to break
-any of the code used to render results as tables and graphs. It extracts values,
-computes tables of margins and row, column, and cell percentages where needed,
-and produces a flat, labeled array for graphing.
-
-The cube is passed on to child scopes inside the `analysis` member. The
-*graph-dotplot* extracts values and labels from that whaam cube and it is
-expected that future plotting directives will uses whaam cubes as input.

@@ -24,11 +24,6 @@ function CubeFactory($log, $q, _, dimension, measure){
         this.nMissing = meta.nMissing
         this.weightId = meta.weightId
         this.appliedFilters = _.cloneDeep(meta.appliedFilters)
-
-        if(_.isObject(margins)) {
-            this.margins = margins
-        }
-
         _.extend(this, measures)
 
         return this
