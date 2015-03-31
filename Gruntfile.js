@@ -13,7 +13,8 @@ module.exports = function(grunt) {
             supportFilesBuild : '<%= pkg.directories.build %>/test-support.js'
         },
         dist : {
-            srcJs : 'index.js'
+            srcJs : 'index.js',
+            distFile : '<%= pkg.directories.dist%>/crunch.js'
         },
         clean : {
             dev : {
@@ -68,18 +69,15 @@ module.exports = function(grunt) {
                 }
             }
 
-            , distJs : {
+            , dist : {
+                options : {
+                    transform : ['browserify-ng-html2js']
+                }
+                ,
                 src : [
                     '<%= dist.srcJs %>'
                 ],
-                dest : '<%= pkg.buildFile %>'
-            }
-
-            , distTemplates : {
-                src : [
-                    '<%= dist.srcHtml %>'
-                ],
-                dest : '<%= pkg.buildTemplatesFile %>'
+                dest : '<%= dist.distFile %>'
             }
         },
 
@@ -87,6 +85,7 @@ module.exports = function(grunt) {
             options : {
                 configFile: 'karma.conf.js',
                 files: [
+                    '<%= pkg.assets.jquery %>',
                     '<%= pkg.assets.angular %>',
                     '<%= pkg.assets.angularMocks %>',
                     '<%= tests.supportFilesBuild %>',
@@ -127,6 +126,6 @@ module.exports = function(grunt) {
         'browserify:dev',
         'karma:prod',
         'clean',
-        'browserify:distJs'
+        'browserify:dist'
     ])
 }

@@ -11,7 +11,8 @@
   },
   "assets": {
     "angular": "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js",
-    "angularMocks": "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular-mocks.js"
+    "angularMocks": "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular-mocks.js",
+    "jquery": "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"
   },
   "buildFile": "./build/build.js",
   "dependencies": {
@@ -25,6 +26,7 @@
   },
   "devDependencies": {
     "browserify": "^9.0.3",
+    "browserify-ng-html2js": "^1.0.0",
     "grunt": "^0.4.5",
     "grunt-browserify": "^3.6.0",
     "grunt-contrib-clean": "^0.6.0",
