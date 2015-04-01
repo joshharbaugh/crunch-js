@@ -1,7 +1,7 @@
 ##Build instructions
 
 - `npm install`
-- `grunt build`
+- `grunt`
 
 ##Test instructions
 

@@ -1,4 +1,4 @@
-module.exports = buildModule()
+'use strict'
 
 function buildModule() {
     var templateModules = {}
@@ -8,9 +8,11 @@ function buildModule() {
 
     mod.run(["$templateCache", function($templateCache) {
     <% tpls.forEach(function(tpl) { %>
-        $templateCache.put("<%= tpl.name %>", require("../<%= tpl.path %>"))
+        $templateCache.put("<%= tpl.name %>", require("<%= tpl.path %>"))
     <% }) %>
     }])
 
     return mod
 }
+
+module.exports = buildModule()

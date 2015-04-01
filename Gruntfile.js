@@ -1,38 +1,69 @@
 'use strict'
 
 var filterTestFile = require('./lib/filter-test-file')
+    , path = require('path')
     ;
 
 module.exports = function(grunt) {
 
     grunt.initConfig({
         pkg : grunt.file.readJSON('package.json'),
-        tests : {
-            src : '<%= pkg.directories.src %>/**/*-spec.js',
-            supportFiles : 'test-support/index.js',
-            supportFilesBuild : '<%= pkg.directories.build %>/test-support.js'
+        baseDirs : {
+            src : 'src',
+            build : 'build',
+            support : 'test-support',
+            dist : 'dist',
+            tmp : 'tmp'
         },
-        dist : {
-            js : {
-                src : 'index.js',
-                tmp : '<%= pkg.directories.tmp %>/crunch.js',
-                dest: '<%= pkg.directories.dist %>/crunch.js'
+        externalAssets : {
+            jquery : 'https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js',
+            angular: 'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js',
+            mocks:   'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular-mocks.js'
+        },
+        src : {
+            tests : {
+                supportFiles : '<%= baseDirs.support %>/index.js',
+                specs : '<%= baseDirs.src %>/**/*-spec.js'
             },
-            html : {
-                src : '<%= pkg.directories.src %>/**/*.html',
-                tmp : '<%= pkg.directories.tmp %>/templates.js',
-                dest: '<%= pkg.directories.dist %>/templates.js'
+            templates : {
+                ngTemplates : '<%= baseDirs.src %>/**/*.html'
+            },
+            lib : {
+                entry : '<%= baseDirs.src %>/crunch/index.js'
             }
         },
-        clean : {
-            dev : {
-                src : ['<%= pkg.directories.build %>']
+        build : {
+            tests : {
+                base : '<%= baseDirs.build %>/tests',
+                supportFiles : '<%= build.tests.base %>/test-support.js',
+                specs : '<%= build.tests.base %>/specs.js'
             },
             dist : {
-                src : ['<%= pkg.directories.dist %>']
+                base : '<%= baseDirs.build %>/dist',
+                ngTemplates : '<%= baseDirs.build %>/dist/ngTemplates.js',
+                lib : '<%= baseDirs.build %>/dist/lib.js'
+            }
+        },
+        tmp : {
+            templates : {
+                ngTemplates : '<%= baseDirs.tmp %>/templates/templateBundler.js'
+            },
+            dist : {
+                bundle : '<%= baseDirs.tmp %>/bundle/crunch.js'
+            }
+        },
+        dist : {
+            dest : '<%= baseDirs.dist %>/crunch.js'
+        },
+        clean : {
+            test : {
+                src : ['<%= build.tests.base %>']
             },
             tmp : {
-                src : ['<%= pkg.directories.tmp %>']
+                src : ['<%= baseDirs.tmp %>']
+            },
+            dist : {
+                src : ['<%= build.dist.base %>', '<%= baseDirs.dist %>']
             }
         }
         ,
@@ -47,36 +78,33 @@ module.exports = function(grunt) {
 
         createTplBundle : {
             dist : {
-                src:  ['<%= dist.html.src %>'],
-                dest: '<%= dist.html.tmp %>'
+                src :  ['<%= src.templates.ngTemplates %>'],
+                dest:   '<%= tmp.templates.ngTemplates %>'
             }
         },
 
         browserify : {
-            testSupport : {
-                options : {
-                    alias : [
-                        './test-support/angular-shim.js:angular',
-                        './test-support/angular-mocks-shim.js:angular-mocks'
-                    ]
-                },
-                src : [
-                    '<%= tests.supportFiles %>'
+            options : {
+                alias : [
+                    './test-support/angular-shim.js:angular',
+                    './test-support/angular-mocks-shim.js:angular-mocks'
                 ],
-                dest : '<%= tests.supportFilesBuild %>'
+                transform : ['html2js-browserify']
             },
-
-            dev : {
+            buildTestSupport : {
+                src : ['<%= src.tests.supportFiles %>'],
+                dest : '<%= build.tests.supportFiles %>'
+            },
+            buildSpecs : {
                 options : {
                     watch : true,
                     external : ['angular', 'angular-mocks'],
-                    transform : ['html2js-browserify']
-
+                    browserifyOptions : {
+                      debug : true
+                    }
                 },
-                src : [
-                    '<%= tests.src %>'
-                ],
-                dest : '<%= pkg.buildFile %>',
+                src : ['<%= src.tests.specs %>'],
+                dest : '<%= build.tests.specs %>',
                 filter : function(filepath) {
                     var options = {
                             file:     grunt.option('file'),
@@ -88,39 +116,32 @@ module.exports = function(grunt) {
                 }
             },
 
-            dist : {
-                options : {
-                    alias : [
-                        './test-support/angular-shim.js:angular',
-                        './test-support/angular-mocks-shim.js:angular-mocks'
-                    ]
-                },
-                src : [
-                    '<%= dist.js.src %>'
-                ],
-                dest : '<%= dist.js.tmp %>'
-            }
-
-            , distTpl : {
+            buildNgTemplates : {
                 options : {
                     external : ['angular', 'angular-mocks'],
                     transform : ['html2js-browserify']
                 },
-                src : ['<%= dist.html.tmp %>'],
-                dest : '<%= dist.html.tmp %>'
+                src : ['<%= tmp.templates.ngTemplates  %>'],
+                dest : '<%= build.dist.ngTemplates %>'
+            },
+
+            buildLib : {
+                src : ['<%= src.lib.entry %>'],
+                dest : '<%= build.dist.lib %>'
+            }
+        },
+
+        concat : {
+            dist : {
+                src : ['<%= build.dist.lib %>', '<%= build.dist.ngTemplates %>'],
+                dest : '<%= tmp.dist.bundle %>'
             }
         },
 
         uglify : {
             dist : {
                 files : {
-                    '<%= dist.js.dest %>' : ['<%= dist.js.tmp %>']
-                }
-            }
-
-            , distTpl : {
-                files : {
-                    '<%= dist.html.dest %>' : ['<%= dist.html.tmp %>']
+                    '<%= dist.dest %>' : ['<%= tmp.dist.bundle %>']
                 }
             }
         },
@@ -129,11 +150,11 @@ module.exports = function(grunt) {
             options : {
                 configFile: 'karma.conf.js',
                 files: [
-                    '<%= pkg.assets.jquery %>',
-                    '<%= pkg.assets.angular %>',
-                    '<%= pkg.assets.angularMocks %>',
-                    '<%= tests.supportFilesBuild %>',
-                    '<%= pkg.buildFile %>'
+                    '<%= externalAssets.jquery %>',
+                    '<%= externalAssets.angular %>',
+                    '<%= externalAssets.mocks %>',
+                    '<%= build.tests.supportFiles %>',
+                    '<%= build.tests.specs %>'
                 ]
             },
 
@@ -154,8 +175,7 @@ module.exports = function(grunt) {
         copy : {
             examples : {
                 files: {
-                    'examples/crunch.js' : ['<%= dist.js.dest %>'],
-                    'examples/templates.js' : ['<%= dist.html.dest %>']
+                    'examples/crunch.js' : ['<%= dist.dest %>']
                 }
             }
         }
@@ -165,6 +185,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean')
     grunt.loadNpmTasks('grunt-contrib-jshint')
     grunt.loadNpmTasks('grunt-contrib-copy')
+    grunt.loadNpmTasks('grunt-contrib-concat')
     grunt.loadNpmTasks('grunt-browserify')
     grunt.loadNpmTasks('grunt-karma')
 
@@ -176,12 +197,16 @@ module.exports = function(grunt) {
             var dest = fileCfg.dest
                 , sources = fileCfg.src
                 , bundle
+                , root = process.cwd()
                 ;
 
             bundle = grunt.template.process(buildModuleTpl, {
                 data : {
                     tpls : sources.map(function(source) {
-                        return { name : source.replace('src', ''), path : source }
+                        return {
+                            name : source.replace('src', '')
+                            , path : path.join(root, source)
+                        }
                     })
                 }
             })
@@ -190,33 +215,40 @@ module.exports = function(grunt) {
         })
     })
 
-    grunt.registerTask('test', 'Run test suites', [
-        'clean:dev',
-        'browserify:testSupport',
-        'browserify:dev',
+    grunt.registerTask('buildTest', 'Creates spec and test support bundles that will be processed by karma', [
+        'clean:test',
+        'browserify:buildTestSupport',
+        'browserify:buildSpecs'
+    ])
+
+    grunt.registerTask('test', 'Run test suite in development mode. Watches for file changes and re-run the tests.', [
+        'buildTest',
         'karma:dev'
+    ])
+
+    grunt.registerTask('test:ci', 'Run test suite in CI mode. After the first run karma stops.', [
+        'buildTest',
+        'karma:prod'
     ])
 
     grunt.registerTask('buildTemplates', [
         'createTplBundle',
-        'browserify:distTpl',
-        'uglify:distTpl'
+        'browserify:buildNgTemplates'
     ])
 
-    grunt.registerTask('buildJS', [
-        'browserify:testSupport',
-        'browserify:dev',
-        'karma:prod',
-        'browserify:dist',
-        'uglify:dist'
-    ])
-
-    grunt.registerTask('build', 'Creates a new build', [
-        'clean',
-        'buildJS',
-        'buildTemplates',
-        'clean:dev',
+    grunt.registerTask('buildDist', [
         'clean:tmp',
+        'clean:dist',
+        'buildTemplates',
+        'browserify:buildLib',
+        'concat:dist',
+        'uglify:dist',
+        'clean:tmp'
+    ])
+
+    grunt.registerTask('default', 'Creates a new build', [
+        'test:ci',
+        'buildDist',
         'copy:examples'
     ])
 }
