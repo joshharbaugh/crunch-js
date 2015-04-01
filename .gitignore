@@ -7,3 +7,4 @@ build
 dist
 examples/crunch.js
 examples/templates.js
+examples/crunch.css

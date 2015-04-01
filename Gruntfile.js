@@ -30,6 +30,9 @@ module.exports = function(grunt) {
             },
             lib : {
                 entry : '<%= baseDirs.src %>/crunch/index.js'
+            },
+            styles : {
+                'class' : '<%= baseDirs.src %>/**/*.styl'
             }
         },
         build : {
@@ -53,7 +56,12 @@ module.exports = function(grunt) {
             }
         },
         dist : {
-            dest : '<%= baseDirs.dist %>/crunch.js'
+            js : {
+                dest: '<%= baseDirs.dist %>/crunch.js'
+            },
+            styles : {
+                dest : '<%= baseDirs.dist %>/crunch.css'
+            }
         },
         clean : {
             test : {
@@ -141,8 +149,18 @@ module.exports = function(grunt) {
         uglify : {
             dist : {
                 files : {
-                    '<%= dist.dest %>' : ['<%= tmp.dist.bundle %>']
+                    '<%= dist.js.dest %>' : ['<%= tmp.dist.bundle %>']
                 }
+            }
+        },
+
+        stylus : {
+            options : {
+                use : ['nib']
+            },
+            dist : {
+                src : ['<%= src.styles.class %>'],
+                dest : '<%= dist.styles.dest %>'
             }
         },
 
@@ -175,7 +193,8 @@ module.exports = function(grunt) {
         copy : {
             examples : {
                 files: {
-                    'examples/crunch.js' : ['<%= dist.dest %>']
+                    'examples/crunch.js' : ['<%= dist.js.dest %>'],
+                    'examples/crunch.css' : ['<%= dist.styles.dest %>']
                 }
             }
         }
@@ -187,6 +206,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy')
     grunt.loadNpmTasks('grunt-contrib-concat')
     grunt.loadNpmTasks('grunt-browserify')
+    grunt.loadNpmTasks('grunt-contrib-stylus')
     grunt.loadNpmTasks('grunt-karma')
 
     grunt.registerMultiTask('createTplBundle', function buildTemplates() {
@@ -243,6 +263,7 @@ module.exports = function(grunt) {
         'browserify:buildLib',
         'concat:dist',
         'uglify:dist',
+        'stylus:dist',
         'clean:tmp'
     ])
 
