@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = (function buildModule() {
+module.exports = function buildModule() {
     var angular = require('angular')
         , features = [
             require('../shoji')
@@ -24,4 +24,4 @@ module.exports = (function buildModule() {
     }))
 
   return mod
-})()
+}
