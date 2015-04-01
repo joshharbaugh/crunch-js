@@ -207,6 +207,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat')
     grunt.loadNpmTasks('grunt-browserify')
     grunt.loadNpmTasks('grunt-contrib-stylus')
+    grunt.loadNpmTasks('grunt-release')
     grunt.loadNpmTasks('grunt-karma')
 
     grunt.registerMultiTask('createTplBundle', function buildTemplates() {
