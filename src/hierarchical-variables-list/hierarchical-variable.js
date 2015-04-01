@@ -36,6 +36,7 @@ function HierarchicalVariableFactory(machina, bus) {
             bus.publish({
                 event : 'variable.clicked'
                 , variable : this.data
+                , behaviors : this.behaviors
             })
         }
         ,_store: function(){
