@@ -1,0 +1,22 @@
+<html ng-app="crosstabsViewer">
+    <head>
+        <title>Hierarchical variables demo</title>
+        <meta charset="utf-8">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.css" rel="stylesheet"/>
+        <link href="styles.css" rel="stylesheet" type="text/css"/>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.10/angular.min.js">
+        </script>
+        <script src="crunch.js"></script>
+        <script src="variables-accordion/variable-accordion-bundle.js"></script>
+        <script src="index.js"></script>
+        <script src="crosstab/crosstab.js"></script>
+    </head>
+    <body ng-controller="AppCtrl as ctrl">
+    <div class="app">
+        <variables-accordion class="sidebar"></variables-accordion>
+        <div class="main">
+            <cr-table></cr-table>
+        </div>
+    </div>
+    </body>
+</html>

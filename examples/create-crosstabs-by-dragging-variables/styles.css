@@ -1,0 +1,73 @@
+.app {
+    display: flex;
+    height: 100%;
+}
+
+button {
+    border: none;
+}
+
+button:focus {
+    outline: none;
+}
+
+.app .sidebar {
+    flex-grow: 1;
+    flex-basis: 20%;
+    background-color: #eee;
+    display: flex;
+    flex-direction: column;
+}
+
+.app .main {
+    flex-grow: 2;
+    flex-basis: 80%;
+}
+
+.icon-plus-sign:before {
+    content : '+';
+    font-size: 12px;
+}
+
+.icon-plus-minus:before {
+    content : '-';
+    font-size: 12px;
+}
+
+variables-accordion button:not(.toggle) {
+    background: #eee;
+    width: 100%;
+    cursor: pointer;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid white;
+    text-align: left;
+    padding: 9px;
+
+}
+
+variables-accordion button.toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+}
+
+variables-accordion .hierarchical-group > header button:not(.variable-button) {
+    font-size: 14px;
+}
+
+variables-accordion .hierarchical-group > header button:not(.variable-button):before {
+    content: 'group - ';
+}
+
+variables-accordion scalar-variable .behavioral-variable button {
+    font-size: 12px;
+}
+
+variables-accordion scalar-variable .behavioral-variable button:before {
+    content: 'variable - ';
+}
+
+variables-accordion .hierarchical-variable.composite header {
+    display: flex;
+}

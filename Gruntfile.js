@@ -105,6 +105,9 @@ module.exports = function(grunt) {
         },
 
         uglify : {
+            options : {
+                sourceMap : true
+            },
             dist : {
                 files : {
                     '<%= dist.lib.dest %>' : ['<%= build.lib.index %>']
@@ -182,15 +185,18 @@ module.exports = function(grunt) {
         'karma:prod'
     ])
 
-    grunt.registerTask('dist', [
-        'clean:tmp',
-        'clean:dist',
-        'test:ci',
+    grunt.registerTask('buildDist', [
         'browserify:buildLib',
         'uglify:dist',
         'clean:tmp',
         'copy:examples'
+    ])
 
+    grunt.registerTask('dist', [
+        'clean:tmp',
+        'clean:dist',
+        'test:ci',
+        'buildDist'
     ])
 
     grunt.registerTask('default', 'Runs dist task', ['dist'])
