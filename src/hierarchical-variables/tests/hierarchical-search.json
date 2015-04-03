@@ -1,6 +1,6 @@
 {
    "element":"shoji:order",
-   "self":"/api/users***REMOVED***datasets/999/variables/search/{token}",
+   "self":"/api/users/test_user/datasets/999/variables/search/{token}",
    "description":"Hierarchical ordering of dataset variables",
    "graph" : [
       {

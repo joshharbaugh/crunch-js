@@ -7,7 +7,7 @@ module.exports = (function() {
         , specification: '/api/specifications/datasets/'
         , description: 'Detail for a given dataset'
         , body: {
-            user***REMOVED***
+            userid: 'test_user'
             , name: 'oyster.csv'
             , sources: ['519be7f3375e4fa9e222d54f']
             , id: '123'

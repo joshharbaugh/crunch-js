@@ -8,7 +8,7 @@ module.exports = (function() {
         , urls: {
             roles_url: '/api/roles/users/'
             , logout_url: '/api/logout/'
-            , user_url: '/api/users***REMOVED***'
+            , user_url: '/api/users/test_user/'
         }
     };
     var catVariable1 = {
@@ -436,7 +436,7 @@ module.exports = (function() {
         , specification: '/api/specifications/datasets/'
         , description: 'Detail for a given dataset'
         , body: {
-            user***REMOVED***
+            userid: 'test_user'
             , name: 'oyster.csv'
             , sources: ['519be7f3375e4fa9e222d54f']
             , id: '123'
@@ -462,7 +462,7 @@ module.exports = (function() {
         , specification: '/api/specifications/datasets/'
         , description: 'Detail for a given dataset'
         , body: {
-            user***REMOVED***
+            userid: 'test_user'
             , name: 'oyster.csv'
             , sources: ['519be7f3375e4fa9e222d54f']
             , id: '123'
@@ -1030,29 +1030,29 @@ module.exports = (function() {
     };
     var user = {
         element: 'shoji:entity'
-        , self: '/api/users***REMOVED***'
+        , self: '/api/users/test_user/'
         , specification: '/api/specifications/users/'
         , description: 'Details for a User'
         , body: {
             first_name: 'Jean Luque'
             , last_name: 'Piccard'
-            , email: '***REMOVED***'
-            , ***REMOVED***
+            , email: 'email@host.test'
+            , id: 'test_user'
         }
         , urls: {
             account_role_url: '/api/accounts/00001/user_roles/5181fc7307a7d81f41bbece1/'
-            , invite_url: '/api/users***REMOVED***invite/'
-            , password_reset_url: '/api/users***REMOVED***password_reset/'
+            , invite_url: '/api/users/test_user/invite/'
+            , password_reset_url: '/api/users/test_user/password_reset/'
             , account_url: '/api/accounts/00001/'
-            , password_url: '/api/users***REMOVED***password/'
-            , sources_url: '/api/users***REMOVED***sources/'
-            , projects_url: '/api/users***REMOVED***projects/'
-            , datasets_url: '/api/users***REMOVED***datasets/'
+            , password_url: '/api/users/test_user/password/'
+            , sources_url: '/api/users/test_user/sources/'
+            , projects_url: '/api/users/test_user/projects/'
+            , datasets_url: '/api/users/test_user/datasets/'
         }
     };
     var userDatasets = {
         element: 'shoji:catalog'
-        , self: '/api/users***REMOVED***datasets/'
+        , self: '/api/users/test_user/datasets/'
         , specification: '/api/specifications/datasets/'
         , description: 'List of Datasets that belong to this user. POST a Dataset representation (serialized JSON) here to create a new one; a 201 response indicates success and returns the location of the new object. GET that URL to retrieve the object.'
         , entities: ['/api/datasets/123/']

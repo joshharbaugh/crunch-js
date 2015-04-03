@@ -20,9 +20,9 @@ module.exports = (function() {
         function mockServices(main) {
             main.factory('iResourceDatasets', function(Shoji, $q) {
                 return function() {
-                    var res = Shoji('/api/users***REMOVED***')
+                    var res = Shoji('/api/users/test_user/')
                         .parse({
-                            self: '/api/users***REMOVED***datasets/'
+                            self: '/api/users/test_user/datasets/'
                             , element: 'shoji:catalog'
                             ,index: {
                                 '/api/datasets/123/':{}

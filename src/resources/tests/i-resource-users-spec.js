@@ -21,9 +21,9 @@ describe('IResourceUsers', function() {
             return {
                 current: function() {
                     var res = Shoji(
-                        '/api/users***REMOVED***')
+                        '/api/users/test_user/')
                         .parse({
-                            self: '/api/users***REMOVED***'
+                            self: '/api/users/test_user/'
                             , element: 'shoji:entity'
                             , urls: {
                                 account_url: fixtures

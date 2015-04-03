@@ -1,6 +1,6 @@
 {
     "element": "shoji:view",
-    "self": "***REMOVED***/api/datasets/e5b429c0b4c2474da8d9b2da7eef538f/cube/?query=%7B%22dimensions%22:%5B%7B%22function%22:%22selected_array%22,%22args%22:%5B%7B%22variable%22:%22https:%2F%2F***REMOVED***%2Fapi%2Fdatasets%2Fe5b429c0b4c2474da8d9b2da7eef538f%2Fvariables%2F150e1893130842dcb0bbc641ed427dec%2F%22%7D%5D%7D,%7B%22each%22:%22https:%2F%2F***REMOVED***%2Fapi%2Fdatasets%2Fe5b429c0b4c2474da8d9b2da7eef538f%2Fvariables%2F150e1893130842dcb0bbc641ed427dec%2F%22%7D,%7B%22variable%22:%22https:%2F%2F***REMOVED***%2Fapi%2Fdatasets%2Fe5b429c0b4c2474da8d9b2da7eef538f%2Fvariables%2F4bee1c80402f4dd0a9e70db36541c2ca%2F%22%7D%5D,%22measures%22:%7B%22count%22:%7B%22function%22:%22cube_count%22%7D%7D%7D",
+    "self": "/api/datasets/e5b429c0b4c2474da8d9b2da7eef538f/cube/?query=%7B%22dimensions%22:%5B%7B%22function%22:%22selected_array%22,%22args%22:%5B%7B%22variable%22:%22https:%2F%2F***REMOVED***%2Fapi%2Fdatasets%2Fe5b429c0b4c2474da8d9b2da7eef538f%2Fvariables%2F150e1893130842dcb0bbc641ed427dec%2F%22%7D%5D%7D,%7B%22each%22:%22https:%2F%2F***REMOVED***%2Fapi%2Fdatasets%2Fe5b429c0b4c2474da8d9b2da7eef538f%2Fvariables%2F150e1893130842dcb0bbc641ed427dec%2F%22%7D,%7B%22variable%22:%22https:%2F%2F***REMOVED***%2Fapi%2Fdatasets%2Fe5b429c0b4c2474da8d9b2da7eef538f%2Fvariables%2F4bee1c80402f4dd0a9e70db36541c2ca%2F%22%7D%5D,%22measures%22:%7B%22count%22:%7B%22function%22:%22cube_count%22%7D%7D%7D",
     "value": {
         "applied_filters": [],
         "description": "A Crunch Cube of data for this dataset.",
@@ -338,16 +338,16 @@
             {
                 "args": [
                     {
-                        "variable": "***REMOVED***/api/datasets/e5b429c0b4c2474da8d9b2da7eef538f/variables/150e1893130842dcb0bbc641ed427dec/"
+                        "variable": "/api/datasets/e5b429c0b4c2474da8d9b2da7eef538f/variables/150e1893130842dcb0bbc641ed427dec/"
                     }
                 ],
                 "function": "selected_array"
             },
             {
-                "each": "***REMOVED***/api/datasets/e5b429c0b4c2474da8d9b2da7eef538f/variables/150e1893130842dcb0bbc641ed427dec/"
+                "each": "/api/datasets/e5b429c0b4c2474da8d9b2da7eef538f/variables/150e1893130842dcb0bbc641ed427dec/"
             },
             {
-                "variable": "***REMOVED***/api/datasets/e5b429c0b4c2474da8d9b2da7eef538f/variables/4bee1c80402f4dd0a9e70db36541c2ca/"
+                "variable": "/api/datasets/e5b429c0b4c2474da8d9b2da7eef538f/variables/4bee1c80402f4dd0a9e70db36541c2ca/"
             }
         ],
         "weight_url": null

@@ -8,19 +8,19 @@ module.exports = (function() {
         , urls: {
             roles_url: '/api/roles/users/'
             , logout_url: '/api/logout/'
-            , user_url: '/api/users***REMOVED***'
+            , user_url: '/api/users/test_user/'
         }
     };
     var user = {
         element: 'shoji:entity'
-        , self: '/api/users***REMOVED***'
+        , self: '/api/users/test_user/'
         , specification: '/api/specifications/users/'
         , description: 'Details for a User'
         , body: {
             first_name: 'Jean Luque'
             , last_name: 'Piccard'
-            , email: '***REMOVED***'
-            , ***REMOVED***
+            , email: 'email@host.test'
+            , id: 'test_user'
         }
         , urls: {
             password_reset_url: 'https://devtest.crunch.io/api/users/139bfe2bcf584ebc8a0e3bfbdd95f70c/password_reset/'
