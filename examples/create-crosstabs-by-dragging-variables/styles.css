@@ -71,3 +71,33 @@ variables-accordion scalar-variable .behavioral-variable button:before {
 variables-accordion .hierarchical-variable.composite header {
     display: flex;
 }
+cr-table h2 {
+    font-size: 16px;
+    font-weight: 600;
+}
+cr-table > div {
+    display: flex;
+    flex-direction: row;
+    font: 10pt/13pt Helvetica, Arial, sans-serif;
+    padding: 12px;
+}
+cr-table .result {
+    flex: 2 1 50%;
+}
+cr-table .doc {
+    flex: 2 1 50%;
+}
+cr-table table {
+    display: block;
+}
+cr-table table th {
+    text-align: left;
+}
+cr-table table td {
+    text-align: right;
+}
+cr-table p {
+    display: block;
+    margin: 12px;
+    color: #468;
+}

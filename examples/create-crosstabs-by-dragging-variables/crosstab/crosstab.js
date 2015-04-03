@@ -9,17 +9,18 @@ app.factory('createAnalysis', function(currentDataset, Analysis) {
     }
 })
 
+// Although fine for an example, this array injection annotation
+// is hard to read and an explicit $inject array is preferable
 app.factory('createXtab', ['lodash', 'stats', 'ndarrayOps', 'ndarrayUnpack', function(_, stats, ndarrayOps, ndarrayUnpack) {
     'use strict'
 
     return function(cube) {
-        var counts = cube.count.cube
         // Here do any stat manipulation of the cube:
         // for example, column-wise proportions. Stats likewise
         // returns an ndarray, which we MULtiply by Scalar 100
-        var columnPercentages = stats.propTable(counts, 1)
-        ndarrayOps.mulseq(columnPercentages, 100)
+        var columnPercentages = stats.propTable(cube, 1)
 
+        ndarrayOps.mulseq(columnPercentages, 100)
         return {
             xtab: {
                 rowLabels:    cube.labels[0],
@@ -46,6 +47,7 @@ function CrTableDirective(createAnalysis, createXtab) {
         link: function($scope) {
 
             $scope.$on('variable.clicked', function(e, data) {
+                if (data.variable.type === 'categorical_array') { return }
                 createAnalysis().then(function(analysis) {
                     analysis.handle('add-variable', data.variable.self)
                     analysis.on('analysis.loaded', function() {
@@ -60,6 +62,4 @@ function CrTableDirective(createAnalysis, createXtab) {
     }
 }
 
-// Although fine for an example, this array injection annotation
-// is hard to read and an explicit $inject array is preferable
 app.directive('crTable', CrTableDirective)
