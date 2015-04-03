@@ -44,22 +44,26 @@
         over which you are repeating are guaranteed to be unique, or specify
         `track by $index`.
     </p>
-    <table cr-table>
+    <table>
         <thead>
             <tr>
+                <th>
+                    &nbsp;
+                </th>
                 <th ng-repeat="label in xtab.columnLabels track by $index">
                     {{ label }}
                 </th>
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat"row in xtab.rows track by $index">
+            <tr ng-repeat="value in xtab.rows track by $index">
                 <th>
                     {{ xtab.rowLabels[$index] }}
                 </th>
-                <td ng-repeat="value in row track by $index">
+                <td>
                     {{ value | number : 1 }}
                 </td>
+            </tr>
         </tbody>
     </table>
 </div>

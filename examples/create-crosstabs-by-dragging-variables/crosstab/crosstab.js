@@ -9,19 +9,22 @@ app.factory('createAnalysis', function(currentDataset, Analysis) {
     }
 })
 
-app.factory('createXtab', function(stats, ndarrayOps, ndarrayUnpack) {
+app.factory('createXtab', ['lodash', 'stats', 'ndarrayOps', 'ndarrayUnpack', function(_, stats, ndarrayOps, ndarrayUnpack) {
     'use strict'
 
     return function(cube) {
+        var counts = cube.count.cube
         // Here do any stat manipulation of the cube:
         // for example, column-wise proportions. Stats likewise
         // returns an ndarray, which we MULtiply by Scalar 100
-        var columnPercentages = ndarrayOps.muls(stats.propTable(cube, 1), 100)
+        var columnPercentages = stats.propTable(counts, 1)
+        ndarrayOps.mulseq(columnPercentages, 100)
+
         return {
             xtab: {
                 rowLabels:    cube.labels[0],
-                columnLabels: cube.labels[1],
-                rows:         ndarrayUnpack(columnPercentages) // row-major array-of-arrays
+                columnLabels: cube.labels[1] ? cube.labels[1] : ["Percent"],
+                rows:         _.flatten(ndarrayUnpack(columnPercentages)) // row-major array-of-arrays
             },
             // To get the (weighted) total of a cube, call stats.margin without
             // its second argument 'axis'. Margin takes into account any special
@@ -31,7 +34,7 @@ app.factory('createXtab', function(stats, ndarrayOps, ndarrayUnpack) {
             total : stats.margin(cube).get(0,0)
         }
     }
-})
+}])
 
 
 function CrTableDirective(createAnalysis, createXtab) {
@@ -46,9 +49,8 @@ function CrTableDirective(createAnalysis, createXtab) {
                 createAnalysis().then(function(analysis) {
                     analysis.handle('add-variable', data.variable.self)
                     analysis.on('analysis.loaded', function() {
-                        var results = createXtab(analysis.data)
+                        var results = createXtab(analysis.data.cube)
                             ;
-
                         $scope.xtab = results.xtab;
                     })
                 })
