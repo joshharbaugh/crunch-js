@@ -60,7 +60,6 @@ function buildModule(moduleName) {
     mod.factory('measure', require('./measure'))
     mod.factory('cube', require('./cube'))
     mod.factory('crFindVariables', require('./cr-find-variables'))
-    mod.factory('displayCube', require('./display-cube'))
     mod.factory('stats', require('./stats'))
     mod.factory('Tabulated', require('./tabulated'))
     return mod

@@ -17,7 +17,7 @@ app.factory('signin', function($http, Shoji) {
     'use strict'
 
     return function(email, password) {
-        return Shoji('***REMOVED***').map().then(function(api) {
+        return Shoji(window.secrets.signinUrl).map().then(function(api) {
             return $http({
                 url : api.urls.login.self,
                 method: 'POST',
@@ -77,10 +77,9 @@ app.factory('createHVL', function(HierarchicalVariablesList) {
 
 function AppCtrl($scope, signin, setCurrentDataset, fetchDatasetVariables, createHVL) {
     'use strict'
-
-    signin('***REMOVED***', '***REMOVED***')
+    signin.apply(this, window.secrets.credentials)
     .then(function() {
-        return setCurrentDataset('***REMOVED***/')
+        return setCurrentDataset(window.secrets.dataset)
     })
     .then(function(dataset) {
         return fetchDatasetVariables(dataset.self)
