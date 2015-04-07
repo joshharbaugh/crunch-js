@@ -1,3 +1,3 @@
 'use strict'
 
-require('./src/crunch')()
+require('./src/crunch')(window.excludes || [])
