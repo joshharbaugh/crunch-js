@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function buildModule() {
+module.exports = function buildModule(excludes) {
     var angular = require('angular')
         , features = [
             require('../shoji')
@@ -19,9 +19,15 @@ module.exports = function buildModule() {
         , mod
         ;
 
-    mod = angular.module('crunchJS', features.map(function(feat) {
-        return feat().name
-    }))
+    var modules = features
+        .map(function(feat) {
+            return feat().name
+        })
+        .filter(function(modName) {
+            return (excludes || []).indexOf(modName) === -1
+        })
+
+    mod = angular.module('crunchJS', modules)
 
   return mod
 }
