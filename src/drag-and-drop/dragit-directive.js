@@ -5,17 +5,17 @@ module.exports = DragItDirective
 DragItDirective.$inject = [
     'dragAndDrop'
     ,'$log'
+    , '$timeout'
 ]
 
 /**
  * @class DragItDirective
  */
-function DragItDirective(dragAndDrop, $log){
+function DragItDirective(dragAndDrop, $log, $timeout){
     return {
         restrict: 'ACE'
         ,link: function(scope, el, attrs) {
             var elm  = el[0]
-            elm.setAttribute('draggable','true')
 
             var handle = dragAndDrop.handle.bind(dragAndDrop)
                 ,classList= elm.classList
@@ -29,14 +29,18 @@ function DragItDirective(dragAndDrop, $log){
             function getData(){
                 return scope.$eval(attrs.dragit)
             }
-            function onDragStart(e){
-                $log.debug('drag-and-drop','drag','start',e)
-                scope.$apply(function(){
-                    classList.add(discoverClass())
+            function onDragStart(e) {
+                var data = getData()
+                    ;
 
-                    e.dataTransfer.effectAllowed = (attrs.dragitOperation || 'all')
+                $log.debug('drag-and-drop','drag','start',e)
+                classList.add(discoverClass())
+                e.dataTransfer.effectAllowed = (attrs.dragitOperation || 'all')
+                e.dataTransfer.setData('application/json', data)
+
+                scope.$apply(function(){
                     var inflight = {
-                        data: getData()
+                        data: data
                         ,element: elm
                         ,event: e
                     }
@@ -52,8 +56,19 @@ function DragItDirective(dragAndDrop, $log){
                     dragAndDrop.handle('cancel')
                 })
             }
-            elm.addEventListener('dragstart',onDragStart)
-            elm.addEventListener('dragend',onDragEnd)
+
+            /*
+                Delay events attachment. Attaching them in the linking
+                process makes firefox fail. I guess this could add some
+                performance gains too b/c DOM mutation happens after the
+                rendering process so yay.
+             */
+            $timeout(function() {
+                elm.setAttribute('draggable', 'true')
+                elm.addEventListener('dragstart', onDragStart)
+                elm.addEventListener('dragend', onDragEnd)
+            }, 500)
+
             scope.$on('$destroy',function(){
                 elm.removeEventListener('dragstart',onDragStart)
                 elm.removeEventListener('dragend',onDragEnd)
