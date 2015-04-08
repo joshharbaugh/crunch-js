@@ -7,6 +7,12 @@ var mainModule = require('..')
     ;
 describe('DragAndDrop',function(){
 
+    function flush() {
+        inject(function($timeout) {
+            $timeout.flush()
+        })
+    }
+
     beforeEach(function(){
         var mod = mainModule()
         scopeable('machina.test')
@@ -50,6 +56,7 @@ describe('DragAndDrop',function(){
                 var elm = $compile('<div dragit="myObject" class="bling" dragit-operation="move"></div>')(scope)
                 el = elm[0]
                 scope.$digest()
+                flush()
             })
 
         })
@@ -57,6 +64,7 @@ describe('DragAndDrop',function(){
             trigger(el, 'dragstart', {
                 dataTransfer: {
                     effectAllowed: undefined
+                    , setData : angular.noop
                 }
             })
             scope.$digest()
@@ -119,6 +127,7 @@ describe('DragAndDrop',function(){
                 var elm = $compile('<div dragit="myObject" class="bling" dragit-operation="copy"></div>')(scope)
                 el = elm[0]
                 scope.$digest()
+                flush()
             })
 
         })
@@ -126,6 +135,7 @@ describe('DragAndDrop',function(){
             trigger(el, 'dragstart', {
                 dataTransfer: {
                     effectAllowed: undefined
+                    , setData : angular.noop
                 }
             })
             scope.$digest()
@@ -184,6 +194,7 @@ describe('DragAndDrop',function(){
                 var elm = $compile('<div dragit="myObject" class="bling" dragit-operation="link"></div>')(scope)
                 el = elm[0]
                 scope.$digest()
+                flush()
             })
 
         })
@@ -191,6 +202,7 @@ describe('DragAndDrop',function(){
             trigger(el, 'dragstart', {
                 dataTransfer: {
                     effectAllowed: undefined
+                    , setData : angular.noop
                 }
             })
             scope.$digest()
@@ -259,6 +271,7 @@ describe('DragAndDrop',function(){
                 var elm = $compile('<div dragit="myObject" class="bling"></div>')(scope)
                 el = elm[0]
                 scope.$digest()
+                flush()
             })
 
         })
@@ -266,6 +279,7 @@ describe('DragAndDrop',function(){
             trigger(el, 'dragstart', {
                 dataTransfer: {
                     effectAllowed: undefined
+                    , setData : angular.noop
                 }
             })
             scope.$digest()
@@ -374,6 +388,7 @@ describe('DragAndDrop',function(){
                     var elm = $compile('<div dragit="myObject" class="bling"></div>')(scope)
                     scope.$digest()
                     el = elm[0]
+                    flush()
                 })
 
             })
@@ -396,6 +411,7 @@ describe('DragAndDrop',function(){
                 trigger(el,'dragstart', {
                     dataTransfer: {
                         effectAllowed: undefined
+                        , setData : angular.noop
                     }
                 })
                 trigger(dropEl,'dragover',{
@@ -438,6 +454,7 @@ describe('DragAndDrop',function(){
                     var elm = $compile('<div dragit="myObject" class="bling" dragit-operation="copy"></div>')(scope)
                     scope.$digest()
                     el = elm[0]
+                    flush()
                 })
 
             })
@@ -460,6 +477,7 @@ describe('DragAndDrop',function(){
                 trigger(el,'dragstart', {
                     dataTransfer: {
                         effectAllowed: undefined
+                        , setData : angular.noop
                     }
                 })
                 trigger(dropEl,'dragover',{
@@ -502,6 +520,7 @@ describe('DragAndDrop',function(){
                     var elm = $compile('<div dragit="myObject" class="bling" dragit-operation="move"></div>')(scope)
                     scope.$digest()
                     el = elm[0]
+                    flush()
                 })
 
             })
@@ -524,6 +543,7 @@ describe('DragAndDrop',function(){
                 trigger(el,'dragstart', {
                     dataTransfer: {
                         effectAllowed: undefined
+                        , setData : angular.noop
                     }
                 })
                 trigger(dropEl,'dragover',{
@@ -567,6 +587,7 @@ describe('DragAndDrop',function(){
                     var elm = $compile('<div dragit="myObject" class="bling" dragit-operation="link"></div>')(scope)
                     scope.$digest()
                     el = elm[0]
+                    flush()
                 })
 
             })
@@ -589,6 +610,7 @@ describe('DragAndDrop',function(){
                 trigger(el,'dragstart', {
                     dataTransfer: {
                         effectAllowed: undefined
+                        , setData : angular.noop
                     }
                 })
                 trigger(dropEl,'dragover',{
