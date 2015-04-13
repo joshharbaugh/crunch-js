@@ -72,7 +72,7 @@ describe('MeasureList', function() {
             beforeEach(function() {
                 expectations =  {
                     "mean": {"function": "cube_mean", args: [{variable: '/api/datasets/123/variables/economytrend/' }] },
-                    "stddev": {"function": "cube_stddev", args: [{ variable: '/api/datasets/123/variables/economytrend/' }] }
+                    "count": {"function": "cube_count", args: [] }
                 }
             })
 

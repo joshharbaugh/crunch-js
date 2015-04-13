@@ -84,9 +84,9 @@ function MeasureListFactory(_, $q, cachedHierarchicalVariables) {
             measures.count = {}
         }
 
-        //If there is mean, there is stddev
+        //If there is mean, there is also a count
         if(measures.hasOwnProperty('mean')) {
-            measures.stddev = measures.mean
+            measures.count = {}
         }
 
         return _.mapValues(measures, serialize)
