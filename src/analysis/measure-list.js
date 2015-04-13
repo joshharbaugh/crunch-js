@@ -44,14 +44,14 @@ function MeasureListFactory(_, $q, cachedHierarchicalVariables) {
 
             //subvariable checking
             if(variable.contains(variableId)) {
-                promise = variable.getSubvariables().then(function(varInfo) {
-                    measure[variableId] = varInfo
+                promise = variable.getSubvariables().then(function() {
+                    measure[variableId] = variable.subvariableById(variableId)
                     self.measures[type] = measure
                 })
             } else {
                 measure[variableId] = variable
                 self.measures[type] = measure
-                promise = $.when(measure[variableId])
+                promise = $q.when(measure[variableId])
             }
         } else {
             promise = $q.when(measure[variableId])
