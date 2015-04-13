@@ -58,7 +58,8 @@ function CubeFactory($log, $q, _, dimension, measure) {
             return dimension.fromData(dim)
         })
 
-        if (meta.measures.indexOf('mean') > -1) {
+        if (dims.length === 0) {
+            // Special case of unconditional mean
             dims.push(dimension.aggregateDimension('Mean'))
         }
 
