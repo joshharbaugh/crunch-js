@@ -91,7 +91,7 @@ function DimensionFactory(_
 
     Object.defineProperties(AggregateDimension.prototype, {
         length : { value : 1}
-
+        , validSubscripts : { value: [0] }
         , validLength : { value : 1}
 
         , missing : { value : [false] }

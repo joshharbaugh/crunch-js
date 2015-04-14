@@ -10,7 +10,15 @@ var mocks = require('angular-mocks')
 describe('MeasureList', function() {
     var MeasureList
         , fakeVariable
+        , hv
         , datasetId = '/datasets/123'
+        , subvariableFixture = {
+            element : 'shoji:entity'
+            , self : '/var/456'
+            , body : {
+                name : 'LeadershipObama'
+            }
+        }
         ;
 
     function buildModule() {
@@ -20,9 +28,10 @@ describe('MeasureList', function() {
         main.factory('cachedHierarchicalVariables', function($q) {
             var cached = { }
                 ;
-
-            cached.current = mockHierarchicalVariables
+            hv = mockHierarchicalVariables
             .getHierarchicalVariablesObj(undefined, varsFixture, orderFixture)
+
+            cached.current = hv
 
             return cached
         })
@@ -37,7 +46,11 @@ describe('MeasureList', function() {
             MeasureList = _MeasureList_
         })
     }
-
+    function expectGET(url, content) {
+        inject(function($httpBackend) {
+            $httpBackend.expectGET(url).respond(200, content)
+        })
+    }
     function flush() {
         angular.mock.inject(function($rootScope) {
             $rootScope.$digest()
@@ -60,8 +73,45 @@ describe('MeasureList', function() {
         it('should fetch measure variable', function() {
             expect(sut.getMeasureVariable('mean', 0)).to.have.property('self', '/api/datasets/123/variables/economytrend/')
         })
-    })
 
+    })
+    describe('given a subvariable', function() {
+        var sut
+            ;
+
+        beforeEach(function() {
+            var subvar = hv.byId('leadershipobama/')
+                , matrix = hv.byId('leadershipMatrix')
+                ;
+
+            sut = new MeasureList(datasetId)
+
+
+            inject(function($q, Shoji) {
+                matrix.getSubvariables = function () {
+                    return $q.when({})
+                }
+
+                matrix.subvariableById = function () {
+                    return {
+                        name:  'LeadershipObama'
+                        , map: function () {
+                            return Shoji(subvar.self).map()
+                        }
+                    }
+                }
+            })
+
+            expectGET(subvar.self, subvariableFixture)
+            sut.add('mean', 'leadershipobama/')
+            flush()
+        })
+
+        it('should fetch the subvariable metadata and add it to the list', function() {
+            var measureVar = sut.getMeasureVariable('mean', 0)
+            expect(measureVar).to.have.property('name', 'LeadershipObama')
+        })
+    })
     describe('when serializing', function() {
 
         describe('given a measure list with a mean measure', function() {
@@ -72,7 +122,7 @@ describe('MeasureList', function() {
             beforeEach(function() {
                 expectations =  {
                     "mean": {"function": "cube_mean", args: [{variable: '/api/datasets/123/variables/economytrend/' }] },
-                    "stddev": {"function": "cube_stddev", args: [{ variable: '/api/datasets/123/variables/economytrend/' }] }
+                    "count": {"function": "cube_count", args: [] }
                 }
             })
 
