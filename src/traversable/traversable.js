@@ -49,8 +49,9 @@ function TraversableFactory(_){
      * @desc overlap the pages to include part of the previous page
      * using `pctOverlap`
      */
-    Traversable.prototype._calcPages = function(max, pageLength, overlap){
-        var batch = Math.floor(pageLength * overlap)
+    Traversable.prototype._calcPages = function(max, pageLength, overlap) {
+        var targetOverlap = max <= pageLength ? 1 : overlap
+        var batch = Math.floor(pageLength * targetOverlap)
         var pages = Math.ceil(max / batch)
         return pages
     }
