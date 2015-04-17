@@ -132,7 +132,27 @@ describe('Traversable',function(){
             sut.itemCountAt(1).should.equal(40)
             sut.itemCountAt(2).should.equal(40)
             sut.itemCountAt(3).should.equal(2)
+        })
 
+        describe('given that the number of items is less than the max items allowed', function() {
+            var target
+
+            beforeEach(function(){
+                target = {
+                    list: buildList(25)
+                }
+                inject(function(Traversable){
+                    sut = new Traversable({
+                        pageLength: 40
+                        ,pctOverlap: 0.5
+                    })
+                    sut.interpret(target,'list')
+                })
+            })
+
+            it('should not calculate more than 1 page because of the percent overlap', function() {
+                expect(sut.pages).to.equal(1)
+            })
         })
     })
     describe('when skipping to a page',function(){
