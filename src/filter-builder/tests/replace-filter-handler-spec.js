@@ -1,6 +1,7 @@
 var filtersModule = require('../index')
-    ,mocks = require('angular-mocks')
-    ;
+    , mocks = require('angular-mocks')
+    , shojiMod = require('../../shoji/index')
+    , machinaMod = require('../../machina-angular')
 
 
 
@@ -12,7 +13,11 @@ module.exports = (function() {
             , events;
         beforeEach(function() {
             events = [];
-            var mod = filtersModule('filters.test');
+            var mod = filtersModule('filters.test')
+
+            shojiMod('shoji.test')
+            machinaMod('machina.test')
+
             mod.factory('bus', function() {
                 return {
                     publish: function(e) {
@@ -20,7 +25,7 @@ module.exports = (function() {
                     }
                 }
             });
-            angular.mock.module('filters.test')
+            angular.mock.module('filters.test', 'shoji.test', 'machina.test')
         });
         beforeEach(function(){
             inject(function(_$httpBackend_, _Shoji_) {

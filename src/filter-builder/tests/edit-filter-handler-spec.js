@@ -1,8 +1,6 @@
-'use strict';
 var buildModule = require('../index')
     ,mocks = require('angular-mocks')
-    ;
-
+    ,shojiMod = require('../../shoji/index')
 
 
 describe('EditFilterHandler', function() {
@@ -10,6 +8,9 @@ describe('EditFilterHandler', function() {
     beforeEach(function() {
         events = [];
         var filtersMod = buildModule('crunch.filters');
+
+        shojiMod('shoji.test')
+
         filtersMod.factory('bus', function() {
             return {
                 events: events
@@ -18,7 +19,7 @@ describe('EditFilterHandler', function() {
                 }
             }
         });
-        angular.mock.module('crunch.filters')
+        angular.mock.module('crunch.filters', 'shoji.test')
     });
     var $httpBackend;
     beforeEach(inject(function(_$httpBackend_) {

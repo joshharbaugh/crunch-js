@@ -1,7 +1,10 @@
 var mainMod = require('../index')
-var datasetFixture = require('../../test-support/common-test-fixtures/dataset-simple')
-var frequenciesCategoricalFixture = require('../../test-support/common-test-fixtures/variable-frequencies-categorical')
-var categoricalVariableFixture = require('../../test-support/common-test-fixtures/categorical-variable')
+    , datasetFixture = require('../../test-support/common-test-fixtures/dataset-simple')
+    , frequenciesCategoricalFixture = require('../../test-support/common-test-fixtures/variable-frequencies-categorical')
+    , categoricalVariableFixture = require('../../test-support/common-test-fixtures/categorical-variable')
+    , shojiMod = require('../../shoji/index')
+    , machinaMod = require('../../machina-angular')
+
 
 describe('FilterExpressionDecompiler', function() {
 
@@ -48,6 +51,10 @@ describe('FilterExpressionDecompiler', function() {
 
         var mod = mainMod('filterBuilder.test')
 
+        shojiMod('shoji.test')
+        machinaMod('machina.test')
+
+
         mod.factory('iResourceDataset', function($q, Shoji) {
             return function() {
                 return $q.when(Shoji(datasetFixture.self).parse(datasetFixture))
@@ -77,7 +84,7 @@ describe('FilterExpressionDecompiler', function() {
         })
 
 
-        angular.mock.module(mod.name)
+        angular.mock.module(mod.name, 'machina.test', 'shoji.test')
 
     })
 

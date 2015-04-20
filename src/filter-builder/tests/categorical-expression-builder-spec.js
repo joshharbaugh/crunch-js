@@ -1,11 +1,10 @@
-;
+var shojiMod = require('../../shoji/index')
+   , machinaMod = require('../../machina-angular')
+
 module.exports = (function() {
-    'use strict';
     var mainModule = require('../index')
         ,mocks = require('angular-mocks')
         ,fixtures = require('./categorical-expression-builder-fixtures')
-        ;
-
 
 
     describe('CategoricalExpressionBuilder', function() {
@@ -21,6 +20,11 @@ module.exports = (function() {
         }
         beforeEach(function() {
             var mod = mainModule('filters.test');
+
+            var shoji = shojiMod('shoji.categoricalExpressionBuilder')
+            var machina = machinaMod('machina.test')
+
+
             mod.factory('iResourceVariable', function(
                 Shoji, $q) {
                 return function execute(q) {
@@ -33,7 +37,7 @@ module.exports = (function() {
                     throw new Error('unexpected args', q)
                 }
             });
-            angular.mock.module('filters.test')
+            angular.mock.module('filters.test', 'shoji.categoricalExpressionBuilder', 'machina.test')
         });
         beforeEach(function() {
             inject(function(categoricalExpressionBuilder) {

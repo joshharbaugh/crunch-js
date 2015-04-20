@@ -1,8 +1,5 @@
 var filtersModule = require('../index')
-    ,mocks = require('angular-mocks')
-    ;
-
-
+    ,shojiMod = require('../../shoji/index')
 
 module.exports = (function() {
     'use strict';
@@ -12,6 +9,9 @@ module.exports = (function() {
             , Shoji
             , events;
         beforeEach(function() {
+
+            var shoji = shojiMod('shoji.applyfilterhandler')
+
             events = [];
             var mod = filtersModule('filters.test');
             mod.factory('bus', function() {
@@ -21,7 +21,7 @@ module.exports = (function() {
                     }
                 }
             });
-            angular.mock.module('filters.test')
+            angular.mock.module('filters.test', 'shoji.applyfilterhandler')
         });
         beforeEach(function(){
             inject(function(_$httpBackend_, _Shoji_) {

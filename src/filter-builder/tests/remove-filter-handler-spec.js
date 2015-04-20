@@ -1,30 +1,36 @@
-'use strict';
 var filtersModule = require('../index')
-    ,mocks = require('angular-mocks')
-    ;
-
+    , mocks = require('angular-mocks')
+    , shojiMod = require('../../shoji/index')
+    , machinaMod = require('../../machina-angular')
 
 
 describe('RemoveFilterHandler', function() {
     var $httpBackend
         , Shoji
-        , events;;
+        , events
     beforeEach(function() {
         events = [];
-        var mod = filtersModule('filters.test');
+        var mod = filtersModule('filters.test')
+
+        shojiMod('shoji.test')
+        machinaMod('machina.test')
+
         mod.factory('bus', function() {
             return {
                 publish: function(e) {
                     events.push(e)
                 }
             }
-        });
-        angular.mock.module('filters.test')
-    });
+        })
+
+        angular.mock.module('filters.test', 'shoji.test', 'machina.test')
+    })
+
     beforeEach(inject(function(_$httpBackend_, _Shoji_) {
         $httpBackend = _$httpBackend_;
         Shoji = _Shoji_
-    }));
+    }))
+
     afterEach(function() {
         try {
             inject(function($rootScope) {
@@ -35,7 +41,8 @@ describe('RemoveFilterHandler', function() {
         } catch (err) {
             console.error(err)
         }
-    });
+    })
+
     describe('when executed', function() {
         beforeEach(function() {
             var headers = {
@@ -69,7 +76,7 @@ describe('RemoveFilterHandler', function() {
                             }
                         ]
                     }
-                }, headers);
+                }, headers)
             $httpBackend.expectPUT( '/datasets/123/applied_filters/',
                 {
                     element: 'shoji:view',
@@ -85,7 +92,7 @@ describe('RemoveFilterHandler', function() {
                         ]
                     }
                 })
-                .respond(204, {}, headers);
+                .respond(204, {}, headers)
             $httpBackend.expectGET( '/datasets/123/applied_filters/')
                 .respond(200, {
                     element: 'shoji:view'
@@ -102,7 +109,7 @@ describe('RemoveFilterHandler', function() {
                         ]
                     }
                 }, headers)
-        });
+        })
         it(
             'should remove filters from application to the dataset', function() {
                 inject(function(removeFilterHandler) {
@@ -114,7 +121,7 @@ describe('RemoveFilterHandler', function() {
                     removeFilterHandler(cmd);
                     $httpBackend.flush()
                 })
-            });
+            })
         it('should raise event', function() {
             inject(function(removeFilterHandler) {
                 var cmd = {

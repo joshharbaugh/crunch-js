@@ -1,14 +1,14 @@
-'use strict'
-
 var mocks = require('angular-mocks')
     , mainMod = require('../index')
-    ;
+    , machinaMod = require('../../machina-angular')
+    , shojiMod = require('../../shoji/index')
+
 
 describe('FilterBuilder', function() {
     var sut
         ,fakeStats
         ,dataset
-        ;
+
 
     function buildModule() {
         var main
@@ -16,6 +16,8 @@ describe('FilterBuilder', function() {
             ;
 
         main = mainMod()
+        machinaMod('machina.test')
+        shojiMod('shoji.test')
 
         main.factory('Filter', function() {
             return function() {
@@ -57,7 +59,7 @@ describe('FilterBuilder', function() {
             }
         })
 
-        angular.mock.module(main.name)
+        angular.mock.module(main.name, 'machina.test', 'shoji.test')
     }
 
     dataset = {

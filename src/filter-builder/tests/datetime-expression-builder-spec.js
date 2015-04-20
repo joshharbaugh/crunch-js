@@ -1,8 +1,11 @@
-;
+var shojiMod = require('../../shoji/index')
+    , machinaMod = require('../../machina-angular')
+    , mainMod = require('../index')
+    , mocks = require('angular-mocks')
+
+
 module.exports = (function() {
-    'use strict';
-    var mainModule = require('../index');
-    var mocks = require('angular-mocks');
+
 
     describe('DatetimeExpressionBuilder', function() {
         var sut
@@ -50,7 +53,11 @@ module.exports = (function() {
             ]
         };
         beforeEach(function() {
-            var mod = mainModule('filters.test');
+            var shoji = shojiMod('shoji.categoricalExpressionBuilder')
+            var machina = machinaMod('machina.test')
+
+            var mod = mainMod('main.test')
+
             mod.factory('iResourceVariable', function(
                 Shoji, $q) {
                 return function execute(q) {
@@ -64,7 +71,9 @@ module.exports = (function() {
                     throw new Error('Unexpected args', q)
                 }
             });
-            angular.mock.module('filters.test')
+
+            angular.mock.module(mod.name, shoji.name, machina.name)
+
         });
         beforeEach(function() {
             inject(function(datetimeExpressionBuilder) {

@@ -36,7 +36,7 @@ function MultipleResponseExpressionBuilderProvider(BaseExpressionBuilder, _) {
             ]
             , build : function(variablePrefix, variableSuffix) {
                 if (!this.hasSource) {
-                    return NULL
+                    return null
                 }
 
                 var cats = _(this.categories)
