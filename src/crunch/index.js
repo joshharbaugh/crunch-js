@@ -10,6 +10,7 @@ module.exports = function buildModule(excludes) {
             , require('../current-dataset')
             , require('../traversable')
             , require('../drag-and-drop')
+            , require('../filter-builder')
             , require('../hierarchical-variables')
             , require('../hierarchical-variables-list')
             , require('../analysis')
