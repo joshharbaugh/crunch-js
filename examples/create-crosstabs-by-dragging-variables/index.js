@@ -1,6 +1,5 @@
 var app = angular.module('crosstabsViewer', [
-    'crunchJS',
-    'variables-accordion'
+    'crunchJS'
 ])
 
 

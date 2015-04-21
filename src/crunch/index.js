@@ -16,6 +16,7 @@ module.exports = function buildModule(excludes) {
             , require('../analysis')
             , require('../cube')
             , require('../start-from')
+            , require('../variables-accordion')
         ]
         , mod
         ;
