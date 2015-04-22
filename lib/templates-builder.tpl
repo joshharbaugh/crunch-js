@@ -3,7 +3,7 @@
 function buildModule() {
     var templateModules = {}
         , angular = require("angular")
-        , mod = angular.module("crunchJSTemplates", [])
+        , mod = angular.module("templates", [])
         ;
 
     mod.run(["$templateCache", function($templateCache) {

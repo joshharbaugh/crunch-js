@@ -1,6 +1,7 @@
 'use strict'
 
-var filterTestFile = require('./lib/filter-test-file')
+var createTplBundle = require('./lib/create-tpl-bundle'),
+    filterTestFile = require('./lib/filter-test-file')
     ;
 
 module.exports = function(grunt) {
@@ -26,7 +27,8 @@ module.exports = function(grunt) {
             },
             lib : {
                 index : 'index.js'
-            }
+            },
+            templates : '<%= baseDirs.src %>/**/*.html'
         },
         build : {
             tests : {
@@ -40,6 +42,8 @@ module.exports = function(grunt) {
             }
         },
         dist : {
+            templates : '<%= baseDirs.dist %>/templates.js',
+            templatesList : '<%= baseDirs.dist %>/templates-list.js',
             lib : {
                 dest: '<%= baseDirs.dist %>/crunch.js'
             }
@@ -76,7 +80,18 @@ module.exports = function(grunt) {
                 src : ['<%= src.tests.supportFiles %>'],
                 dest : '<%= build.tests.supportFiles %>'
             },
-
+            templatesDist : {
+                options : {
+                    external : ['angular'],
+                    transform : ['html2js-browserify'],
+                    browserifyOptions : {
+                        fullPaths : false
+                    },
+                    watch : true
+                },
+                src : ['<%= baseDirs.dist.templatesList %>'],
+                dest : '<%= baseDirs.dist.templates %>'
+            },
             buildSpecs : {
                 options : {
                     watch : true,
@@ -106,15 +121,21 @@ module.exports = function(grunt) {
 
         uglify : {
             options : {
-                sourceMap : true
+                sourceMap : true,
+                compress: false,
+                beautify: true,
+                mangle: false
             },
             dist : {
                 files : {
                     '<%= dist.lib.dest %>' : ['<%= build.lib.index %>']
                 }
+            },
+            templates : {
+                src : ['<%= baseDirs.dist.templates %>'],
+                dest : '<%= baseDirs.dist.templates %>'
             }
         },
-
         stylus : {
             options : {
                 use : ['nib']
@@ -154,8 +175,16 @@ module.exports = function(grunt) {
         copy : {
             examples : {
                 files: {
-                    'examples/crunch.js' : ['<%= dist.lib.dest %>']
+                    'examples/crunch.js' : ['<%= dist.lib.dest %>'],
+                    'examples/create-crosstabs-by-dragging-variables/crunch.js' : ['<%= dist.lib.dest %>']
                 }
+            }
+        },
+
+        createTplBundle : {
+            dist : {
+                src :  ['<%= src.templates.ngTemplates %>'],
+                dest:   '<%= baseDirs.dist.templatesList %>'
             }
         }
     })
@@ -168,6 +197,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-stylus')
     grunt.loadNpmTasks('grunt-release')
     grunt.loadNpmTasks('grunt-karma')
+
+
+    grunt.registerMultiTask('createTplBundle', createTplBundle(grunt))
 
     grunt.registerTask('buildTest', 'Creates spec and test support bundles that will be processed by karma', [
         'clean:test',
@@ -185,8 +217,14 @@ module.exports = function(grunt) {
         'karma:prod'
     ])
 
+    grunt.registerTask('templates:dist', 'Creates a dev templates bundle', [
+        'createTplBundle:dist',
+        'browserify:templatesDist'
+    ])
+
     grunt.registerTask('buildDist', [
         'browserify:buildLib',
+        'templates:dist',
         'uglify:dist',
         'clean:tmp',
         'copy:examples'
@@ -195,9 +233,12 @@ module.exports = function(grunt) {
     grunt.registerTask('dist', [
         'clean:tmp',
         'clean:dist',
-        'test:ci',
+        //'test:ci',
         'buildDist'
     ])
 
     grunt.registerTask('default', 'Runs dist task', ['dist'])
+
+
+
 }
