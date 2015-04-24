@@ -2,60 +2,80 @@
 // Generated on Mon Mar 30 2015 10:06:41 GMT-0400 (AST)
 
 module.exports = function(config) {
-  'use strict'
+    'use strict'
 
-  config.set({
+    config.set({
 
-    // base path that will be used to resolve all patterns (eg. files, exclude)
-    basePath: '../',
-
-
-    // frameworks to use
-    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['mocha'],
-
-    // list of files to exclude
-    exclude: [
-    ],
+        // base path that will be used to resolve all patterns (eg. files, exclude)
+        basePath: '../',
 
 
-    // preprocess matching files before serving them to the browser
-    // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-    preprocessors: {
-    },
+        // frameworks to use
+        // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+        frameworks: ['mocha'],
+
+        // list of files to exclude
+        exclude: [
+        ],
 
 
-    // test results reporter to use
-    // possible values: 'dots', 'progress'
-    // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-    reporters: ['progress'],
+        // preprocess matching files before serving them to the browser
+        // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+        preprocessors: {
+        },
 
 
-    // web server port
-    //port: 9876,
+        // test results reporter to use
+        // possible values: 'dots', 'progress'
+        // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+        reporters: ['progress'],
 
 
-    // enable / disable colors in the output (reporters and logs)
-    colors: true,
+        // web server port
+        port: 9876,
 
 
-    plugins : [
+        // enable / disable colors in the output (reporters and logs)
+        colors: true,
+
+
+        plugins : [
             'karma-junit-reporter',
             //'karma-chrome-launcher',
-            'karma-firefox-launcher',
+            //'karma-firefox-launcher',
             //'karma-phantomjs-launcher',
             'karma-mocha'
-            ],
+        ],
+
+        browsers: ['Chrome'],
+
+        customLaunchers: {
+            Chrome_travis_ci: {
+                base: 'Chrome',
+                flags: ['--no-sandbox']
+            }
+        },
+
+        junitReporter : {
+            outputFile: 'test_out/unit.xml',
+            suite: 'unit'
+        },
 
 
-    junitReporter : {
-      outputFile: 'test_out/unit.xml',
-      suite: 'unit'
-    },
+        // level of logging
+        // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+        logLevel: config.LOG_DEBUG
+    });
 
+    if(process.env.TRAVIS){
 
-    // level of logging
-    // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-    logLevel: config.LOG_DEBUG
-  });
+    configuration.browsers = ['Chrome_travis_ci'];
+    // configuration.reporters = configuration.reporters.concat(['coverage', 'coveralls']);
+    // configuration.coverageReporter = {
+    //   type : 'lcovonly',
+    //   dir : 'coverage/'
+    // };
+  }
+
+  config.set(configuration);
 };

@@ -158,7 +158,7 @@ module.exports = function(grunt) {
                 options : {
                     configFile: 'config/karma.travis.conf.js',
                     singleRun: true,
-                    browsers: ['Firefox']
+                    //browsers: ['Firefox']
                 }
             }
         },
