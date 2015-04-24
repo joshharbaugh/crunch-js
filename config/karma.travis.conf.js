@@ -4,7 +4,7 @@
 module.exports = function(config) {
     'use strict'
 
-    config.set({
+    var configuration = {
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
         basePath: '../',
@@ -65,7 +65,7 @@ module.exports = function(config) {
         // level of logging
         // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
         logLevel: config.LOG_DEBUG
-    });
+    };
 
     if(process.env.TRAVIS){
 
@@ -75,7 +75,7 @@ module.exports = function(config) {
     //   type : 'lcovonly',
     //   dir : 'coverage/'
     // };
-  }
+    }
 
-  config.set(configuration);
+    config.set(configuration);
 };
