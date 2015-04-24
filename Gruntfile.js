@@ -95,6 +95,11 @@ module.exports = function(grunt) {
                         ;
 
                     return filterTestFile(filepath, options)
+                },
+                travis: {
+                    options : {
+                        watch:false
+                    }
                 }
             },
 
@@ -127,7 +132,6 @@ module.exports = function(grunt) {
 
         karma : {
             options : {
-                configFile: 'karma.conf.js',
                 files: [
                     '<%= externalAssets.jquery %>',
                     '<%= externalAssets.angular %>',
@@ -139,6 +143,7 @@ module.exports = function(grunt) {
 
             dev : {
                 options : {
+                    configFile: 'config/karma.conf.js',
                     browsers: ['Chrome']
                 }
             },
@@ -146,6 +151,12 @@ module.exports = function(grunt) {
             prod : {
                 options : {
                     browsers:  ['Chrome'],
+                    singleRun: true
+                }
+            },
+            travis: {
+                options : {
+                    configFile: 'config/karma.travis.conf.js',
                     singleRun: true
                 }
             }
@@ -175,13 +186,24 @@ module.exports = function(grunt) {
         'browserify:buildSpecs'
     ])
 
+    grunt.registerTask('buildTest:travis', 'Creates spec and test support bundles that will be processed by karma', [
+        'clean:test',
+        'browserify:buildTestSupport',
+        'browserify:buildSpecs:travis'
+    ])
+
     grunt.registerTask('test', 'Run test suite in development mode. Watches for file changes and re-run the tests.', [
         'buildTest',
         'karma:dev'
     ])
 
+    grunt.registerTask('test', 'Run test suite on travis.', [
+        'buildTest:travis',
+        'karma:travis'
+    ])
+
     grunt.registerTask('test:ci', 'Run test suite in CI mode. After the first run karma stops.', [
-        'buildTest',
+        'buildTest:travis',
         'karma:prod'
     ])
 
