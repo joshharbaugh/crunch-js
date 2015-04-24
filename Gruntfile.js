@@ -97,7 +97,9 @@ module.exports = function(grunt) {
                     return filterTestFile(filepath, options)
                 },
                 travis: {
-                    'watch':false
+                    options : {
+                        'watch':false
+                    }
                 }
             },
 
@@ -156,7 +158,7 @@ module.exports = function(grunt) {
                 options : {
                     configFile: 'config/karma.travis.conf.js',
                     singleRun: true,
-                    browsers: ['firefox']
+                    browsers: ['Firefox']
                 }
             }
         },
