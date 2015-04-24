@@ -79,7 +79,7 @@ module.exports = function(grunt) {
 
             buildSpecs : {
                 options : {
-                    watch : true,
+                    //watch : true,
                     external : ['angular', 'angular-mocks'],
                     browserifyOptions : {
                       debug : true
@@ -98,7 +98,7 @@ module.exports = function(grunt) {
                 },
                 travis: {
                     options : {
-                        'watch':false
+                        watch:false
                     }
                 }
             },
