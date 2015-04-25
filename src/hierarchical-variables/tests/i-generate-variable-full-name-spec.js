@@ -70,7 +70,7 @@ describe('iGenerateVariableFullName', function() {
             })
 
             it('should return the variable name along with its n-1 parent names', function() {
-                fullName.should.be.equal('lvl 1 - lvl 2 - var name')
+                fullName.should.be.equal('lvl 1 | lvl 2 | var name')
             })
         })
 
@@ -97,7 +97,7 @@ describe('iGenerateVariableFullName', function() {
             })
 
             it('should not consider the graph as parent of the hierarchy', function() {
-                fullName.should.be.equal('lvl 1 - lvl 2 - var name')
+                fullName.should.be.equal('lvl 1 | lvl 2 | var name')
             })
         })
 
@@ -124,7 +124,7 @@ describe('iGenerateVariableFullName', function() {
             })
 
             it('should not consider the graph as parent of the hierarchy', function() {
-                fullName.should.be.equal('lvl 1 - lvl 2 - var name')
+                fullName.should.be.equal('lvl 1 | lvl 2 | var name')
             })
         })
 
@@ -146,7 +146,7 @@ describe('iGenerateVariableFullName', function() {
             })
 
             it('should always consider the subvariable parent', function() {
-                fullName.should.be.equal('array - var name')
+                fullName.should.be.equal('array | var name')
             })
         })
     })

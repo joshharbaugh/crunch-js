@@ -13,7 +13,7 @@ function IGenerateVariableFullNameFactory() {
 
         while(parent.hierarchicalType === 'variable' ||
             (parent.parent && parent.parent.name !== 'graph')) {
-            fullName = parent.name + ' - ' + fullName
+            fullName = parent.name + ' | ' + fullName
             parent = parent.parent
         }
 
