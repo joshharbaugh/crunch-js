@@ -1,6 +1,7 @@
 module.exports = (function() {
     'use strict';
     var mainModule = require('../index')
+    var shojiMod = require('../../shoji/index')
     var mocks = require('angular-mocks')
     var userUrl = '/api/user/me/'
     var events = []
@@ -8,6 +9,7 @@ module.exports = (function() {
     describe('Set user preferences handler', function() {
         function buildModule(prefValue) {
             var mod = mainModule('userpref.test');
+            var shoji = shojiMod()
             mod.factory('iResourceUser', function($q, Shoji) {
                 return {
                     current : function() {
@@ -33,7 +35,7 @@ module.exports = (function() {
                     publish: events.push.bind(events)
                 }
             })
-            angular.mock.module('userpref.test')
+            angular.mock.module('userpref.test', shoji.name)
         }
 
         function flush() {

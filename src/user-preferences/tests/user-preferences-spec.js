@@ -2,8 +2,9 @@
 module.exports = (function() {
     'use strict';
     var mainModule = require('../index')
+    var shojiMod = require('../../shoji/index')
+    var machinaMod = require('../../machina-angular/index')
     var mocks = require('angular-mocks')
-        ;
     var userUrl = '/api/user/me/'
         ,commands = []
         ,prefValue = 'abc'
@@ -11,14 +12,16 @@ module.exports = (function() {
 
     describe('UserPreferences', function() {
         function buildModule(prefValue) {
-
             var mod = mainModule('userpref.test');
+            var shoji = shojiMod()
+            var machina = machinaMod()
+
             mod.factory('bus', function(){
                 return {
                     send: commands.push.bind(commands)
                 }
             })
-            angular.mock.module('userpref.test')
+            angular.mock.module('userpref.test', shoji.name, machina.name)
         }
 
         beforeEach(function() {
