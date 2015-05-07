@@ -96,6 +96,8 @@ function HierarchicalGroupFactory(machina, HierarchicalVariable, Traversable) {
                 return item
             })
 
+            this.retraversable(this, 'items')
+
             return this
         }
         ,states: {
@@ -111,7 +113,7 @@ function HierarchicalGroupFactory(machina, HierarchicalVariable, Traversable) {
     })
 
     var HierarchicalGroup = HierarchicalGroupBase.extend({
-        initialize: function(cfg) {
+        initialize: function() {
             this.items = []
             this._traversable = new Traversable({
                 pageLength: this.threshold || 40
