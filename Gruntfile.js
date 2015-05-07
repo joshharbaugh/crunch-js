@@ -197,11 +197,6 @@ module.exports = function(grunt) {
         'karma:dev'
     ])
 
-    grunt.registerTask('test', 'Run test suite on travis.', [
-        'buildTest:travis',
-        'karma:travis'
-    ])
-
     grunt.registerTask('test:ci', 'Run test suite in CI mode. After the first run karma stops.', [
         'buildTest:travis',
         'karma:prod'
