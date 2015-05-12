@@ -11,4 +11,4 @@ before_script:
   - npm install -g karma grunt-cli jshint
   - npm install
 
-script: grunt test:travis
+script: grunt test:ci
