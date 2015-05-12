@@ -74,7 +74,12 @@ module.exports = function(grunt) {
             },
             buildTestSupport : {
                 src : ['<%= src.tests.supportFiles %>'],
-                dest : '<%= build.tests.supportFiles %>'
+                dest : '<%= build.tests.supportFiles %>',
+                travis: {
+                    options : {
+                        watch:false
+                    }
+                }
             },
 
             buildSpecs : {
@@ -199,7 +204,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('test:ci', 'Run test suite in CI mode. After the first run karma stops.', [
         'buildTest:travis',
-        'karma:prod'
+        'karma:travis'
     ])
 
     grunt.registerTask('buildDist', [
