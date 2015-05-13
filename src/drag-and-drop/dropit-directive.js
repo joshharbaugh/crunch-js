@@ -16,7 +16,6 @@ function DropItDirective(dragAndDrop, $log){
                 ,classList = elm.classList
                 , applied = false
                 , enterTime = 0
-                , enterTarget
                 ;
 
             elm.setAttribute('droppable','true')
@@ -75,7 +74,6 @@ function DropItDirective(dragAndDrop, $log){
             }
 
             function onDragEnter(e) {
-                enterTarget = e.currentTarget
                 $log.debug('drag-and-drop','drop','dragenter',e)
                 if(e.preventDefault){
                     e.preventDefault()
