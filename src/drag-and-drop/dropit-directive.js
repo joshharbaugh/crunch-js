@@ -15,6 +15,7 @@ function DropItDirective(dragAndDrop, $log){
             var elm = el[0]
                 ,classList = elm.classList
                 , applied = false
+                , enterTime = 0
                 ;
 
             elm.setAttribute('droppable','true')
@@ -30,7 +31,8 @@ function DropItDirective(dragAndDrop, $log){
                     applied = true
                 }
             }
-            function removeClass(e) {
+
+             function removeClass(e) {
                 if(applied) {
                     classList.remove(discoverDroppableClass())
                     applied = false
@@ -68,7 +70,6 @@ function DropItDirective(dragAndDrop, $log){
                 e.dataTransfer.dropEffect = 'all'
                 //yup, this fires way too much
                 applyClass(e)
-
                 scope.$broadcast('dragover')
             }
 
@@ -81,20 +82,32 @@ function DropItDirective(dragAndDrop, $log){
                     e.stopPropagation()
                 }
 
+                enterTime = performance.now()
+
                 //yup..this is interrupted by a bug
                 //applyClass(e)
             }
             function onDragLeave(e){
-                $log.debug('drag-and-drop','drop','dragleave',e)
+                var enterLeaveInterval = performance.now() - enterTime
                 if(e.preventDefault){
                     e.preventDefault()
                 }
+
                 if(e.stopPropagation){
                     e.stopPropagation()
                 }
-                removeClass(e)
 
-                scope.$broadcast('dragleave')
+                /*
+                This event is triggered many times, even with the slighest change
+                in the draggable's position. Since enter and leave events happen
+                within really small intervals, the drag enter style flickers and
+                the UI enters in an inconsistent state. This condition verifies
+                that the class is only remove is
+                 */
+                if(enterLeaveInterval > 1) {
+                    removeClass(e)
+                    scope.$broadcast('dragleave')
+                }
             }
 
 
