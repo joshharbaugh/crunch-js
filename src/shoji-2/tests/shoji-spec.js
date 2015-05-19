@@ -174,4 +174,37 @@ describe('Shoji', function() {
             httpSupport.flushAndCheckExpectations()
         })
     })
+
+    context('Given a shoji object', function() {
+        var sut
+            , accumulator
+            ;
+
+        beforeEach(function() {
+            sut = Shoji(entityLargeFixture.self)
+            accumulator = {}
+        })
+
+        it('should support the reduce operation', function() {
+            sut.reduce(accumulator, [
+                function(accumulator, current) {
+                    expect(current).to.equal(sut)
+                    accumulator.first = { data : 1}
+                    return accumulator.first
+                }
+                , function(accumulator, current) {
+                    expect(current).to.equal(accumulator.first)
+                    accumulator.second = { data : 2 }
+                    return accumulator.second
+                }
+                , function(accumulator, current) {
+                    expect(current).to.equal(accumulator.second)
+                    accumulator.third = { data : 3 }
+                    return accumulator.third
+                }
+            ])
+
+            inject(function($rootScope) { $rootScope.$digest() })
+        })
+    })
 })
