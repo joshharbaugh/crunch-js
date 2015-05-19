@@ -41,6 +41,12 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert) {
         return promise.then.apply(promise, processCallbacks(arguments))
     }
 
+    ShojiObject.prototype.save = function(params) {
+        return shojiDataOperations.post(this.self, params).then(function(newResourceLocation) {
+            return new ShojiObject(newResourceLocation)
+        })
+    }
+
     ShojiObject.prototype.parse = function(data) {
         //noinspection JSPotentiallyInvalidUsageOfThis
         this.data = data

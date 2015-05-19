@@ -138,6 +138,40 @@ describe('Shoji', function() {
 
             httpSupport.flushAndCheckExpectations()
         })
+    })
 
+    context('When posting to a shoji object', function() {
+        var sut
+            , newResource
+            ;
+
+        beforeEach(function() {
+            sut = Shoji(catalogFixture.self)
+            newResource = {
+                name : 'new resource'
+            }
+        })
+
+        it('should send the post request', function() {
+            httpSupport.expectPOST(catalogFixture.self, newResource, {
+                Location : '/variables/self'
+            })
+            sut.save({
+                data : newResource
+            })
+            httpSupport.flushAndCheckExpectations()
+        })
+
+        it('should create a new shoji object based on the Location header returned by the server', function() {
+            httpSupport.expectPOST(catalogFixture.self, newResource, {
+                Location : '/variables/self'
+            })
+            sut.save({
+                data : newResource
+            }).then(function(newResource) {
+                expect(newResource.self).to.equal('/variables/self')
+            })
+            httpSupport.flushAndCheckExpectations()
+        })
     })
 })

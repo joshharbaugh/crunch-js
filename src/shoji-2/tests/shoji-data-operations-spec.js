@@ -4,6 +4,7 @@ var mocks = require('angular-mocks')
     , mainMod = require('../index')
     , httpSupport = require('./http-support')
     , entityFixture = require('./entity-fixture')
+    , catalogFixture = require('./catalog-fixture')
     ;
 
 describe('shojiDataOperations', function() {
@@ -31,6 +32,13 @@ describe('shojiDataOperations', function() {
         sut.get(entityFixture.self).then(function(data) {
             expect(data).to.deep.equal(entityFixture)
         })
+        httpSupport.flushAndCheckExpectations()
+    })
+
+    it('should perform POST requests', function() {
+        var data = { name : 'new resource' }
+        httpSupport.expectPOST(catalogFixture.self, data, { Location : '/newresource' })
+        sut.post(catalogFixture.self, { data : data })
         httpSupport.flushAndCheckExpectations()
     })
 })

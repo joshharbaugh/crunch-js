@@ -9,7 +9,15 @@ var fixtures = {
 }
 
 module.exports = {
-    expectGETFixture : function(fixtureName, responseCode) {
+    expectPOST : function(url, data, headers) {
+        inject(function($httpBackend) {
+            $httpBackend
+            .expectPOST(url, data)
+            .respond(201, '', headers)
+        })
+    }
+
+    , expectGETFixture : function(fixtureName, responseCode) {
         var fixture = fixtures[fixtureName]
             ;
 
