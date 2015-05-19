@@ -4,11 +4,26 @@ module.exports = ShojiCatalogFactory
 
 function ShojiCatalogFactory(_, url, ShojiObject) {
 
-    var tupleOperations
-        , indexProperties
-        ;
+    var tupleOperations = {
+        map : function() {
+            var self = this
+                ;
 
-    indexProperties = {
+            return new ShojiObject(this.self).map().then(function(shojiObject) {
+                return _.extend(shojiObject, _.omit(self, '_self'))
+            })
+        }
+    }
+
+    function CatalogIndex() {
+
+    }
+
+    CatalogIndex.prototype.forEach = function(fn) {
+        this.values.forEach(fn)
+    }
+
+    Object.defineProperties(CatalogIndex.prototype, {
         length : {
             get : function() {
                 return this.keys.length
@@ -26,18 +41,7 @@ function ShojiCatalogFactory(_, url, ShojiObject) {
                 return this._values || (this._values = this.keys.map(function(key) { return this[key] }, this))
             }
         }
-    }
-
-    tupleOperations = {
-        map : function() {
-            var self = this
-                ;
-
-            return new ShojiObject(this.self).map().then(function(shojiObject) {
-                return _.extend(shojiObject, _.omit(self, '_self'))
-            })
-        }
-    }
+    })
 
     function toShojiObjects(urls) {
         return Object.keys(urls).reduce(function(accum, key) {
@@ -46,9 +50,12 @@ function ShojiCatalogFactory(_, url, ShojiObject) {
         }, {})
     }
 
-    function extendIndex(self, index) {
-        var mapped = _.mapValues(index, function(tuple, key) {
-            return Object.defineProperties(_.extend(tuple, tupleOperations), {
+    function extendIndex(self, indexData) {
+        var index = new CatalogIndex()
+            ;
+
+        _.each(indexData, function(tuple, key) {
+            index[key] = Object.defineProperties(_.extend(tuple, tupleOperations), {
                 self : {
                     get : function() {
                         return this._self || (this._self = url.resolve(self, key))
@@ -57,7 +64,7 @@ function ShojiCatalogFactory(_, url, ShojiObject) {
             })
         })
 
-        return Object.defineProperties(mapped, indexProperties)
+        return index
     }
 
     function ShojiCatalog() {
@@ -80,7 +87,7 @@ function ShojiCatalogFactory(_, url, ShojiObject) {
         }
 
         , element : {
-            value : 'shoji:entity'
+            value : 'shoji:catalog'
         }
     })
 
