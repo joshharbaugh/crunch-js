@@ -6,6 +6,8 @@ var mainMod = require('../index')
     , entityFixture = require('./entity-fixture')
     , entityLargeFixture = require('./entity-large-fixture')
     , catalogFixture = require('./catalog-fixture')
+    , viewFixture = require('./view-fixture')
+    , orderFixture = require('./order-fixture')
     , httpSupport = require('./http-support')
     ;
 
@@ -206,5 +208,23 @@ describe('Shoji', function() {
 
             inject(function($rootScope) { $rootScope.$digest() })
         })
+    })
+
+    it('should support a shoji:view objects', function() {
+        var sut = Shoji(viewFixture.self)
+        httpSupport.expectGETFixture('view-fixture')
+        sut.map().then(function(view) {
+            expect(view.value).to.deep.equal(viewFixture.value)
+        })
+        httpSupport.flushAndCheckExpectations()
+    })
+
+    it('should support a shoji:order objects', function() {
+        var sut = Shoji(orderFixture.self)
+        httpSupport.expectGETFixture('order-fixture')
+        sut.map().then(function(view) {
+            expect(view.graph).to.deep.equal(orderFixture.graph)
+        })
+        httpSupport.flushAndCheckExpectations()
     })
 })

@@ -2,7 +2,7 @@
 
 module.exports = ShojiParserFactory
 
-function ShojiParserFactory(assert, ShojiEntity, ShojiCatalog) {
+function ShojiParserFactory(assert, ShojiEntity, ShojiCatalog, ShojiView, ShojiOrder) {
 
     function ShojiParser() {
 
@@ -21,6 +21,12 @@ function ShojiParserFactory(assert, ShojiEntity, ShojiCatalog) {
             case 'shoji:catalog':
                 object = new ShojiCatalog(data.self).parse(data)
                 break
+            case 'shoji:view':
+                object = new ShojiView(data.self).parse(data)
+                break
+            case 'shoji:order':
+                object = new ShojiOrder(data.self).parse(data)
+                break
             default:
                 throw new Error('Unrecognized shoji object ' + data.element)
         }
@@ -35,4 +41,6 @@ ShojiParserFactory.$inject = [
     'assert'
     , 'ShojiEntity'
     , 'ShojiCatalog'
+    , 'ShojiView'
+    , 'ShojiOrder'
 ]

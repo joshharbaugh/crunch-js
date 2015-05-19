@@ -11,6 +11,8 @@ function buildModule() {
     mod.factory('ShojiObject', require('./shoji-object'))
     mod.factory('ShojiEntity', require('./shoji-entity'))
     mod.factory('ShojiCatalog', require('./shoji-catalog'))
+    mod.factory('ShojiView', require('./shoji-view'))
+    mod.factory('ShojiOrder', require('./shoji-order'))
     mod.factory('shojiDataOperations', require('./shoji-data-operations'))
     mod.factory('shojiParser', require('./shoji-parser'))
 

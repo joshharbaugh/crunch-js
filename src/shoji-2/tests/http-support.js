@@ -6,6 +6,8 @@ var fixtures = {
     'entity-fixture' : require('./entity-fixture')
     , 'entity-large-fixture' : require('./entity-large-fixture')
     , 'catalog-fixture' : require('./catalog-fixture')
+    , 'view-fixture' : require('./view-fixture')
+    , 'order-fixture' : require('./order-fixture')
 }
 
 module.exports = {

@@ -1,0 +1,47 @@
+{
+  "self": "/api/datasets/123/variables/456/summary/",
+  "value": {
+    "count": 212489,
+    "valid_count": 31890.0,
+    "missing_frequencies": [
+      {
+        "count": 180599,
+        "value": "No Data"
+      }
+    ],
+    "categories": [
+      {
+        "count": 11786,
+        "id": 1,
+        "name": "Positive",
+        "missing": false
+      },
+      {
+        "count": 17615,
+        "id": 2,
+        "name": "Neutral",
+        "missing": false
+      },
+      {
+        "count": 1305,
+        "id": 3,
+        "name": "Negative",
+        "missing": false
+      },
+      {
+        "count": 1184,
+        "id": 4,
+        "name": "Not aware of brand",
+        "missing": false
+      },
+      {
+        "count": 180599,
+        "id": -1,
+        "name": "No Data",
+        "missing": true
+      }
+    ],
+    "missing_count": 180599.0
+  },
+  "element": "shoji:view"
+}
