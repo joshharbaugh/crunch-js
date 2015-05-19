@@ -2,10 +2,9 @@
 
 module.exports = ShojiObjectFactory
 
-function ShojiObjectFactory($injector, shojiDataOperations, _) {
-    function ShojiObject(uri) {
-        this.self = uri
-    }
+function ShojiObjectFactory($injector, shojiDataOperations, _, assert) {
+    var metadataProps
+        ;
 
     function passThrough(data) {
         return data
@@ -23,6 +22,17 @@ function ShojiObjectFactory($injector, shojiDataOperations, _) {
         return [success, error]
     }
 
+    function toShojiObjects(urls) {
+        return Object.keys(urls).reduce(function(accum, key) {
+            accum[key.replace('_url', '')] = new ShojiObject(urls[key])
+            return accum
+        }, {})
+    }
+
+    function ShojiObject(uri) {
+        this.self = uri
+    }
+
     ShojiObject.prototype.map = function() {
         var shojiParser = $injector.get('shojiParser')
             , promise = shojiDataOperations.get(this.self).then(shojiParser.parse)
@@ -31,9 +41,27 @@ function ShojiObjectFactory($injector, shojiDataOperations, _) {
         return promise.then.apply(promise, processCallbacks(arguments))
     }
 
-    ShojiObject.prototype.parse = function() {
-        throw new Error('Not implemented')
+    ShojiObject.prototype.parse = function(data) {
+        //noinspection JSPotentiallyInvalidUsageOfThis
+        this.data = data
     }
+
+    metadataProps = (['urls', 'fragments', 'views', 'catalogs']).reduce(function(props, meta) {
+
+        props[meta] = {
+            get : function() {
+                var store = '_' + meta
+                    ;
+
+                assert(this.data[meta], 'The shoji object does not contain ' + meta)
+                return this[store] || (this[store] = toShojiObjects(this.data[meta]))
+            }
+        }
+
+        return props
+    }, {})
+
+    Object.defineProperties(ShojiObject.prototype, metadataProps)
 
     return ShojiObject
 }
@@ -42,4 +70,5 @@ ShojiObjectFactory.$inject = [
     '$injector'
     , 'shojiDataOperations'
     , 'lodash'
+    , 'assert'
 ]

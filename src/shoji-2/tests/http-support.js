@@ -3,6 +3,7 @@
 var mocks = require('angular-mocks')
     , fixtures = {
         'entity-fixture' : require('./entity-fixture')
+        , 'entity-large-fixture' : require('./entity-large-fixture')
     }
 
 module.exports = {

@@ -1,8 +1,10 @@
 'use strict'
 
-var mocks = require('angular-mocks')
-    , mainMod = require('../index')
+require('angular-mocks')
+
+var mainMod = require('../index')
     , entityFixture = require('./entity-fixture')
+    , entityLargeFixture = require('./entity-large-fixture')
     , httpSupport = require('./http-support')
     ;
 
@@ -48,6 +50,49 @@ describe('Shoji', function() {
 
             it('should request and parse the object representation', function() {
                 expect(mapped).to.deep.contain(entityFixture.body)
+                expect(mapped.element).to.equal(entityFixture.element)
+            })
+        })
+    })
+
+    context('Given a shoji object', function() {
+        var sut
+            , mapped
+            ;
+
+        beforeEach(function() {
+            sut = Shoji(entityLargeFixture.self)
+        })
+
+        beforeEach(function() {
+            httpSupport.expectGETFixture('entity-large-fixture')
+            sut.map().then(function(m) {
+                mapped = m
+            })
+            httpSupport.flushAndCheckExpectations()
+        })
+
+        it('should expose its urls', function() {
+            Object.keys(mapped.urls).forEach(function(object, key) {
+                expect(entityLargeFixture.urls[key + '_url']).to.equal(object.self)
+            })
+        })
+
+        it('should expose its fragments', function() {
+            Object.keys(mapped.fragments).forEach(function(object, key) {
+                expect(entityLargeFixture.fragments[key]).to.equal(object.self)
+            })
+        })
+
+        it('should expose its views', function() {
+            Object.keys(mapped.views).forEach(function(object, key) {
+                expect(entityLargeFixture.views[key]).to.equal(object.self)
+            })
+        })
+
+        it('should expose its catalogs', function() {
+            Object.keys(mapped.catalogs).forEach(function(object, key) {
+                expect(entityLargeFixture.catalogs[key]).to.equal(object.self)
             })
         })
     })

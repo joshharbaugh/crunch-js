@@ -1,0 +1,91 @@
+{
+  "body": {
+    "name": "Heinz",
+    "format": {
+      "summary": {
+        "digits": 0
+      }
+    },
+    "description": "",
+    "missing_reasons": {
+      "No Data": -1
+    },
+    "private": false,
+    "discarded": false,
+    "alias": "bix_value_11009",
+    "dataset_id": "3282f3c571594a6d9c1b7ddd75f97ba3",
+    "type": "categorical",
+    "id": "5de1cda4c27b4ab59129a5aff3828d99",
+    "categories": [
+      {
+        "numeric_value": 1,
+        "selected": true,
+        "id": 1,
+        "name": "Positive",
+        "missing": false
+      },
+      {
+        "numeric_value": 0,
+        "selected": false,
+        "id": 2,
+        "name": "Neutral",
+        "missing": false
+      },
+      {
+        "numeric_value": 2,
+        "selected": false,
+        "id": 3,
+        "name": "Negative",
+        "missing": false
+      },
+      {
+        "numeric_value": 9,
+        "selected": false,
+        "id": 4,
+        "name": "Not aware of brand",
+        "missing": false
+      },
+      {
+        "numeric_value": null,
+        "selected": false,
+        "id": -1,
+        "missing": true,
+        "name": "No Data"
+      }
+    ],
+    "view": {
+      "show_counts": false,
+      "column_width": null,
+      "include_missing": false,
+      "show_numeric_values": false
+    }
+  },
+  "catalogs": {
+    "parent": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/"
+  },
+  "description": "Details for a given Variable",
+  "views": {
+    "frequencies": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/frequencies/",
+    "cast": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/cast/",
+    "values": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/values/",
+    "summary": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/summary/"
+  },
+  "self": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/",
+  "element": "shoji:entity",
+  "urls": {
+    "cast_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/cast/",
+    "summary_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/summary/",
+    "missing_rules_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/missing_rules/",
+    "values_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/values/",
+    "dataset_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/",
+    "user_settings_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/user_settings/",
+    "frequencies_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/frequencies/",
+    "view_model_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/card_view/"
+  },
+  "fragments": {
+    "card_view": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/card_view/",
+    "missing_rules": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/missing_rules/",
+    "user_settings": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/user_settings/"
+  },
+  "specification": "/api/specifications/categorical_variables/"
+}

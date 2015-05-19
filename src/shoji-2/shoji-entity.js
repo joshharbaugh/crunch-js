@@ -11,6 +11,8 @@ function ShojiEntityFactory(ShojiObject, assert, _) {
     ShojiEntity.prototype = Object.create(ShojiObject.prototype)
 
     ShojiEntity.prototype.parse = function(data) {
+        ShojiObject.prototype.parse.call(this, data)
+
         assert(data, 'Invalid data object')
         assert(data.body, 'Entities should have a body')
 
