@@ -41,4 +41,11 @@ describe('shojiDataOperations', function() {
         sut.post(catalogFixture.self, { data : data })
         httpSupport.flushAndCheckExpectations()
     })
+
+    it('should perform PUT requests', function() {
+        var data = { name : 'new resource' }
+        httpSupport.expectPUT(catalogFixture.self, data)
+        sut.put(catalogFixture.self, { data : data })
+        httpSupport.flushAndCheckExpectations()
+    })
 })

@@ -212,10 +212,22 @@ describe('Shoji', function() {
 
     context('When updating a shoji object', function() {
         var sut
+            , data
             ;
 
         beforeEach(function() {
             sut = Shoji(entityFixture.self)
+            data = { newField : 'new field' }
+        })
+
+        it('should send a put request to the shoji object and refresh the shoji object', function() {
+            httpSupport.expectPUT(entityFixture.self, data)
+            httpSupport.expectGETFixture('entity-fixture')
+
+            sut.update({
+                data : data
+            })
+            httpSupport.flushAndCheckExpectations()
         })
     })
 

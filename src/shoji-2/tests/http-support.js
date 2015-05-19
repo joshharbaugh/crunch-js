@@ -19,6 +19,14 @@ module.exports = {
         })
     }
 
+    , expectPUT : function(url, data, headers) {
+        inject(function($httpBackend) {
+            $httpBackend
+                .expectPUT(url, data)
+                .respond(201, '', headers)
+        })
+    }
+
     , expectGETFixture : function(fixtureName, responseCode) {
         var fixture = fixtures[fixtureName]
             ;
