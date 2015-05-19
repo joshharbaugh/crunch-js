@@ -210,6 +210,15 @@ describe('Shoji', function() {
         })
     })
 
+    context('When updating a shoji object', function() {
+        var sut
+            ;
+
+        beforeEach(function() {
+            sut = Shoji(entityFixture.self)
+        })
+    })
+
     it('should support a shoji:view objects', function() {
         var sut = Shoji(viewFixture.self)
         httpSupport.expectGETFixture('view-fixture')

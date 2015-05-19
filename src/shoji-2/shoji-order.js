@@ -16,6 +16,12 @@ function ShojiOrderFactory(ShojiObject) {
         return this
     }
 
+    Object.defineProperties(ShojiOrder.prototype, {
+        element : {
+            value : 'shoji:order'
+        }
+    })
+
     return ShojiOrder
 }
 

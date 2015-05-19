@@ -78,6 +78,10 @@ function ShojiCatalogFactory(_, url, ShojiObject) {
                 return this._orders || (this._orders = toShojiObjects(this.data.orders))
             }
         }
+
+        , element : {
+            value : 'shoji:entity'
+        }
     })
 
     return ShojiCatalog

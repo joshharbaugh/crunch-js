@@ -16,6 +16,12 @@ function ShojiViewFactory(ShojiObject) {
         return this
     }
 
+    Object.defineProperties(ShojiView.prototype, {
+        element : {
+            value : 'shoji:view'
+        }
+    })
+
     return ShojiView
 }
 
