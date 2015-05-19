@@ -5,6 +5,7 @@ require('angular-mocks')
 var mainMod = require('../index')
     , entityFixture = require('./entity-fixture')
     , entityLargeFixture = require('./entity-large-fixture')
+    , catalogFixture = require('./catalog-fixture')
     , httpSupport = require('./http-support')
     ;
 
@@ -95,5 +96,48 @@ describe('Shoji', function() {
                 expect(entityLargeFixture.catalogs[key]).to.equal(object.self)
             })
         })
+    })
+
+    context('Given a shoji catalog object', function() {
+        var sut
+            , mapped
+            ;
+
+        beforeEach(function() {
+            sut = Shoji(catalogFixture.self)
+        })
+
+        beforeEach(function() {
+            httpSupport.expectGETFixture('catalog-fixture')
+            sut.map().then(function(m) {
+                mapped = m
+            })
+            httpSupport.flushAndCheckExpectations()
+        })
+
+        it('should expose its index', function() {
+            Object.keys(catalogFixture.index).forEach(function(key) {
+                expect(mapped.index.hasOwnProperty([key]))
+            })
+        })
+
+        it('should expose its orders', function() {
+            Object.keys(catalogFixture.orders).forEach(function(key) {
+                expect(mapped.orders[key].self).to.equal(catalogFixture.orders[key])
+            })
+        })
+
+        it('should allow to map each tuple to its related entity', function() {
+            Object.keys(catalogFixture.index).forEach(function(tupleSelf) {
+                httpSupport.expectGETUrl((catalogFixture.self + tupleSelf), { element : 'shoji:entity', body : {} })
+            })
+
+            mapped.index.values.map(function(tuple) {
+                return tuple.map()
+            })
+
+            httpSupport.flushAndCheckExpectations()
+        })
+
     })
 })

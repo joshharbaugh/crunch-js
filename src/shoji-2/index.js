@@ -10,11 +10,16 @@ function buildModule() {
     mod.factory('Shoji', require('./shoji'))
     mod.factory('ShojiObject', require('./shoji-object'))
     mod.factory('ShojiEntity', require('./shoji-entity'))
+    mod.factory('ShojiCatalog', require('./shoji-catalog'))
     mod.factory('shojiDataOperations', require('./shoji-data-operations'))
     mod.factory('shojiParser', require('./shoji-parser'))
 
     mod.factory('lodash', function() {
         return require('lodash')
+    })
+
+    mod.factory('url', function() {
+        return require('url')
     })
 
     mod.factory('assert', function() {

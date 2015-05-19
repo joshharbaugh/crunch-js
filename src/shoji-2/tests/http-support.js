@@ -1,20 +1,27 @@
 'use strict'
 
-var mocks = require('angular-mocks')
-    , fixtures = {
-        'entity-fixture' : require('./entity-fixture')
-        , 'entity-large-fixture' : require('./entity-large-fixture')
-    }
+require('angular-mocks')
+
+var fixtures = {
+    'entity-fixture' : require('./entity-fixture')
+    , 'entity-large-fixture' : require('./entity-large-fixture')
+    , 'catalog-fixture' : require('./catalog-fixture')
+}
 
 module.exports = {
     expectGETFixture : function(fixtureName, responseCode) {
         var fixture = fixtures[fixtureName]
             ;
 
+        this.expectGETUrl(fixture.self, fixture, responseCode)
+    }
+
+    , expectGETUrl : function(url, response, responseCode) {
+
         inject(function($httpBackend) {
             $httpBackend
-            .expectGET(fixture.self)
-            .respond((responseCode || 200), fixture)
+                .expectGET(url)
+                .respond((responseCode || 200), response)
         })
     }
 

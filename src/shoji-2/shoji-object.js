@@ -44,6 +44,7 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert) {
     ShojiObject.prototype.parse = function(data) {
         //noinspection JSPotentiallyInvalidUsageOfThis
         this.data = data
+        return this
     }
 
     metadataProps = (['urls', 'fragments', 'views', 'catalogs']).reduce(function(props, meta) {
