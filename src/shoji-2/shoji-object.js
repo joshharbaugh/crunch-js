@@ -22,7 +22,7 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
     }
 
     function errorPassThrough(error) {
-        return error
+        throw error
     }
 
     function processCallbacks() {
