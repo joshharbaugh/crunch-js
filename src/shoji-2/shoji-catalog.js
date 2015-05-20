@@ -23,6 +23,10 @@ function ShojiCatalogFactory(_, url, ShojiObject) {
         this.values.forEach(fn)
     }
 
+    CatalogIndex.prototype.tuple = function(id) {
+        return this[id]
+    }
+
     CatalogIndex.prototype.toObject = function() {
         return this
     }
