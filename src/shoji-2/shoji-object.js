@@ -105,6 +105,16 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
         })
     }
 
+    ShojiObject.prototype.delete = function(params) {
+        var obj = this
+            ;
+
+        return shojiDataOperations.delete(obj.self).then(function() {
+            obj.deleted = true
+            return obj
+        })
+    }
+
     ShojiObject.prototype.parse = function(data) {
         //noinspection JSPotentiallyInvalidUsageOfThis
         this.data = data

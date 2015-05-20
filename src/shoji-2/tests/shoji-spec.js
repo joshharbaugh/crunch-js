@@ -252,6 +252,28 @@ describe('Shoji', function() {
         })
     })
 
+    context('When deleting a shoji object', function() {
+        var sut
+            , data
+            ;
+
+        beforeEach(function() {
+            sut = Shoji(entityFixture.self)
+            data = { newField : 'new field' }
+        })
+
+        it('should send a patch request to the shoji object and refresh', function() {
+            httpSupport.expectDELETE(entityFixture.self, data)
+
+            sut.delete({
+                data : data
+            }).then(function(o) {
+                expect(o.deleted).to.be.true
+            })
+            httpSupport.flushAndCheckExpectations()
+        })
+    })
+
     it('should support a shoji:view objects', function() {
         var sut = Shoji(viewFixture.self)
         httpSupport.expectGETFixture('view-fixture')

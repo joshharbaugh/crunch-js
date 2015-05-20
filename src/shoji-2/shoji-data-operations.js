@@ -50,7 +50,7 @@ function ShojiDataOperationsFactory($q, $http, $log) {
                 outer.resolve()
             })
             .error(function(response) {
-                outer.reject(new Error('The resource could not be saved ' + response.status))
+                outer.reject(new Error('The resource could not be updated ' + response.status))
                 $log.error(response)
             })
 
@@ -66,7 +66,23 @@ function ShojiDataOperationsFactory($q, $http, $log) {
                 outer.resolve()
             })
             .error(function(response) {
-                outer.reject(new Error('The resource could not be saved ' + response.status))
+                outer.reject(new Error('The resource could not be patched ' + response.status))
+                $log.error(response)
+            })
+
+        return outer.promise
+    }
+
+    ShojiDataOperations.prototype.delete = function(uri) {
+        var outer = $q.defer()
+            ;
+
+        $http.delete(uri)
+            .success(function() {
+                outer.resolve()
+            })
+            .error(function(response) {
+                outer.reject(new Error('The resource could not be deleted ' + response.status))
                 $log.error(response)
             })
 

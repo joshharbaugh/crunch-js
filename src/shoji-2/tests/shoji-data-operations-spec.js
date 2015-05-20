@@ -55,4 +55,10 @@ describe('shojiDataOperations', function() {
         sut.patch(catalogFixture.self, { data : data })
         httpSupport.flushAndCheckExpectations()
     })
+
+    it('should perform DELETE requests', function() {
+        httpSupport.expectDELETE(catalogFixture.self)
+        sut.delete(catalogFixture.self)
+        httpSupport.flushAndCheckExpectations()
+    })
 })

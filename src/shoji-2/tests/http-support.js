@@ -35,6 +35,14 @@ module.exports = {
         })
     }
 
+    , expectDELETE : function(url, data, headers) {
+        inject(function($httpBackend) {
+            $httpBackend
+            .expectDELETE(url)
+            .respond(201, '', headers)
+        })
+    }
+
     , expectGETFixture : function(fixtureName, responseCode) {
         var fixture = fixtures[fixtureName]
             ;
