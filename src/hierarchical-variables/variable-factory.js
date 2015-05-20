@@ -19,7 +19,22 @@ function VariableFactory(_
     , pruneGroupNameFromVariableName
     , iGenerateVariableFullName
     , iCalculateItemLevel) {
+
     var factory
+        , dataProperties = [
+            'self'
+            , 'name'
+            , 'alias'
+            , 'derived'
+            , 'discarded'
+            , 'type'
+            , 'id'
+            , 'description'
+            , 'urls'
+            , 'fragments'
+            , 'views'
+            , 'catalogs'
+        ]
         ;
 
     function isSubordinate(varb) {
@@ -28,7 +43,66 @@ function VariableFactory(_
         return varb.self && subordinateRegexp.test(varb.self)
     }
 
-    function getSubvariables() {
+    function Variable(data, parent) {
+        this.subvariables = data.subvariables || []
+        this.parent = parent
+        this.data = data
+    }
+
+    Object.defineProperties(Variable.prototype, {
+        fullName : {
+            get : function() {
+                return this._fullName || (this._fullName =
+                        iGenerateVariableFullName(this))
+            }
+        }
+
+        , url : {
+            get : function() {
+                //backward compatibility
+                return this.self
+            }
+        }
+
+        , prunedName : {
+            get : function() {
+                return this._prunedName || (this._prunedName =
+                        pruneGroupNameFromVariableName(this.name, this.parent))
+            }
+        }
+
+        , subordinate : {
+            get : function() {
+                return isSubordinate(this)
+            }
+        }
+
+        , level : {
+            get : function() {
+                return iCalculateItemLevel(this)
+            }
+        }
+
+        , categoricalArray : {
+            get : function() {
+                return this.type === 'categorical_array'
+            }
+        }
+
+        , hierarchicalType : {
+            value : 'variable'
+        }
+    })
+
+    dataProperties.forEach(function(prop) {
+        Object.defineProperty(Variable.prototype, prop, {
+            get : function() {
+                return this.data[prop]
+            }
+        })
+    })
+
+    Variable.prototype.getSubvariables = function() {
         var self = this
             , order = self.subvariables
             ;
@@ -49,8 +123,8 @@ function VariableFactory(_
         return $q.when(self.subvariables)
     }
 
-    function subvariableById(variableId) {
-        var found = undefined
+    Variable.prototype.subvariableById = function(variableId) {
+        var found = null
             , self = this
             ;
 
@@ -68,91 +142,30 @@ function VariableFactory(_
         return found
     }
 
-    function extendSelf(map, params) {
-        var tuple = this
-            ;
-
-        return map.call(tuple, params).then(function(entity) {
-            return factory.create(entity, tuple.parent)
-        })
-    }
-
-    function clone() {
-        return factory.create(this, this.parent)
-    }
-
-    function contains(variableId) {
-        return subvariableById.call(this, variableId) !== undefined
-    }
-
-    function toJSON() {
+    Variable.prototype.toJSON = function() {
         return this.self
     }
 
-    var properties = {
-        'fullName' : {
-            get : function() {
-                return this._fullName || (this._fullName =
-                    iGenerateVariableFullName(this))
-            }
-        }
+    Variable.prototype.contains = function(variableId) {
+        return this.subvariableById(variableId) !== null
+    }
 
-        , 'url' : {
-            get : function() {
-                //backward compatibility
-                return this.self
-            }
-        }
+    Variable.prototype.clone = function() {
+        return factory.create(this, this.parent)
+    }
 
-        , 'prunedName' : {
-            get : function() {
-                return this._prunedName || (this._prunedName =
-                    pruneGroupNameFromVariableName(this.name, this.parent))
-            }
-        }
+    Variable.prototype.map = function() {
+        var parent = this.parent
+            ;
 
-        , 'subordinate' : {
-            get : function() {
-                return isSubordinate(this)
-            }
-        }
-
-        , 'level' : {
-            get : function() {
-                return iCalculateItemLevel(this)
-            }
-        }
-
-        , 'categoricalArray' : {
-            get : function() {
-                return this.type === 'categorical_array'
-            }
-        }
-
-        , 'hierarchicalType' : {
-            value : 'variable'
-        }
+        return this.data.map().then(function(entity) {
+            return factory.create(entity, parent)
+        })
     }
 
     return (factory = {
         create : function(data, group) {
-            var variable = _.clone(data)
-                ;
-
-            variable.prototype = data.prototype
-
-            Object.defineProperties(variable, properties)
-            variable.map = _.wrap(data.map, extendSelf)
-            variable.getSubvariables = getSubvariables
-            variable.toJSON = toJSON
-            variable.subvariables = variable.subvariables || []
-            variable.subvariableById = subvariableById
-            variable.contains = contains
-            variable.clone = clone
-
-            variable.parent = group
-
-            return variable
+            return new Variable(data, group)
         }
     })
 }
