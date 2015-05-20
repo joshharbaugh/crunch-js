@@ -34,6 +34,7 @@ function VariableFactory(_
             , 'fragments'
             , 'views'
             , 'catalogs'
+            , 'private'
         ]
         ;
 
@@ -98,6 +99,9 @@ function VariableFactory(_
         Object.defineProperty(Variable.prototype, prop, {
             get : function() {
                 return this.data[prop]
+            }
+            , set : function(value) {
+                this.data[prop] = value
             }
         })
     })
