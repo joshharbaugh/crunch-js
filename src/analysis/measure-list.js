@@ -77,7 +77,7 @@ function MeasureListFactory(_, $q, cachedHierarchicalVariables) {
     }
 
     MeasureList.prototype.valueOf = function() {
-        var measures = _.cloneDeep(this.measures)
+        var measures = _.clone(this.measures)
             ;
 
         if(Object.keys(measures).length === 0) {

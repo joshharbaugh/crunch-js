@@ -103,6 +103,7 @@ function VariableFactory(_
             , set : function(value) {
                 this.data[prop] = value
             }
+            ,enumerable : true
         })
     })
 
