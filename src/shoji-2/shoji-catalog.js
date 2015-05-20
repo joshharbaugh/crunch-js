@@ -2,7 +2,7 @@
 
 module.exports = ShojiCatalogFactory
 
-function ShojiCatalogFactory(_, url, ShojiObject) {
+function ShojiCatalogFactory(_, url, ShojiObject, $q) {
 
     var tupleOperations = {
         map : function() {
@@ -19,8 +19,8 @@ function ShojiCatalogFactory(_, url, ShojiObject) {
 
     }
 
-    CatalogIndex.prototype.forEach = function(fn) {
-        this.values.forEach(fn)
+    CatalogIndex.prototype.forEach = function(fn, context) {
+        this.values.forEach(fn, context || this)
     }
 
     CatalogIndex.prototype.tuple = function(id) {
@@ -29,6 +29,10 @@ function ShojiCatalogFactory(_, url, ShojiObject) {
 
     CatalogIndex.prototype.toObject = function() {
         return this
+    }
+
+    CatalogIndex.prototype.mapResources = function() {
+        return $q.all(this.values.map(function(t) { return t.map() }))
     }
 
     Object.defineProperties(CatalogIndex.prototype, {
@@ -102,5 +106,5 @@ function ShojiCatalogFactory(_, url, ShojiObject) {
     return ShojiCatalog
 }
 
-ShojiCatalogFactory.$inject = ['lodash', 'url', 'ShojiObject']
+ShojiCatalogFactory.$inject = ['lodash', 'url', 'ShojiObject', '$q']
 
