@@ -11,7 +11,7 @@ VariableListFactory.$inject = [
 function VariableListFactory(_, $q, cachedHierarchicalVariables) {
     var addStrategies = {
         'categorical_array' : function(varInfo, items) {
-            var columnVar = _.cloneDeep(varInfo)
+            var columnVar = varInfo.clone()
                 ;
 
             varInfo.dimension = "each"

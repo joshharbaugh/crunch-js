@@ -30,11 +30,13 @@ function VariableFactory(_
             , 'type'
             , 'id'
             , 'description'
+            , 'rollup_resolution'
             , 'urls'
             , 'fragments'
             , 'views'
             , 'catalogs'
             , 'private'
+            , 'view'
         ]
         ;
 
@@ -156,7 +158,7 @@ function VariableFactory(_
     }
 
     Variable.prototype.clone = function() {
-        return factory.create(this, this.parent)
+        return factory.create(this.data, this.parent)
     }
 
     Variable.prototype.map = function() {
