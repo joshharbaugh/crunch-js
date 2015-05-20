@@ -43,18 +43,18 @@ module.exports = {
         })
     }
 
-    , expectGETFixture : function(fixtureName, responseCode) {
+    , expectGETFixture : function(fixtureName, responseCode, headers) {
         var fixture = fixtures[fixtureName]
             ;
 
-        this.expectGETUrl(fixture.self, fixture, responseCode)
+        this.expectGETUrl(fixture.self, fixture, responseCode, headers)
     }
 
-    , expectGETUrl : function(url, response, responseCode) {
+    , expectGETUrl : function(url, response, responseCode, headers) {
 
         inject(function($httpBackend) {
             $httpBackend
-                .expectGET(url)
+                .expectGET(url, headers)
                 .respond((responseCode || 200), response)
         })
     }

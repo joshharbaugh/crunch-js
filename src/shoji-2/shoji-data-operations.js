@@ -2,17 +2,31 @@
 
 module.exports = ShojiDataOperationsFactory
 
-function ShojiDataOperationsFactory($q, $http, $log) {
+function ShojiDataOperationsFactory($q, $http, $log, _) {
 
     function ShojiDataOperations() {
 
+    }
+
+    function processGetConfiguration(config) {
+        config = config || {}
+
+        if(config.noCache) {
+            _.extend(config, {
+                headers : _.extend((config.headers || {}), {
+                    'Cache-Control' : 'no-cache'
+                })
+            })
+        }
+
+        return config
     }
 
     ShojiDataOperations.prototype.get = function(uri, params) {
         var outer = $q.defer()
             ;
 
-        $http.get(uri, (params || {}))
+        $http.get(uri, processGetConfiguration(params))
             .success(function(data) {
                 outer.resolve(data)
             })
@@ -92,4 +106,4 @@ function ShojiDataOperationsFactory($q, $http, $log) {
     return new ShojiDataOperations()
 }
 
-ShojiDataOperationsFactory.$inject = ['$q', '$http', '$log']
+ShojiDataOperationsFactory.$inject = ['$q', '$http', '$log', 'lodash']

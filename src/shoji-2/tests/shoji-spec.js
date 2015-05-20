@@ -56,6 +56,18 @@ describe('Shoji', function() {
                 expect(mapped.element).to.equal(entityFixture.element)
             })
         })
+
+        context('When fetching the object representation with the noCache flag', function() {
+
+            it('should request the resource with the Cache-Control header equals to no-cache', function() {
+                httpSupport.expectGETFixture('entity-fixture', 200, {
+                    'Cache-Control' : 'no-cache'
+                    , 'Accept' : 'application/json, text/plain, */*'
+                })
+                sut.map({ noCache : true })
+                httpSupport.flushAndCheckExpectations()
+            })
+        })
     })
 
     context('Given a shoji object', function() {
