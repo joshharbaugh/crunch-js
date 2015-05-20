@@ -23,6 +23,10 @@ function ShojiCatalogFactory(_, url, ShojiObject) {
         this.values.forEach(fn)
     }
 
+    CatalogIndex.prototype.toObject = function() {
+        return this
+    }
+
     Object.defineProperties(CatalogIndex.prototype, {
         length : {
             get : function() {

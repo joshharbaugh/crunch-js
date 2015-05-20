@@ -17,10 +17,40 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
         this.self = uri
     }
 
-    ShojiObject.prototype.map = function() {
-        var shojiParser = $injector.get('shojiParser')
+    function passThrough(data) {
+        return data
+    }
 
-        return shojiDataOperations.get(this.self).then(shojiParser.parse)
+    function errorPassThrough(error) {
+        return error
+    }
+
+    function processCallbacks() {
+        var args = [].slice.call(arguments)
+            , success = _.isFunction(arguments[0]) ? arguments[0] : passThrough
+            , error = _.isFunction(arguments[1]) ? arguments[1] : errorPassThrough
+            ;
+
+        args.forEach(function(arg) {
+            if(_.isFunction(arg)) {
+                if(!success) {
+                    success = arg
+                } else if(success && !error) {
+                    error = arg
+                }
+            }
+        })
+
+        return [success, error]
+    }
+
+    ShojiObject.prototype.map = function(params) {
+        var shojiParser = $injector.get('shojiParser')
+            , promise = shojiDataOperations
+                .get(this.self, _.isPlainObject(params) ? params : {})
+                .then(shojiParser.parse)
+
+        return promise.then.apply(promise, processCallbacks.apply(this, arguments))
     }
 
     ShojiObject.prototype.reduce = function(accumulator, handlers) {

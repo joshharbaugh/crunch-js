@@ -8,11 +8,11 @@ function ShojiDataOperationsFactory($q, $http, $log) {
 
     }
 
-    ShojiDataOperations.prototype.get = function(uri) {
+    ShojiDataOperations.prototype.get = function(uri, params) {
         var outer = $q.defer()
             ;
 
-        $http.get(uri)
+        $http.get(uri, (params || {}))
             .success(function(data) {
                 outer.resolve(data)
             })
