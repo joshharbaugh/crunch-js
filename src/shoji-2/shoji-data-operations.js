@@ -57,6 +57,22 @@ function ShojiDataOperationsFactory($q, $http, $log) {
         return outer.promise
     }
 
+    ShojiDataOperations.prototype.patch = function(uri, params) {
+        var outer = $q.defer()
+            ;
+
+        $http.patch(uri, params.data)
+            .success(function() {
+                outer.resolve()
+            })
+            .error(function(response) {
+                outer.reject(new Error('The resource could not be saved ' + response.status))
+                $log.error(response)
+            })
+
+        return outer.promise
+    }
+
     return new ShojiDataOperations()
 }
 

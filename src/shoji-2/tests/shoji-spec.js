@@ -231,6 +231,27 @@ describe('Shoji', function() {
         })
     })
 
+    context('When patching a shoji object', function() {
+        var sut
+            , data
+            ;
+
+        beforeEach(function() {
+            sut = Shoji(catalogFixture.self)
+            data = { newField : 'new field' }
+        })
+
+        it('should send a patch request to the shoji object and refresh', function() {
+            httpSupport.expectPATCH(catalogFixture.self, data)
+            httpSupport.expectGETFixture('catalog-fixture')
+
+            sut.patch({
+                data : data
+            })
+            httpSupport.flushAndCheckExpectations()
+        })
+    })
+
     it('should support a shoji:view objects', function() {
         var sut = Shoji(viewFixture.self)
         httpSupport.expectGETFixture('view-fixture')

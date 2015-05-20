@@ -19,6 +19,14 @@ module.exports = {
         })
     }
 
+    , expectPATCH : function(url, data, headers) {
+        inject(function($httpBackend) {
+            $httpBackend
+                .expectPATCH(url, data)
+                .respond(201, '', headers)
+        })
+    }
+
     , expectPUT : function(url, data, headers) {
         inject(function($httpBackend) {
             $httpBackend

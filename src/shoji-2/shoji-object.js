@@ -96,6 +96,15 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
         })
     }
 
+    ShojiObject.prototype.patch = function(params) {
+        var self = this.self
+            ;
+
+        return shojiDataOperations.patch(self, params).then(function() {
+            return new ShojiObject(self).map()
+        })
+    }
+
     ShojiObject.prototype.parse = function(data) {
         //noinspection JSPotentiallyInvalidUsageOfThis
         this.data = data

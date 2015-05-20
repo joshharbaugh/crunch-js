@@ -48,4 +48,11 @@ describe('shojiDataOperations', function() {
         sut.put(catalogFixture.self, { data : data })
         httpSupport.flushAndCheckExpectations()
     })
+
+    it('should perform PATCH requests', function() {
+        var data = { name : 'new resource' }
+        httpSupport.expectPATCH(catalogFixture.self, data)
+        sut.patch(catalogFixture.self, { data : data })
+        httpSupport.flushAndCheckExpectations()
+    })
 })
