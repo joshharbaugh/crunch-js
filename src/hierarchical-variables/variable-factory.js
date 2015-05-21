@@ -37,6 +37,11 @@ function VariableFactory(_
             , 'catalogs'
             , 'private'
             , 'view'
+            , 'format'
+            , 'resolution'
+            , 'missing_reasons'
+            , 'categories'
+            , 'scale'
         ]
         ;
 
