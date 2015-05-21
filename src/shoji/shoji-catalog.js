@@ -10,7 +10,7 @@ function ShojiCatalogFactory(_, url, ShojiObject, $q) {
                 ;
 
             return new ShojiObject(this.self).map().then(function(shojiObject) {
-                return _.extend(shojiObject, _.omit(self, '_self'))
+                return _.defaults(shojiObject, _.omit(self, '_self'))
             })
         }
     }
