@@ -10,6 +10,7 @@ VariableFactory.$inject = [
     , 'pruneGroupNameFromVariableName'
     , 'iGenerateVariableFullName'
     , 'iCalculateItemLevel'
+    , 'ShojiObject'
 ]
 
 function VariableFactory(_
@@ -18,7 +19,8 @@ function VariableFactory(_
     , iFetchSubvariables
     , pruneGroupNameFromVariableName
     , iGenerateVariableFullName
-    , iCalculateItemLevel) {
+    , iCalculateItemLevel
+    , ShojiObject) {
 
     var factory
         , dataProperties = [
@@ -56,6 +58,8 @@ function VariableFactory(_
         this.parent = parent
         this.data = data
     }
+
+    Variable.prototype = Object.create(ShojiObject.prototype)
 
     Object.defineProperties(Variable.prototype, {
         fullName : {
