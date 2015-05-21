@@ -7,7 +7,6 @@ function ShojiParserFactory(assert, _, ShojiEntity, ShojiCatalog, ShojiView, Sho
     var parsers = {
         'shoji:entity' : function(data) {
             assert(data, 'Invalid data object')
-            assert(data.body, 'Entities should have a body')
 
             return _.extend(new ShojiEntity(data.self, data), data.body)
         }
