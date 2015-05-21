@@ -31,10 +31,14 @@ function ShojiParserFactory(assert, _, ShojiEntity, ShojiCatalog, ShojiView, Sho
             order.graph = data.graph
             return order
         }
-    }
 
-    function invalidElement(data) {
-        throw new Error('Unrecognized shoji object ' + data.element)
+        , 'shoji:value' : function(data) {
+            var object = new ShojiView(data.self, data)
+                ;
+
+            object.value = data
+            return object
+        }
     }
 
     function ShojiParser() {
@@ -43,7 +47,7 @@ function ShojiParserFactory(assert, _, ShojiEntity, ShojiCatalog, ShojiView, Sho
 
     ShojiParser.prototype.parse = function(data) {
         assert(data, 'Invalid data object')
-        return (parsers[data.element] || invalidElement)(data)
+        return (parsers[data.element || 'shoji:value'])(data)
     }
 
     return new ShojiParser()
