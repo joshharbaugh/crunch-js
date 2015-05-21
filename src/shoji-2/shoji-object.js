@@ -13,7 +13,8 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
         }, {})
     }
 
-    function ShojiObject(uri) {
+    function ShojiObject(uri, data) {
+        this.data = data
         this.self = uri
     }
 
@@ -45,10 +46,9 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
     }
 
     ShojiObject.prototype.map = function(params) {
-        var shojiParser = $injector.get('shojiParser')
-            , promise = shojiDataOperations
+        var promise = shojiDataOperations
                 .get(this.self, _.isPlainObject(params) ? params : {})
-                .then(shojiParser.parse)
+                .then(this.parse)
 
         return promise.then.apply(promise, processCallbacks.apply(this, arguments))
     }
@@ -116,9 +116,10 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
     }
 
     ShojiObject.prototype.parse = function(data) {
-        //noinspection JSPotentiallyInvalidUsageOfThis
-        this.data = data
-        return this
+        var shojiParser = $injector.get('shojiParser')
+            ;
+
+        return shojiParser.parse(data)
     }
 
     metadataProps = (['urls', 'fragments', 'views', 'catalogs']).reduce(function(props, meta) {

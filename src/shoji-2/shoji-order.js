@@ -10,12 +10,6 @@ function ShojiOrderFactory(ShojiObject) {
 
     ShojiOrder.prototype = Object.create(ShojiObject.prototype)
 
-    ShojiOrder.prototype.parse = function(data) {
-        ShojiObject.prototype.parse.apply(this, arguments)
-        this.graph = data.graph
-        return this
-    }
-
     Object.defineProperties(ShojiOrder.prototype, {
         element : {
             value : 'shoji:order'

@@ -10,12 +10,6 @@ function ShojiViewFactory(ShojiObject) {
 
     ShojiView.prototype = Object.create(ShojiObject.prototype)
 
-    ShojiView.prototype.parse = function(data) {
-        ShojiObject.prototype.parse.apply(this, arguments)
-        this.value = data.value
-        return this
-    }
-
     Object.defineProperties(ShojiView.prototype, {
         element : {
             value : 'shoji:view'
