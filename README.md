@@ -9,6 +9,8 @@ dev branch
 
 [![Build Status](https://travis-ci.org/Crunch-io/crunch-js.svg?branch=dev)](https://travis-ci.org/Crunch-io/crunch-js)
 
+[![Code Climate](https://codeclimate.com/github/Crunch-io/crunch-js/badges/gpa.svg)](https://codeclimate.com/github/Crunch-io/crunch-js)
+
 ##Build instructions
 
 - `npm install`
