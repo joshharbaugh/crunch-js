@@ -4,7 +4,7 @@ module.exports = buildModule
 
 function buildModule() {
     var angular = require('angular')
-        , mod = angular.module('shoji-2', [])
+        , mod = angular.module('shoji', [])
         ;
 
     mod.factory('Shoji', require('./shoji'))

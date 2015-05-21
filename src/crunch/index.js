@@ -3,8 +3,7 @@
 module.exports = function buildModule(excludes) {
     var angular = require('angular')
         , features = [
-            //require('../shoji')
-            , require('../shoji-2')
+            require('../shoji')
             , require('../resources')
             , require('../messaging')
             , require('../machina-angular')
