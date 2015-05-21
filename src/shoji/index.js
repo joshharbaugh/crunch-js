@@ -2,9 +2,9 @@
 
 module.exports = buildModule
 
-function buildModule() {
+function buildModule(name) {
     var angular = require('angular')
-        , mod = angular.module('shoji', [])
+        , mod = angular.module((name || 'shoji'), [])
         ;
 
     mod.factory('Shoji', require('./shoji'))

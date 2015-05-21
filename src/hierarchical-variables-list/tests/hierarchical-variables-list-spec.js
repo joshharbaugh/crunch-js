@@ -9,6 +9,7 @@ var mainMod = require('../index')
     ,variablesFixture = require('../../hierarchical-variables/tests/variables')
     ,orderFixture = require('../../hierarchical-variables/tests/hierarchical-ungrouped')
     ,orderFixture2  = require('../../hierarchical-variables/tests/hierarchical-grouped')
+    ,_ = require('lodash')
     ;
 
 describe('HierarchicalVariablesList',function(){
@@ -32,7 +33,9 @@ describe('HierarchicalVariablesList',function(){
 
     function buildSut() {
         angular.mock.inject(function(HierarchicalVariablesList) {
-            hv = mockHierarchicalVariables.getHierarchicalVariablesObj(undefined, [variablesFixture], orderFixture)
+            hv = mockHierarchicalVariables.getHierarchicalVariablesObj(undefined
+                , [_.cloneDeep(variablesFixture)]
+                , orderFixture)
 
             sut = HierarchicalVariablesList.create({
                 hierarchicalVariables : hv
@@ -59,7 +62,7 @@ describe('HierarchicalVariablesList',function(){
         beforeEach(buildSut)
         beforeEach(function() {
             var newOrder = mockHierarchicalVariables.getHierarchicalVariablesObj(undefined
-                , [variablesFixture]
+                , [_.cloneDeep(variablesFixture)]
                 , orderFixture2)
 
 
@@ -86,7 +89,7 @@ describe('HierarchicalVariablesList',function(){
         beforeEach(buildSut)
         beforeEach(function() {
             var newOrder = mockHierarchicalVariables.getHierarchicalVariablesObj(undefined
-                , [variablesFixture]
+                , [_.cloneDeep(variablesFixture)]
                 , orderFixture2)
             ;
 

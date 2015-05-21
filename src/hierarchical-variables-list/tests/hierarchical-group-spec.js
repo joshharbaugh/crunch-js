@@ -9,6 +9,7 @@ var mocks = require('angular-mocks')
         variables: require('../../hierarchical-variables/tests/variables')
         ,hierarchicalUngrouped : require('../../hierarchical-variables/tests/hierarchical-ungrouped')
     }
+    , _ = require('lodash')
     ;
 
 describe('HierarchicalGroup', function() {
@@ -32,7 +33,7 @@ describe('HierarchicalGroup', function() {
         angular.mock.inject(function(HierarchicalGroup, hierarchicalBehaviors) {
             var hv = mockHierarchicalVariables.getHierarchicalVariablesObj(
                 undefined
-                , fixtures.variables
+                , _.cloneDeep(fixtures.variables)
                 , fixtures.hierarchicalUngrouped
             )
 

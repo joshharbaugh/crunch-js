@@ -52,6 +52,14 @@ describe('HierarchicalVariables',function(){
         return sut
     }
 
+    function variablesFixture() {
+        return _.cloneDeep(fixtures.variables)
+    }
+
+    function subordinateVariablesFixture() {
+        return _.cloneDeep(fixtures.subordinateVariables)
+    }
+
     function fakeUniqueId() {
         angular.mock.inject(function(lodash) {
             lodash._uniqueId = lodash.uniqueId
@@ -73,7 +81,7 @@ describe('HierarchicalVariables',function(){
 
         beforeEach(buildModule)
         beforeEach(function() {
-            sut = buildSut([fixtures.variables, fixtures.subordinateVariables]
+            sut = buildSut([variablesFixture(), fixtures.subordinateVariables]
                     , _.clone(fixtures.hierarchicalGrouped, true))
         })
 
@@ -88,7 +96,7 @@ describe('HierarchicalVariables',function(){
 
         beforeEach(buildModule)
         beforeEach(function(){
-            sut = buildSut([fixtures.variables], _.clone(fixtures.hierarchicalGrouped, true))
+            sut = buildSut([variablesFixture()], _.clone(fixtures.hierarchicalGrouped, true))
         })
 
         it('should expose relevant order url',function(){
@@ -126,7 +134,7 @@ describe('HierarchicalVariables',function(){
 
         beforeEach(buildModule)
         beforeEach(function() {
-            sut = buildSut([fixtures.variables], _.clone(fixtures.hierarchicalUngrouped, true))
+            sut = buildSut([variablesFixture()], _.clone(fixtures.hierarchicalUngrouped, true))
         })
 
         it('should add all ungrouped variables to the graph group',function(){
@@ -149,7 +157,7 @@ describe('HierarchicalVariables',function(){
 
         beforeEach(buildModule)
         beforeEach(function() {
-            sut = buildSut([fixtures.variables], _.clone(fixtures.hierarchicalNestedGroups, true))
+            sut = buildSut([variablesFixture()], _.clone(fixtures.hierarchicalNestedGroups, true))
         })
 
         it('should expose nested groups', function() {
@@ -203,7 +211,7 @@ describe('HierarchicalVariables',function(){
             beforeEach(buildModule)
             beforeEach(fakeUniqueId)
             beforeEach(function() {
-                sut = buildSut([fixtures.variables], _.clone(fixtures.hierarchicalNestedGroups, true))
+                sut = buildSut([variablesFixture()], _.clone(fixtures.hierarchicalNestedGroups, true))
             })
             afterEach(restoreUniqueId)
 
@@ -221,7 +229,7 @@ describe('HierarchicalVariables',function(){
             beforeEach(buildModule)
             beforeEach(fakeUniqueId)
             beforeEach(function() {
-                sut = buildSut([fixtures.variables], _.clone(fixtures.hierarchicalNestedGroups, true))
+                sut = buildSut([variablesFixture()], _.clone(fixtures.hierarchicalNestedGroups, true))
             })
             afterEach(restoreUniqueId)
 
@@ -237,7 +245,7 @@ describe('HierarchicalVariables',function(){
 
         beforeEach(buildModule)
         beforeEach(function() {
-            sut = buildSut([fixtures.variables], _.clone(fixtures.hierarchicalGrouped, true))
+            sut = buildSut([variablesFixture()], _.clone(fixtures.hierarchicalGrouped, true))
         })
 
         it('should return the first item that matches the given name', function() {
@@ -251,7 +259,7 @@ describe('HierarchicalVariables',function(){
 
         beforeEach(buildModule)
         beforeEach(function() {
-            sut = buildSut([fixtures.variables], _.clone(fixtures.hierarchicalNestedGroups, true))
+            sut = buildSut([variablesFixture()], _.clone(fixtures.hierarchicalNestedGroups, true))
         })
 
         it('should return a variable type item', function() {
@@ -271,7 +279,7 @@ describe('HierarchicalVariables',function(){
             var orderWithoutWeight = _.clone(fixtures.hierarchicalGrouped, true)
             var o = orderWithoutWeight.graph[0].aaa
             orderWithoutWeight.graph[0].aaa = o.splice(o.indexOf('../weight/'), 1)
-            sut = buildSut([fixtures.variables, fixtures.subordinateVariables], orderWithoutWeight)
+            sut = buildSut([variablesFixture(), fixtures.subordinateVariables], orderWithoutWeight)
         })
 
         it('should be undefined in byId', function() {
@@ -291,7 +299,7 @@ describe('HierarchicalVariables',function(){
             ;
 
             // remove the weight from the order
-            sut = buildSut([fixtures.variables], _.clone(fixtures.hierarchicalGroupedSmall, true))
+            sut = buildSut([variablesFixture()], _.clone(fixtures.hierarchicalGroupedSmall, true))
         })
 
         it('should generate a valid structure with abs urls', function() {
