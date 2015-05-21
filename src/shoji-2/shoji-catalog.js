@@ -27,6 +27,10 @@ function ShojiCatalogFactory(_, url, ShojiObject, $q) {
         return this[id]
     }
 
+    CatalogIndex.prototype.first = function() {
+        return _.first(this.values)
+    }
+
     CatalogIndex.prototype.toObject = function() {
         return this
     }

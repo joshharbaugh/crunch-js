@@ -27,15 +27,15 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
 
     function processCallbacks() {
         var args = [].slice.call(arguments)
-            , success = _.isFunction(arguments[0]) ? arguments[0] : passThrough
-            , error = _.isFunction(arguments[1]) ? arguments[1] : errorPassThrough
+            , success = passThrough
+            , error = errorPassThrough
             ;
 
         args.forEach(function(arg) {
             if(_.isFunction(arg)) {
-                if(!success) {
+                if(success === passThrough) {
                     success = arg
-                } else if(success && !error) {
+                } else if(success && error === errorPassThrough) {
                     error = arg
                 }
             }
@@ -105,7 +105,7 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
         })
     }
 
-    ShojiObject.prototype.delete = function(params) {
+    ShojiObject.prototype.delete = function() {
         var obj = this
             ;
 
