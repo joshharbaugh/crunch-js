@@ -7,7 +7,7 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
         ;
 
     function toShojiObjects(urls) {
-        return Object.keys(urls).reduce(function(accum, key) {
+        return Object.keys((urls || {})).reduce(function(accum, key) {
             accum[key.replace('_url', '')] = new ShojiObject(urls[key])
             return accum
         }, {})
@@ -23,7 +23,7 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
     }
 
     function errorPassThrough(error) {
-        throw error
+        return $q.reject(error)
     }
 
     function processCallbacks() {
