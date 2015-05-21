@@ -15,6 +15,11 @@ function ShojiCatalogFactory(_, url, ShojiObject, $q) {
         }
     }
 
+    function defineFinalProp(obj, prop, value) {
+        Object.defineProperty(obj, prop, { value : value, enumerable : false })
+        return obj[prop]
+    }
+
     function CatalogIndex() {
 
     }
@@ -48,13 +53,15 @@ function ShojiCatalogFactory(_, url, ShojiObject, $q) {
 
         , keys : {
             get : function() {
-                return this._keys || (this._keys = Object.keys(this))
+                return this._keys || defineFinalProp(this, '_keys', Object.keys(this))
             }
         }
 
         , values : {
             get : function() {
-                return this._values || (this._values = this.keys.map(function(key) { return this[key] }, this))
+                return this._values || defineFinalProp(this, '_values',  this.keys.map(function(key) {
+                    return this[key]
+                }, this))
             }
         }
     })
