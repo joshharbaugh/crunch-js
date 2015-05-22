@@ -12,14 +12,17 @@ function CachedHierarchicalVariablesFactory(_, $q) {
 
     }
 
-    CachedHierarchicalVariables.prototype.executeAfterRefresh = function(fn) {
-        if(_.isFunction(fn)) {
-            if(refreshing === true) {
-                executionQueue.push(fn)
-            } else {
-                fn()
-            }
+    CachedHierarchicalVariables.prototype.executeAfterRefresh = function() {
+        var deferred = $q.defer()
+            ;
+
+        if(refreshing === true) {
+            executionQueue.push(deferred)
+        } else {
+            deferred.resolve(this.current)
         }
+
+        return deferred.promise
     }
 
     CachedHierarchicalVariables.prototype.refresh = function() {
@@ -35,8 +38,8 @@ function CachedHierarchicalVariablesFactory(_, $q) {
             , set : function(value) {
                 current = value
 
-                executionQueue.forEach(function(fn) {
-                    fn()
+                executionQueue.forEach(function(deferred) {
+                    deferred.resolve(current)
                 })
 
                 executionQueue.length = 0

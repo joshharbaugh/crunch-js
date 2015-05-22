@@ -5,6 +5,7 @@ var mocks = require('angular-mocks')
     , mockHierarchicalVariables = require('../../test-support/mock-hierarchical-variables')
     , varsFixture = require('../../hierarchical-variables/tests/variables')
     , orderFixture = require('../../hierarchical-variables/tests/hierarchical-grouped')
+    , _ = require('lodash')
     ;
 
 describe('VariableList', function() {
@@ -31,12 +32,12 @@ describe('VariableList', function() {
         var main = mainMod()
             ;
 
-        main.factory('cachedHierarchicalVariables', function($q) {
+        main.factory('cachedHierarchicalVariables', function() {
             var cached = { }
                 ;
 
             hv = mockHierarchicalVariables
-                .getHierarchicalVariablesObj(undefined, varsFixture, orderFixture)
+                .getHierarchicalVariablesObj(undefined, _.cloneDeep(varsFixture), _.cloneDeep(orderFixture))
 
             cached.current = hv
 
@@ -210,6 +211,9 @@ describe('VariableList', function() {
         beforeEach(buildModule)
         beforeEach(buildSut)
         beforeEach(function() {
+            var self = hv.byId('/economytrend').self
+                ;
+
             sut = new VariableList(datasetId)
             expectGET(hv.byId('/childrenunder18').self, {})
             sut.add('/childrenunder18')
@@ -217,7 +221,7 @@ describe('VariableList', function() {
             sut.replace(0, '/economytrend').then(function(v) {
                 variable = v
             })
-            expectGET(hv.byId('/economytrend').self, {})
+            expectGET(hv.byId('/economytrend').self, { self : self })
             flush()
         })
 
@@ -257,11 +261,15 @@ describe('VariableList', function() {
             beforeEach(buildModule)
             beforeEach(buildSut)
             beforeEach(function() {
+                var children = hv.byId('/childrenunder18')
+                    , economyTrend = hv.byId('/economytrend')
+                    ;
+
                 sut = new VariableList(datasetId)
                 sut.add(var1Id)
                 sut.add(var2Id)
-                expectGET(hv.byId('/economytrend').self, {})
-                expectGET(hv.byId('/childrenunder18').self, {})
+                expectGET(economyTrend.self, { self : economyTrend.self })
+                expectGET(children.self, { self : children.self })
                 flush()
 
                 sut.pivot(1,0)

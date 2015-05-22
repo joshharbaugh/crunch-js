@@ -1,0 +1,58 @@
+{
+  "element":"shoji:catalog",
+  "self":"/api/datasets/123/variables/",
+  "specification":"/api/specifications/variables/",
+  "description":"List of Variables of this dataset",
+  "index":{
+    "economytrend/":{
+      "name":"EconomyTrend",
+      "discarded":false,
+      "alias":"economytrend",
+      "is_subvar":null,
+      "type":"categorical",
+      "id":"economytrend",
+      "description":"Overall, do you think the economy is getting better or worse?"
+    },
+    "leadershipMatrix/":{
+      "name":"Leadership array",
+      "subvariables":[
+        "leadershipclinton/",
+        "leadershipbiden/",
+        "leadershipobama/"
+      ],
+      "discarded":false,
+      "alias":"leadershipMatrix",
+      "is_subvar":null,
+      "type":"categorical_array",
+      "id":"leadershipMatrix",
+      "description":"Testing"
+    },
+    "childrenunder18/":{
+      "name":"ChildrenUnder18",
+      "discarded":false,
+      "alias":"childrenunder18",
+      "is_subvar":null,
+      "type":"categorical",
+      "id":"childrenunder18",
+      "description":"Are you the parent or guardian of any children under the age of 18?"
+    },
+    "bornagain/":{
+      "name":"BornAgain",
+      "discarded":false,
+      "alias":"bornagain",
+      "is_subvar":null,
+      "type":"categorical",
+      "id":"bornagain",
+      "description":"Would you describe yourself as a \"born-again\" or evangelical Christian, or not?"
+    }
+  },
+  "views":{
+    "hierarchical_order":"/api/datasets/123/variables/hierarchical/"
+  },
+  "orders":{
+    "hier":"/api/datasets/123/variables/hier"
+  },
+  "catalogs":{
+    "private":"/api/datasets/123/variables/private"
+  }
+}
