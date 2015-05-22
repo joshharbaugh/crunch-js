@@ -86,6 +86,7 @@
   "globals"       : {
     "angular" : true,
     "inject" : true,
-    "expect" : true
+    "expect" : true,
+    "context" : true
   }        // additional predefined global variables
 }

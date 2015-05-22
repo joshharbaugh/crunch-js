@@ -5,6 +5,7 @@ var mocks = require('angular-mocks')
     , mockHierarchicalVariables = require('../../test-support/mock-hierarchical-variables')
     , varsFixture = require('../../hierarchical-variables/tests/variables')
     , orderFixture = require('../../hierarchical-variables/tests/hierarchical-grouped')
+    , _ = require('lodash')
     ;
 
 describe('MeasureList', function() {
@@ -25,11 +26,11 @@ describe('MeasureList', function() {
         var main = mainMod()
             ;
 
-        main.factory('cachedHierarchicalVariables', function($q) {
+        main.factory('cachedHierarchicalVariables', function() {
             var cached = { }
                 ;
             hv = mockHierarchicalVariables
-            .getHierarchicalVariablesObj(undefined, varsFixture, orderFixture)
+            .getHierarchicalVariablesObj(undefined, _.cloneDeep(varsFixture), orderFixture)
 
             cached.current = hv
 

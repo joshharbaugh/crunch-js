@@ -1,33 +1,32 @@
-'use strict';
-/** @module shoji
- * @desc Exposes the shoji client.  For details on the shoji JSON spec, please visit [here](http://aminusfu.com/shoji)
- * */
-module.exports = function buildModule(moduleName, cfg) {
+'use strict'
+
+module.exports = buildModule
+
+function buildModule(name) {
     var angular = require('angular')
-        ,_ = require('lodash');
-    moduleName = moduleName || 'shoji';
-    var defaults = {
-         offline: false
-    };
-    cfg = _.extend({}, defaults, cfg);
-    var shoji = angular.module(moduleName, []);
-    shoji.constant('SHOJI_CFG', cfg);
-    shoji.factory('lodash', function() {
-        return _
+        , mod = angular.module((name || 'shoji'), [])
+        ;
+
+    mod.factory('Shoji', require('./shoji'))
+    mod.factory('ShojiObject', require('./shoji-object'))
+    mod.factory('ShojiEntity', require('./shoji-entity'))
+    mod.factory('ShojiCatalog', require('./shoji-catalog'))
+    mod.factory('ShojiView', require('./shoji-view'))
+    mod.factory('ShojiOrder', require('./shoji-order'))
+    mod.factory('shojiDataOperations', require('./shoji-data-operations'))
+    mod.factory('shojiParser', require('./shoji-parser'))
+
+    mod.factory('lodash', function() {
+        return require('lodash')
     })
-    shoji.factory('url', function() {
+
+    mod.factory('url', function() {
         return require('url')
     })
 
-    shoji.provider('shojiDataStrategy', require( './shoji-http-data-strategy'));
-    shoji.factory('Shoji', require('./shoji-resource-factory'));
-    shoji.factory('shojiParser', require('./shoji-parser'));
-    shoji.factory('shojiSerializer', require( './shoji-serializer'));
-    shoji.factory('ShojiCollection', require( './shoji-collection-factory'));
+    mod.factory('assert', function() {
+        return console.assert.bind(console)
+    })
 
-    shoji.factory('ShojiCatalogIndex',require('./shoji-catalog-index'))
-    shoji.factory('ShojiTuple',require('./shoji-tuple'))
-
-    return shoji
-
+    return mod
 }
