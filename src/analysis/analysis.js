@@ -208,9 +208,9 @@ function AnalysisFactory(_
 
 
                     variableTypes.forEach(function(t, i){
-                        if(t === "numeric" && i==0){
+                        if(t === "numeric" && i === 0){
                             graphType = "histogram"
-                        } else if (t === "datetime" && i==1){
+                        } else if (t === "datetime" && i === 1){
                             graphType = "timeplot"
                         }
                     })
@@ -230,8 +230,8 @@ function AnalysisFactory(_
 
                     this.datasetId = params.datasetId
                     this.slideId = params.slideId
-                    this.analysis = params.analysis || undefined
-                    this.savedSettings = undefined
+                    this.analysis = params.analysis || null
+                    this.savedSettings = null
                     this.variables = new VariableList(params.datasetId)
                     this.measures = new MeasureList(params.datasetId)
 

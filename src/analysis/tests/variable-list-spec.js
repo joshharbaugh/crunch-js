@@ -69,7 +69,7 @@ describe('VariableList', function() {
         })
     }
 
-    describe('when constructing', function() {
+    context('when constructing', function() {
         var sut
             ;
 
@@ -84,9 +84,9 @@ describe('VariableList', function() {
         })
     })
 
-    describe('when adding a new variable', function() {
+    context('when adding a new variable', function() {
 
-        describe('given a variable url', function() {
+        context('given a variable url', function() {
             var sut
                 , addedVariables
                 ;
@@ -111,7 +111,7 @@ describe('VariableList', function() {
             })
         })
 
-        describe('given a list of variable urls', function() {
+        context('given a list of variable urls', function() {
             var sut
                 , addedVariables
                 ;
@@ -134,7 +134,7 @@ describe('VariableList', function() {
             })
         })
 
-        describe('given a categorical array variable', function() {
+        context('given a categorical array variable', function() {
             var sut
                 ;
 
@@ -163,7 +163,7 @@ describe('VariableList', function() {
             })
         })
 
-        describe('given a subvariable', function() {
+        context('given a subvariable', function() {
             var sut
                 ;
 
@@ -203,7 +203,7 @@ describe('VariableList', function() {
         })
     })
 
-    describe('when replacing a variable', function() {
+    context('when replacing a variable', function() {
         var sut
             , variable
             ;
@@ -231,7 +231,7 @@ describe('VariableList', function() {
         })
     })
 
-    describe('when removing a variable at a given index', function() {
+    context('when removing a variable at a given index', function() {
         var sut
             ;
 
@@ -250,9 +250,9 @@ describe('VariableList', function() {
         })
     })
 
-    describe('when pivoting', function() {
+    context('when pivoting', function() {
 
-        describe('given two variables', function() {
+        context('given two variables', function() {
             var sut
                 ,var1Id = '/api/datasets/123/variables/economytrend/'
                 ,var2Id = '/api/datasets/123/variables/childrenunder18/'
@@ -282,9 +282,9 @@ describe('VariableList', function() {
         })
     })
 
-    describe('when looking for array variables', function() {
+    context('when looking for array variables', function() {
 
-        describe('given a variable with subvariables', function() {
+        context('given a variable with subvariables', function() {
             var sut
                 ;
 

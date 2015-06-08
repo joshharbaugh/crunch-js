@@ -97,7 +97,6 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
     VariableList.prototype.add = function(items) {
          var itemList = items instanceof Array ? items : [items]
             , add = addVariable.bind(this)
-            , promise
             , currentCount = this.items.length
             , self = this
             ;
@@ -172,11 +171,11 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
 
     VariableList.prototype.remove = function(index) {
         if(!this.isEmpty() && index < this.items.length) {
-            if(this.items[index].type == 'categorical_array'){
+            if(this.items[index].type === 'categorical_array'){
                 // remove all the dims from an arrayvar
                 var variableId = this.items[index].self
                 this.items = this.items.filter(function(i){
-                    return i.self != variableId
+                    return i.self !== variableId
                 })
             } else {
                 this.items.splice(index, 1)

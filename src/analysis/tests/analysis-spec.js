@@ -1,7 +1,8 @@
 'use strict'
 
-var mocks = require('angular-mocks')
-    , mainMod = require('../index')
+require('angular-mocks')
+
+var mainMod = require('../index')
     , machinaMod = require('../../machina-angular')
     ;
 
@@ -87,9 +88,6 @@ describe('Analysis', function() {
         })
 
         describe('given an slide id', function() {
-            var triggered
-                ;
-
             beforeEach(function() {
                 sut = Sut.create({
                     datasetId : datasetId
@@ -157,7 +155,7 @@ describe('Analysis', function() {
 
     describe('when adding a variable', function() {
         var sut
-            , triggered
+            , recalculated
             ;
 
         beforeEach(buildModule)
@@ -167,7 +165,7 @@ describe('Analysis', function() {
             fakeAnalysis.variables.push('/variable/123')
             sut = Sut.create({ datasetId : datasetId })
             sut.on('analysis.loaded', function() {
-                triggered = true
+                recalculated = true
             })
             flush()
 
@@ -182,7 +180,7 @@ describe('Analysis', function() {
         })
 
         it('should recalculate the analysis data', function() {
-            triggered.should.be.true
+            expect(recalculated).to.be.true
         })
     })
 
