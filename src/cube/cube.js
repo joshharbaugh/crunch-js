@@ -3,17 +3,15 @@
 module.exports = CubeFactory
 
 CubeFactory.$inject = [
-    '$log'
-    , '$q'
+    '$q'
     , 'lodash'
     , 'dimension'
     , 'measure'
 ]
 
-function CubeFactory($log, $q, _, dimension, measure) {
+function CubeFactory($q, _, dimension, measure) {
 
-    var Cube = function(measures, meta, margins) {
-        var shape = meta.shape
+    var Cube = function(measures, meta) {
         var validShape = meta.validShape
 
         this.dimension = validShape.length
@@ -24,9 +22,43 @@ function CubeFactory($log, $q, _, dimension, measure) {
         this.nMissing = meta.nMissing
         this.weightId = meta.weightId
         this.appliedFilters = _.cloneDeep(meta.appliedFilters)
+
         _.extend(this, measures)
 
         return this
+    }
+
+    Cube.prototype.getSliceFromMeasure = function(measureName, index) {
+        var slices
+            , slice
+            , measures = {}
+            ;
+
+        if(!(measureName in this)) {
+            throw new Error('this cube does not contain the measure specified')
+        }
+
+        slices = this[measureName].slices
+
+        if(index >= slices.length || index < 0) {
+            throw new Error('Invalid slice index')
+        }
+
+        slice = slices[index]
+        measures[measureName] = slice
+
+        return new Cube(
+            measures
+            , {
+                validShape : slice.validShape
+                , n : this.n
+                , dimensions : slice.dimensions
+                , query : this.query
+                , nMissing : this.nMissing
+                , weightId : this.weightId
+                , appliedFilters : this.appliedFilters
+            }
+        )
     }
 
     Object.defineProperties(Cube.prototype, {
