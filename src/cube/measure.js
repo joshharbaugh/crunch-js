@@ -72,7 +72,7 @@ function MeasureFactory(_, ndarray, scratch, unpack) {
     Object.defineProperties(Measure.prototype, {
         validShape : {
             get : function() {
-                this.dimensions.map(function(d) {
+                return this.dimensions.map(function(d) {
                     return d.validLength
                 })
             }
@@ -105,7 +105,7 @@ function MeasureFactory(_, ndarray, scratch, unpack) {
                     , rawData = this.rawData
                     ;
 
-                return this.slices || (this.slices = _.range(0, slicedLength).map(function(sliceIndex) {
+                return this._slices || (this._slices = _.range(0, slicedLength).map(function(sliceIndex) {
                     slicedDimension
                     unpack
                     var rawSlice = scratch.clone(rawData.lo(sliceIndex).hi(1).pick(0))
