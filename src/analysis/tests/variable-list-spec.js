@@ -122,8 +122,10 @@ describe('VariableList', function() {
                 sut = new VariableList(datasetId)
                 expectGET(hv.byId('/childrenunder18').self, {})
                 expectGET(hv.byId('/economytrend').self, {})
+                expectGET(hv.byId('/warcrime').self, {})
 
-                sut.add(['/childrenunder18', '/economytrend']).then(function(variables) {
+
+                sut.add(['/childrenunder18', '/economytrend', '/warcrime']).then(function(variables) {
                     addedVariables = variables
                 })
                 flush()
