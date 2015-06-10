@@ -9,51 +9,47 @@ VariableListFactory.$inject = [
 ]
 
 function VariableListFactory(_, $q, cachedHierarchicalVariables) {
-    var addStrategies = {
-        'categorical_array' : function(varInfo, items) {
+
+    var transformStrategies = {
+        categoricalArray : function(varInfo) {
             var columnVar = varInfo.clone()
                 ;
 
             varInfo.dimension = "each"
             columnVar.dimension = "variable"
-            items.push(varInfo, columnVar)
 
-            return items
+            return [varInfo, columnVar]
         }
 
-        , default : function(varInfo, items) {
+        , savedVariable : function(variableInfo, dimensionInfo) {
+            var clone = variableInfo.clone()
+                ;
+
+            clone.dimension = dimensionInfo.dimension
+
+            return [clone]
+        }
+
+        , default : function(varInfo) {
             varInfo.dimension = "variable"
-            items.push(varInfo)
-            return items
+            return [varInfo]
+        }
+
+        , executeStrategy : function(variableId, variableInfo) {
+            if(typeof variableId === 'object') {
+                return this.savedVariable(variableInfo, variableId)
+            } else if(variableInfo.type === 'categorical_array') {
+                return this.categoricalArray(variableInfo)
+            } else {
+                return this.default(variableInfo)
+            }
         }
     }
 
     function addVariable(variable) {
-        var strategy
-            , self = this
-            , promise
-            ;
-
-        if (typeof variable === 'object') { // if in a saved analysis
-            promise = getVariableInfo(variable.self).then(function(varInfo) {
-                var clone = varInfo.clone()
-                    ;
-
-                clone.dimension = variable.dimension
-                self.items = self.items.concat([clone])
-
-                return clone
-            })
-        } else {
-            promise = getVariableInfo(variable).then(function(varInfo) {
-                strategy = addStrategies[varInfo.type] || addStrategies.default
-                self.items = strategy(varInfo, self.items)
-                return varInfo
-            })
-
-        }
-
-        return promise
+        return getVariableInfo((variable.self || variable)).then(function(varInfo) {
+            return transformStrategies.executeStrategy(variable, varInfo)
+        })
     }
 
     function getVariableInfo(variableId) {
@@ -96,7 +92,6 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
 
     VariableList.prototype.add = function(items) {
          var itemList = items instanceof Array ? items : [items]
-            , add = addVariable.bind(this)
             , currentCount = this.items.length
             , self = this
             ;
@@ -107,7 +102,10 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
                 ;
 
             if(item) {
-                p = add(item).then(request)
+                p = addVariable(item).then(function(items) {
+                    self.items = self.items.concat(items)
+                    return request()
+                })
             } else {
                 p = $q.when(self.items.slice(currentCount))
             }
@@ -118,23 +116,40 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
         return request()
     }
 
-    VariableList.prototype.replace = function(index, variableId) {
-         var items = this.items
+    VariableList.prototype.insertBefore = function(index, variableId) {
+        var self = this
             , promise
-            , strategy
             ;
 
-        if(items.length <= index) {
-            promise = addVariable.call(this, variableId)
+        index = index < 0 ? 0 : index
+
+        if(index >= self.items.length) {
+            promise = this.add(variableId)
         } else {
-            promise = getVariableInfo(variableId).then(function(varInfo) {
-                strategy = addStrategies[varInfo.type] || addStrategies.default
-                items[index] = strategy(varInfo, [])[0]
-                return varInfo
+            promise = addVariable(variableId).then(function(newItems) {
+                self.items.splice.apply(self.items, [index, 0].concat(newItems))
             })
         }
 
         return promise
+    }
+
+    VariableList.prototype.replace = function(index, variableId) {
+         var self = this
+            ;
+
+        return addVariable(variableId).then(function(newItems) {
+            var items = self.items
+                ;
+
+            if(index >= items.length) {
+                self.items = items.concat(newItems)
+            } else {
+                items.splice.apply(items, [index, 1].concat(newItems))
+            }
+
+            return items[index]
+        })
     }
 
     VariableList.prototype.pivot = function() {

@@ -216,20 +216,48 @@ describe('VariableList', function() {
             var self = hv.byId('/economytrend').self
                 ;
 
-            sut = new VariableList(datasetId)
             expectGET(hv.byId('/childrenunder18').self, {})
+            sut = new VariableList(datasetId)
             sut.add('/childrenunder18')
             flush()
+
+            expectGET(hv.byId('/economytrend').self, { self : self })
             sut.replace(0, '/economytrend').then(function(v) {
                 variable = v
             })
-            expectGET(hv.byId('/economytrend').self, { self : self })
             flush()
         })
 
         it('should replace the variable info at the given index with the new variable', function() {
             sut.items[0].self.should.be.equal('/api/datasets/123/variables/economytrend/')
             expect(variable).to.equal(sut.items[0])
+        })
+    })
+
+    context('when inserting a variable before another variable', function() {
+        var sut
+            , variable
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(buildSut)
+        beforeEach(function() {
+            var self = hv.byId('/economytrend').self
+                ;
+
+            expectGET(hv.byId('/childrenunder18').self, {})
+            sut = new VariableList(datasetId)
+            sut.add('/childrenunder18')
+            flush()
+
+            expectGET(hv.byId('/economytrend').self, { self : self })
+            sut.insertBefore(0, '/economytrend')
+            flush()
+        })
+
+        it('should add the item at the specified item and move existing items one position', function() {
+            expect(sut.items[0].id).to.be.equal('economytrend')
+            expect(sut.items[1].id).to.be.equal('childrenunder18')
         })
     })
 

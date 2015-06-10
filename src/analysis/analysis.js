@@ -60,14 +60,19 @@ function AnalysisFactory(_
         }
 
         , 'replace-variable' : function(index, variableId) {
-            this.variables.replace(index, variableId)
-            .then(function() {
-                this.recalculate()
-            }.bind(this))
+            this.variables
+                .replace(index, variableId)
+                .then(this.recalculate.bind(this))
         }
 
-        , pivot : function(idx1, idx2) {
-            this.variables.pivot(idx1, idx2)
+        , 'insert-before' : function(index, variableId) {
+            this.variables
+                .insertBefore(index, variableId)
+                .then(this.recalculate.bind(this))
+        }
+
+        , pivot : function() {
+            this.variables.pivot()
             this.recalculate()
         }
 
@@ -217,6 +222,12 @@ function AnalysisFactory(_
                 }
 
                 return graphType
+            }
+        }
+
+        , dimension : {
+            get : function() {
+                return this.data && this.data.cube.dimension
             }
         }
     })
