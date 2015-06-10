@@ -254,10 +254,11 @@ describe('VariableList', function() {
 
     context('when pivoting', function() {
 
-        context('given two variables', function() {
+        context('given three variables', function() {
             var sut
-                ,var1Id = '/api/datasets/123/variables/economytrend/'
-                ,var2Id = '/api/datasets/123/variables/childrenunder18/'
+                ,var1Id = 'economytrend'
+                ,var2Id = 'childrenunder18'
+                ,var3Id = 'worryaboutmortgage'
                 ;
 
             beforeEach(buildModule)
@@ -265,21 +266,26 @@ describe('VariableList', function() {
             beforeEach(function() {
                 var children = hv.byId('/childrenunder18')
                     , economyTrend = hv.byId('/economytrend')
+                    , worryAboutMortage = hv.byId('/worryaboutmortgage')
                     ;
 
                 sut = new VariableList(datasetId)
                 sut.add(var1Id)
                 sut.add(var2Id)
+                sut.add(var3Id)
                 expectGET(economyTrend.self, { self : economyTrend.self })
                 expectGET(children.self, { self : children.self })
-                flush()
+                expectGET(worryAboutMortage.self, { self : worryAboutMortage.self })
 
-                sut.pivot(1,0)
+                flush()
+                sut.pivot()
             })
 
-            it('should swap variables in index 0 and 1', function() {
-                sut.items[1].self.should.be.equal(var1Id)
-                sut.items[0].self.should.be.equal(var2Id)
+            it('should move variables one position to the right and put the last item on the first index', function() {
+                sut.items[0].id.should.be.equal(var3Id)
+                sut.items[1].id.should.be.equal(var1Id)
+                sut.items[2].id.should.be.equal(var2Id)
+
             })
         })
     })

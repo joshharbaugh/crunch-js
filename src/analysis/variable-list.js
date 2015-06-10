@@ -137,18 +137,19 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
         return promise
     }
 
-    VariableList.prototype.pivot = function(idx1, idx2) {
+    VariableList.prototype.pivot = function() {
         var items = this.items
-            , variable1 = items[idx1]
-            , variable2 = items[idx2]
+            , pivotted = []
             ;
 
-        if(!_.isObject(variable1) || !_.isObject(variable2)) {
-            throw new Error('Some of the specified variables does not exist')
-        }
+        items.forEach(function(item, index) {
+            var next = (index >= items.length - 1) ? 0 : index + 1
+                ;
 
-        items[idx1] = variable2
-        items[idx2] = variable1
+            pivotted[next] = item
+        })
+
+        this.items = pivotted
     }
 
     VariableList.prototype.hasArrays = function() {
