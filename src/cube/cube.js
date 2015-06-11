@@ -28,31 +28,35 @@ function CubeFactory($q, _, dimension, measure) {
         return this
     }
 
-    Cube.prototype.getSliceFromMeasure = function(measureName, index) {
-        var slices
-            , slice
+    Cube.prototype.getSliceAtIndex = function(index) {
+        var firstSlice
             , measures = {}
+            , measureTypes = ['count', 'mean']
+            , self = this
             ;
 
-        if(!(measureName in this)) {
-            throw new Error('this cube does not contain the measure specified')
-        }
+        measureTypes.forEach(function(measure) {
+            var slices
+                ;
 
-        slices = this[measureName].slices
+            if(measure in self) {
+                slices = self[measure].slices
 
-        if(index >= slices.length || index < 0) {
-            throw new Error('Invalid slice index')
-        }
+                if(index >= slices.length || index < 0) {
+                    throw new Error('Invalid slice index')
+                }
 
-        slice = slices[index]
-        measures[measureName] = slice
+                measures[measure] = slices[index]
+                firstSlice = slices[index]
+            }
+        })
 
         return new Cube(
             measures
             , {
-                validShape : slice.validShape
+                validShape : firstSlice.validShape
                 , n : this.n
-                , dimensions : slice.dimensions
+                , dimensions : firstSlice.dimensions
                 , query : this.query
                 , nMissing : this.nMissing
                 , weightId : this.weightId
