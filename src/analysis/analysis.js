@@ -48,14 +48,16 @@ function AnalysisFactory(_
             this.transition('empty')
         }
 
-        , 'remove-variable' : function(i) {
+        , 'remove-variable' : function(i, avoidRecalculate) {
             this.variables.remove(_.isString(i) ? this.variables.indexOf(i) : i)
 
             if(this.variables.isEmpty()) {
                 delete this.data
                 this.transition('empty')
             } else {
-                this.recalculate()
+                if(!avoidRecalculate) {
+                    this.recalculate()
+                }
             }
         }
 
