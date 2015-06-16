@@ -247,6 +247,26 @@ function AnalysisFactory(_
             }
         }
 
+        , scalarVariable : {
+            get : function() {
+                var scalarFound = null
+                    ;
+
+                this.variables.items.some(function(v) {
+                    var scalar = v.type !== 'categorical_array'
+                        ;
+
+                    if(scalar) {
+                        scalarFound = v
+                    }
+
+                    return scalar
+                })
+
+                return scalarFound
+            }
+        }
+
         , dimension : {
             get : function() {
                 return this.data && this.data.cube.dimension
