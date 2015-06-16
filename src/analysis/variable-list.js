@@ -84,6 +84,25 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
     VariableList.prototype.at = function(idx) {
         return this.items[idx]
     }
+
+    VariableList.prototype.indexOf = function(variableId) {
+        var index = -1
+            ;
+
+        this.items.some(function(item, i) {
+            var found = item.self === variableId
+                ;
+
+            if(found) {
+                index = i
+            }
+
+            return found
+        })
+
+        return index
+    }
+
     VariableList.prototype.getTypes = function(){
         return this.items.map(function(each){
             return each.type
@@ -119,17 +138,14 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
     VariableList.prototype.insertBefore = function(index, variableId) {
         var self = this
             , promise
+            , indexes = _.isArray(index) ? index : [index]
             ;
 
-        index = index < 0 ? 0 : index
-
-        if(index >= self.items.length) {
-            promise = this.add(variableId)
-        } else {
-            promise = addVariable(variableId).then(function(newItems) {
-                self.items.splice.apply(self.items, [index, 0].concat(newItems))
+        promise = addVariable(variableId).then(function(newItems) {
+            indexes.forEach(function(index, i) {
+                self.items.splice.apply(self.items, [index, 0].concat(newItems[i]))
             })
-        }
+        })
 
         return promise
     }

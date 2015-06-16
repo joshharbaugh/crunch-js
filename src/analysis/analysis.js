@@ -49,7 +49,7 @@ function AnalysisFactory(_
         }
 
         , 'remove-variable' : function(i) {
-            this.variables.remove(i)
+            this.variables.remove(_.isString(i) ? this.variables.indexOf(i) : i)
 
             if(this.variables.isEmpty()) {
                 delete this.data
@@ -222,6 +222,26 @@ function AnalysisFactory(_
                 }
 
                 return graphType
+            }
+        }
+
+        , categoricalArray : {
+            get : function() {
+                var catArray = null
+                    ;
+
+                this.variables.items.some(function(v) {
+                    var array = v.type === 'categorical_array'
+                        ;
+
+                    if(array) {
+                        catArray = v
+                    }
+
+                    return array
+                })
+
+                return catArray
             }
         }
 

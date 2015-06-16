@@ -9,6 +9,7 @@ var mainMod = require('../index')
 describe('Analysis', function() {
     var Sut
         , fakeAnalysis
+        , fakeHierarchicalVariables
         , datasetId = '/datasets/123'
         ;
 
@@ -37,19 +38,28 @@ describe('Analysis', function() {
         })
 
         main.factory('cachedHierarchicalVariables', function($q) {
-            return {
+            return (fakeHierarchicalVariables = {
                 current : {
-                    byId : function(id) {
+                    defaultType : 'categorical'
+                    , byId : function(id) {
                         return {
                             self : id
                             , contains : angular.noop
+                            , type : this.defaultType
+                            , clone : function() {
+                                return this
+                            }
                             , map : function() {
                                 return $q.when(this)
                             }
                         }
                     }
+
+                    , setVariableType : function(type) {
+                        this.defaultType = type
+                    }
                 }
-            }
+            })
         })
 
         angular.mock.module(main.name, machina.name)
@@ -69,14 +79,14 @@ describe('Analysis', function() {
         })
     }
 
-    describe('when initializing', function() {
+    context('when initializing', function() {
         var sut
             ;
 
         beforeEach(buildModule)
         beforeEach(buildSut)
 
-        describe('given no parameters', function() {
+        context('given no parameters', function() {
             beforeEach(function() {
                 sut = Sut.create({ datasetId : datasetId })
                 flush()
@@ -87,7 +97,7 @@ describe('Analysis', function() {
             })
         })
 
-        describe('given an slide id', function() {
+        context('given an slide id', function() {
             beforeEach(function() {
                 sut = Sut.create({
                     datasetId : datasetId
@@ -106,7 +116,7 @@ describe('Analysis', function() {
         })
     })
 
-    describe('when loading a saved analysis', function() {
+    context('when loading a saved analysis', function() {
         var sut
             , triggered
             , changedTriggered
@@ -153,7 +163,7 @@ describe('Analysis', function() {
         })
     })
 
-    describe('when adding a variable', function() {
+    context('when adding a variable', function() {
         var sut
             , recalculated
             ;
@@ -184,11 +194,11 @@ describe('Analysis', function() {
         })
     })
 
-    describe('when replacing a variable', function() {
+    context('when replacing a variable', function() {
         var sut
             ;
 
-        describe('given an analysis variable in the given index', function() {
+        context('given an analysis variable in the given index', function() {
             beforeEach(buildModule)
             beforeEach(buildSut)
             beforeEach(function() {
@@ -207,11 +217,11 @@ describe('Analysis', function() {
         })
     })
 
-    describe('when cleaning', function() {
+    context('when cleaning', function() {
         var sut
             ;
 
-        describe('given an analysis with two variables', function() {
+        context('given an analysis with two variables', function() {
             beforeEach(buildModule)
             beforeEach(buildSut)
             beforeEach(function() {
@@ -239,11 +249,11 @@ describe('Analysis', function() {
         })
     })
 
-    describe('when removing a variable in the given index', function() {
+    context('when removing a variable in the given index', function() {
         var sut
             ;
 
-        describe('given an analysis with two variables', function() {
+        context('given an analysis with two variables', function() {
             beforeEach(buildModule)
             beforeEach(buildSut)
             beforeEach(function() {
@@ -263,7 +273,7 @@ describe('Analysis', function() {
             })
         })
 
-        describe('given an analysis with one variable', function() {
+        context('given an analysis with one variable', function() {
             beforeEach(buildModule)
             beforeEach(buildSut)
             beforeEach(function() {
@@ -287,7 +297,7 @@ describe('Analysis', function() {
         })
     })
 
-    describe('when analysis calculation fails', function() {
+    context('when analysis calculation fails', function() {
         var sut
             , triggered
             ;
@@ -319,5 +329,24 @@ describe('Analysis', function() {
         it('should trigger analysis.error event', function() {
             triggered.should.be.true
         })
+    })
+
+    describe('categoricalArray property', function() {
+        var sut
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(buildSut)
+        beforeEach(function() {
+            sut = Sut.create({ datasetId : datasetId })
+            fakeHierarchicalVariables.current.setVariableType('categorical_array')
+            sut.handle('add-variable', '/var/123')
+            flush()
+        })
+
+        it('should return a categorical array contained in the variable list', function() {
+            expect(sut.categoricalArray.self).to.equal('/var/123')
+        })
+
     })
 })
