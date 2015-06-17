@@ -272,6 +272,12 @@ function AnalysisFactory(_
                 return this.data && this.data.cube.dimension
             }
         }
+
+        , variablesCount : {
+            get : function() {
+                return this.variables.count()
+            }
+        }
     })
 
     var SavedAnalysis = Analysis.extend({
