@@ -39,10 +39,23 @@ function IBuildHierarchicalOrderFactory(HierarchicalOrder
             var simple = typeof itemData === 'string'
                 , create = simple ? createVariable : createGroup
                 , item = create(itemData, parent)
+                , previousItems
                 ;
 
             flattened[numericIndex] = item
-            orderedIndex.set(item.id, numericIndex)
+
+            if(orderedIndex.has(item.id)) {
+                previousItems = orderedIndex.get(item.id)
+                //save different indexes for the same id in a map
+                previousItems = typeof previousItems === 'number' ?
+                    { 'main' : previousItems } :
+                    previousItems
+                previousItems[item.subordinateDataset] = numericIndex
+                orderedIndex.set(item.id, previousItems)
+            } else {
+                orderedIndex.set(item.id, numericIndex)
+            }
+
             parent.addItem(item)
 
             if(simple) {
@@ -61,6 +74,11 @@ function IBuildHierarchicalOrderFactory(HierarchicalOrder
             var varb = variables.getVariable(url)
                 , variable
                 ;
+
+            //Case where two variables in the hierarchy have the same id
+            if(orderedIndex.has(varb.id)) {
+                varb = variables.getVariable(url, true)
+            }
 
             if(!varb && privateVariables) {
                 varb = privateVariables.getVariable(url)

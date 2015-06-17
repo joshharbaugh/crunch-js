@@ -10,7 +10,7 @@
          "alias":"economytrend",
          "is_subvar":null,
          "type":"categorical",
-         "id":"ed9d9c8079314b4d8c10486b947fb81c",
+         "id":"economytrend",
          "description":"Overall, do you think the economy is getting better or worse?"
       }
    },

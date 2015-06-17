@@ -16,6 +16,7 @@ var mainModule = require('../index')
         ,emptyJoins: require('./empty-joins')
         ,joins: require('./joins')
         ,hierarchicalSubordinate : require('./hierarchical-subordinate')
+        ,hierarchicalSubordinateDuplicateIds : require('./hierarchical-subordinate-duplicate-ids')
         ,subordinateVariables : require('./subordinate-variables')
     }
     ;
@@ -116,7 +117,7 @@ describe('HierarchicalVariables',function(){
             var flattened = sut.flatten()
             //only count variables
             var all = fixtures.hierarchicalGrouped.graph
-            flattened.length.should.equal(all.length + all[0]['aaa'].length)
+            flattened.length.should.equal(all.length + all[0].aaa.length)
             flattened[1].parent.name.should.equal('aaa')
             flattened[1].alias.should.equal('percentskipped')
             flattened[2].parent.name.should.equal('aaa')
@@ -272,9 +273,7 @@ describe('HierarchicalVariables',function(){
         ;
 
         beforeEach(function() {
-            var module = buildModule()
-            ;
-
+            buildModule()
             // remove the weight from the order
             var orderWithoutWeight = _.clone(fixtures.hierarchicalGrouped, true)
             var o = orderWithoutWeight.graph[0].aaa
@@ -295,9 +294,7 @@ describe('HierarchicalVariables',function(){
             ;
 
         beforeEach(function() {
-            var module = buildModule()
-            ;
-
+            buildModule()
             // remove the weight from the order
             sut = buildSut([variablesFixture()], _.clone(fixtures.hierarchicalGroupedSmall, true))
         })
@@ -310,6 +307,24 @@ describe('HierarchicalVariables',function(){
             expect(serialized.graph[0].aaa.length)
             .to.equal(fixtures.hierarchicalGroupedSmall.graph[0].aaa.length)
             expect(typeof serialized.graph[1]).to.equal('string')
+        })
+    })
+
+    describe('when variables in a main and subordinate datasets have the same id', function() {
+        var sut
+            ;
+
+        beforeEach(function() {
+            buildModule()
+            sut = buildSut([
+                variablesFixture()
+                , subordinateVariablesFixture()
+            ], _.clone(fixtures.hierarchicalSubordinateDuplicateIds, true))
+        })
+
+        it('should distinguish between variables in different datasets', function() {
+            expect(sut.byId('/joins/456/variables/economytrend/').subordinate).to.be.true
+            expect(sut.byId('/joins/456/variables/economytrend/').subordinateDataset).to.equal('456')
         })
     })
 })

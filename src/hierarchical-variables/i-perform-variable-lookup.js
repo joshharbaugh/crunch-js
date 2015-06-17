@@ -10,6 +10,12 @@ function IPerformVariableLookupFactory(iGetVariableHash) {
 
     }
 
+    function subordinateDataset(varId) {
+        var subordinateRegexp = /\/joins\/(.{1,32})\/variables/gi
+
+        return subordinateRegexp.exec(varId)[1]
+    }
+
     //This one is linear so it's quite expensive
     IPerformVariableLookup.prototype.byName = function(hierarchicalOrder, itemName) {
         var itemFound
@@ -53,6 +59,10 @@ function IPerformVariableLookupFactory(iGetVariableHash) {
         } else {
             pruned = iGetVariableHash(itemId)
             index = hierarchicalOrder.orderedIndex.get(pruned.replace('/', ''))
+        }
+
+        if(typeof index === 'object') {
+            index = index[subordinateDataset(itemId)] || index.main
         }
 
         return (typeof index === 'number') ? index : -1
