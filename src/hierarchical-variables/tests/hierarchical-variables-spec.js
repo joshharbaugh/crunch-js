@@ -325,6 +325,8 @@ describe('HierarchicalVariables',function(){
         it('should distinguish between variables in different datasets', function() {
             expect(sut.byId('/joins/456/variables/economytrend/').subordinate).to.be.true
             expect(sut.byId('/joins/456/variables/economytrend/').subordinateDataset).to.equal('456')
+            expect(sut.byId('/variables/economytrend/').subordinate).to.be.false
+            expect(sut.byId('/variables/economytrend/').subordinateDataset).to.equal(null)
         })
     })
 })

@@ -55,8 +55,10 @@ function VariableFactory(_
 
     function subordinateDataset(varb) {
         var subordinateRegexp = /\/joins\/(.{1,32})\/variables/gi
+            , result
 
-        return varb.self && subordinateRegexp.exec(varb.self)[1]
+        return (varb.self && (result = subordinateRegexp.exec(varb.self)) && result[1])
+        || null
     }
 
     function Variable(data, parent) {

@@ -12,8 +12,9 @@ function IPerformVariableLookupFactory(iGetVariableHash) {
 
     function subordinateDataset(varId) {
         var subordinateRegexp = /\/joins\/(.{1,32})\/variables/gi
+            , result = subordinateRegexp.exec(varId)
 
-        return subordinateRegexp.exec(varId)[1]
+        return (result && result[1]) || null
     }
 
     //This one is linear so it's quite expensive
