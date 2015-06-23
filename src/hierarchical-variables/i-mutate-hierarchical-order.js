@@ -13,7 +13,20 @@ function IMutateHierarchicalOrderFactory(iPerformVariableLookup, iGetVariableHas
             ;
 
         flattenedIndex.forEach(function(item, index) {
-            orderIdMap.set(item.id, index)
+            var previousItems
+                ;
+
+            if(orderIdMap.has(item.id)) {
+                previousItems = orderIdMap.get(item.id)
+                //save different indexes for the same id in a map
+                previousItems = typeof previousItems === 'number' ?
+                { 'main' : previousItems } :
+                    previousItems
+                previousItems[item.subordinateDataset] = index
+                orderIdMap.set(item.id, previousItems)
+            } else {
+                orderIdMap.set(item.id, index)
+            }
 
             if(item.hierarchicalType === 'variable') {
                 item.subvariables.forEach(function(subvar) {

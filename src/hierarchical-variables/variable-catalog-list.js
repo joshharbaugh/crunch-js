@@ -2,9 +2,9 @@
 
 module.exports = VariableCatalogListFactory
 
-VariableCatalogListFactory.$inject = ['iGetVariableHash']
+VariableCatalogListFactory.$inject = ['lodash', 'iGetVariableHash']
 
-function VariableCatalogListFactory(iGetVariableHash) {
+function VariableCatalogListFactory(_, iGetVariableHash) {
 
     /**
      * Represents the set of variable catalogs that belongs
@@ -22,11 +22,12 @@ function VariableCatalogListFactory(iGetVariableHash) {
      * Look up a variable with a given url in the dataset's catalogs
      * @return {ShojiTuple} variable tuple
      */
-    VariableCatalogList.prototype.getVariable = function(url) {
-        var variableFound
+    VariableCatalogList.prototype.getVariable = function(url, subordinate) {
+        var variableFound = null
             , id = iGetVariableHash(url)
+            , catalogs = subordinate ? _.rest(this.catalogs) : this.catalogs
 
-        this.catalogs.some(function(catalog, index) {
+        catalogs.some(function(catalog) {
             if((variableFound = catalog.index[id])) {
                 return true
             }
