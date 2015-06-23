@@ -170,6 +170,11 @@ function AnalysisFactory(_
                         this.recalculate()
                     }.bind(this))
                 }
+                , 'insert-before' : function(index, variableId) {
+                    this.variables
+                        .insertBefore(index, variableId)
+                        .then(this.recalculate.bind(this))
+                }
                 ,'measures-mean': function(variableId) {
                     this.measures.add('mean', variableId).then(function() {
                         this.recalculate()
