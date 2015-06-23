@@ -347,6 +347,80 @@ describe('Analysis', function() {
         it('should return a categorical array contained in the variable list', function() {
             expect(sut.categoricalArray.self).to.equal('/var/123')
         })
+    })
 
+    describe('scalarVariable property', function() {
+        var sut
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(buildSut)
+        beforeEach(function() {
+            sut = Sut.create({ datasetId : datasetId })
+            fakeHierarchicalVariables.current.setVariableType('categorical')
+            sut.handle('add-variable', '/var/456')
+            flush()
+            fakeHierarchicalVariables.current.setVariableType('categorical_array')
+            sut.handle('add-variable', '/var/123')
+            flush()
+        })
+
+        it('should return a variable that is not an array contained in the variable list', function() {
+            expect(sut.scalarVariable.self).to.equal('/var/456')
+        })
+    })
+
+    describe('topMostVariable property', function() {
+        var sut
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(buildSut)
+        beforeEach(function() {
+            sut = Sut.create({ datasetId : datasetId })
+        })
+
+        context('given a variable list with 1 variable', function() {
+            beforeEach(function() {
+                fakeHierarchicalVariables.current.setVariableType('categorical')
+                sut.handle('add-variable', '/var/456')
+                flush()
+            })
+
+            it('should return variable at index 0', function() {
+                expect(sut.topMostVariable.self).to.equal('/var/456')
+            })
+
+        })
+
+        context('given a variable list with 2 variables', function() {
+            beforeEach(function() {
+                fakeHierarchicalVariables.current.setVariableType('numeric')
+                sut.handle('add-variable', '/var/456')
+                flush()
+                sut.handle('add-variable', '/var/123')
+                flush()
+            })
+
+            it('should return variable at index 1', function() {
+                expect(sut.topMostVariable.self).to.equal('/var/123')
+            })
+        })
+
+        context('given a variable list with 3 variables', function() {
+            beforeEach(function() {
+                fakeHierarchicalVariables.current.setVariableType('numeric')
+                sut.handle('add-variable', '/var/456')
+                flush()
+                sut.handle('add-variable', '/var/123')
+                flush()
+                sut.handle('add-variable', '/var/789')
+                flush()
+            })
+
+            it('should return variable at index 0', function() {
+                expect(sut.topMostVariable.self).to.equal('/var/456')
+            })
+        })
     })
 })

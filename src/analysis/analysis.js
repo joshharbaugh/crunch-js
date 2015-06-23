@@ -272,6 +272,27 @@ function AnalysisFactory(_
             }
         }
 
+        , topMostVariable : {
+            get : function() {
+                var varb
+                    ;
+
+                switch(this.variablesCount) {
+                    case 1:
+                    case 3:
+                        varb = this.variables.at(0)
+                        break
+                    case 2:
+                        varb = this.variables.at(1)
+                        break
+                    default:
+                        varb = null
+                }
+
+                return varb
+            }
+        }
+
         , dimension : {
             get : function() {
                 return this.data && this.data.cube.dimension
