@@ -28,6 +28,19 @@ function CubeFactory($q, _, dimension, measure) {
         return this
     }
 
+    Cube.prototype.isValidSlice = function(index) {
+        var valid = true
+            ;
+
+        try {
+            valid = this.getSliceAtIndex(index)
+        } catch(e) {
+            valid = false
+        }
+
+        return valid
+    }
+
     Cube.prototype.getSliceAtIndex = function(index) {
         var firstSlice
             , measures = {}
