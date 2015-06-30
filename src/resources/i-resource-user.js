@@ -5,9 +5,9 @@ IResourceUser.$inject = ['Shoji'];
 
 function IResourceUser(Shoji) {
     return {
-        current: function() {
+        current: function(params) {
             return Shoji.API.map(function(api) {
-                return api.urls.user.map()
+                return api.urls.user.map(params)
             })
         }
     }
