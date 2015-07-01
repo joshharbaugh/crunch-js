@@ -82,6 +82,61 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
             return out
         }
     }
+
+    function missing(cube){
+        if(cube.dimension > 2) {
+            throw new Error('Can only calculate missing for a 2d slice')
+        }
+        var data = cube.count.rawData
+        var indices = [],
+            types = [],
+            missing = 0
+        if (cube._dimensions.length === 1) {
+            indices = cube._dimensions[0].missingSubscripts
+            indices.forEach(function(i){
+                missing += data.get(i)
+            })
+            return missing
+        }
+        // on to 2d case
+        // first gather dim0 missing by dim1 missing
+        var subscripts = cube._dimensions.map(function(d, i){
+            types.push(d.type)
+            return d.missingSubscripts
+        })
+        if(_.flattenDeep(subscripts).length) {
+            indices = Cube.prod.apply(this, subscripts)
+        }
+
+        if(types.indexOf('multiresponse') > -1){
+            // then counting by missing
+            subscripts = cube._dimensions.map(function(d, i){
+                if(d.type === 'multiresponse'){
+                    return i === 0 ? d.countingSubscripts : d.missingSubscripts
+                }
+                return []
+            })
+            if(subscripts.every(function(i){ return i.length })) {
+                indices = indices.concat(Cube.prod.apply(this, subscripts))
+            }
+            // last missing by counting
+            subscripts = cube._dimensions.map(function(d, i){
+                if(d.type === 'multiresponse'){
+                    return i === 1 ? d.countingSubscripts : d.missingSubscripts
+                }
+                return []
+            })
+            if(subscripts.every(function(i){ return i.length })){
+                indices = indices.concat(Cube.prod.apply(this, subscripts))
+            }
+        }
+        indices.forEach(function(i){
+            missing += data.get.apply(data, i)
+        })
+        console.log(missing)
+        return missing
+    }
+
     function propTable(cube, axis, marginal, includeMissing){
         var includeMissing = includeMissing || false
         var table, tbl, marginal, total;
@@ -376,6 +431,7 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
     return {
         getPvalues: getPvalues
         ,margin: margin
+        ,missing: missing
         ,propTable: propTable
         ,diffTable: diffTable
         ,filterByMarginThreshold: filterByMarginThreshold
