@@ -6,6 +6,7 @@ var mocks = require('angular-mocks')
     , show = require('ndarray-show')
     , mrMissing = require('./cube-mr-x-mr')
     , mrMissingUnivariate = require('./cube-mr')
+    , arrayWithMissingCat = require('./cube-array-mis')
     ;
 
 describe('cube stats', function(){
@@ -60,6 +61,20 @@ describe('cube stats', function(){
         })
         it('mr by mr', function(){
             sut.missing(rawcube).should.equal(538211)
+        })
+    })
+    describe('missing values, array', function(){
+        beforeEach(function(){
+            inject(function(cube, stats, show){
+                cube.fromCrCube(arrayWithMissingCat.value).then(function(it){
+                    rawcube = it
+                    sut = stats
+                })
+            })
+            scope.$digest()
+        })
+        it('mr by mr', function(){
+            sut.missing(rawcube).should.equal(1)
         })
     })
     describe('margins and percentaging', function(){
@@ -251,7 +266,7 @@ describe('cube stats', function(){
             total.should.eql([[3]])
         })
         it('missing', function(){
-            sut.missing(rawcube).should.equal(0)
+            sut.missing(rawcube).should.equal(1)
         })
     })
     describe('datetime univariate -- some dataset "wave" var', function(){

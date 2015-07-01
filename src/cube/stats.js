@@ -130,6 +130,19 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
                 indices = indices.concat(Cube.prod.apply(this, subscripts))
             }
         }
+        var compositeDimension = types.indexOf('composite')
+        if(compositeDimension > -1){
+            subscripts = []
+            var offDimension = 1-compositeDimension
+            subscripts[compositeDimension] = cube._dimensions[compositeDimension].validSubscripts
+            subscripts[offDimension] = cube._dimensions[offDimension].missingSubscripts
+            indices = indices.concat(Cube.prod.apply(this, subscripts))
+            return indices.map(function(i){
+                return data.get.apply(data, i)
+            }).reduce(function(i,j){
+                return Math.max(i,j)
+            },missing)
+        }
         indices.forEach(function(i){
             missing += data.get.apply(data, i)
         })

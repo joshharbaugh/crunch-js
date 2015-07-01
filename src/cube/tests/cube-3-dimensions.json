@@ -1,5 +1,5 @@
 {
-  "self": "https://alpha.crunch.io/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/cube/?query=%7B%22dimensions%22:%5B%7B%22function%22:%22selected_array%22,%22args%22:%5B%7B%22variable%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2Fd685aef5d3df464d82c747a03ebf936f%2F%22%7D%5D%7D,%7B%22each%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2Fd685aef5d3df464d82c747a03ebf936f%2F%22%7D,%7B%22each%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2Fd154e9cf578e4c32b772fd661751f0ec%2F%22%7D,%7B%22variable%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2Fd154e9cf578e4c32b772fd661751f0ec%2F%22%7D%5D,%22measures%22:%7B%22mean%22:%7B%22function%22:%22cube_mean%22,%22args%22:%5B%7B%22variable%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2Fedc61278968c40929a65f4d0d8e616b9%2F%22%7D%5D%7D,%22count%22:%7B%22function%22:%22cube_count%22,%22args%22:%5B%5D%7D%7D%7D",
+  "self": "/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/cube/?query=%7B%22dimensions%22:%5B%7B%22function%22:%22selected_array%22,%22args%22:%5B%7B%22variable%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2Fd685aef5d3df464d82c747a03ebf936f%2F%22%7D%5D%7D,%7B%22each%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2Fd685aef5d3df464d82c747a03ebf936f%2F%22%7D,%7B%22each%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2Fd154e9cf578e4c32b772fd661751f0ec%2F%22%7D,%7B%22variable%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2Fd154e9cf578e4c32b772fd661751f0ec%2F%22%7D%5D,%22measures%22:%7B%22mean%22:%7B%22function%22:%22cube_mean%22,%22args%22:%5B%7B%22variable%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2Fedc61278968c40929a65f4d0d8e616b9%2F%22%7D%5D%7D,%22count%22:%7B%22function%22:%22cube_count%22,%22args%22:%5B%5D%7D%7D%7D",
   "value": {
     "query": {
       "filters": [],
@@ -12,7 +12,7 @@
           "function": "cube_mean",
           "args": [
             {
-              "variable": "https://alpha.crunch.io/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/edc61278968c40929a65f4d0d8e616b9/"
+              "variable": "/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/edc61278968c40929a65f4d0d8e616b9/"
             }
           ]
         }
@@ -22,21 +22,21 @@
           "function": "selected_array",
           "args": [
             {
-              "variable": "https://alpha.crunch.io/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/d685aef5d3df464d82c747a03ebf936f/"
+              "variable": "/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/d685aef5d3df464d82c747a03ebf936f/"
             }
           ]
         },
         {
-          "each": "https://alpha.crunch.io/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/d685aef5d3df464d82c747a03ebf936f/"
+          "each": "/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/d685aef5d3df464d82c747a03ebf936f/"
         },
         {
-          "each": "https://alpha.crunch.io/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/d154e9cf578e4c32b772fd661751f0ec/"
+          "each": "/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/d154e9cf578e4c32b772fd661751f0ec/"
         },
         {
-          "variable": "https://alpha.crunch.io/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/d154e9cf578e4c32b772fd661751f0ec/"
+          "variable": "/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/d154e9cf578e4c32b772fd661751f0ec/"
         }
       ],
-      "weight": "https://alpha.crunch.io/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/ae78fa132f47402c97c67a73664bb85a/"
+      "weight": "/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/ae78fa132f47402c97c67a73664bb85a/"
     },
     "result": {
       "dimensions": [
