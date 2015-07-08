@@ -107,29 +107,21 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
         if(_.flattenDeep(subscripts).length) {
             indices = Cube.prod.apply(this, subscripts)
         }
-
-        if(types.indexOf('multiresponse') > -1){
-            // then counting by missing
-            subscripts = cube._dimensions.map(function(d, i){
-                if(d.type === 'multiresponse'){
-                    return i === 0 ? d.countingSubscripts : d.missingSubscripts
-                }
-                return []
-            })
-            if(subscripts.every(function(i){ return i.length })) {
-                indices = indices.concat(Cube.prod.apply(this, subscripts))
-            }
-            // last missing by counting
-            subscripts = cube._dimensions.map(function(d, i){
-                if(d.type === 'multiresponse'){
-                    return i === 1 ? d.countingSubscripts : d.missingSubscripts
-                }
-                return []
-            })
-            if(subscripts.every(function(i){ return i.length })){
-                indices = indices.concat(Cube.prod.apply(this, subscripts))
-            }
+        subscripts = cube._dimensions.map(function(d, i){
+            return i === 0 ? d.countingSubscripts : d.missingSubscripts
+        })
+        if(subscripts.every(function(i){ return i === undefined ? false : i.length })) {
+            indices = indices.concat(Cube.prod.apply(this, subscripts))
         }
+
+        // last missing by counting
+        subscripts = cube._dimensions.map(function(d, i){
+            return i === 1 ? d.countingSubscripts : d.missingSubscripts
+        })
+        if(subscripts.every(function(i){ return i === undefined ? false : i.length})){
+            indices = indices.concat(Cube.prod.apply(this, subscripts))
+        }
+
         var compositeDimension = types.indexOf('composite')
         if(compositeDimension > -1){
             subscripts = []
@@ -146,7 +138,6 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
         indices.forEach(function(i){
             missing += data.get.apply(data, i)
         })
-        console.log(missing)
         return missing
     }
 
