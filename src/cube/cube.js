@@ -3,17 +3,15 @@
 module.exports = CubeFactory
 
 CubeFactory.$inject = [
-    '$log'
-    , '$q'
+    '$q'
     , 'lodash'
     , 'dimension'
     , 'measure'
 ]
 
-function CubeFactory($log, $q, _, dimension, measure) {
+function CubeFactory($q, _, dimension, measure) {
 
-    var Cube = function(measures, meta, margins) {
-        var shape = meta.shape
+    var Cube = function(measures, meta) {
         var validShape = meta.validShape
 
         this.dimension = validShape.length
@@ -24,9 +22,60 @@ function CubeFactory($log, $q, _, dimension, measure) {
         this.nMissing = meta.nMissing
         this.weightId = meta.weightId
         this.appliedFilters = _.cloneDeep(meta.appliedFilters)
+
         _.extend(this, measures)
 
         return this
+    }
+
+    Cube.prototype.isValidSlice = function(index) {
+        var valid = true
+            ;
+
+        try {
+            valid = this.getSliceAtIndex(index)
+        } catch(e) {
+            valid = false
+        }
+
+        return valid
+    }
+
+    Cube.prototype.getSliceAtIndex = function(index) {
+        var firstSlice
+            , measures = {}
+            , measureTypes = ['count', 'mean']
+            , self = this
+            ;
+
+        measureTypes.forEach(function(measure) {
+            var slices
+                ;
+
+            if(measure in self) {
+                slices = self[measure].slices
+
+                if(index >= slices.length || index < 0) {
+                    throw new Error('Invalid slice index')
+                }
+
+                measures[measure] = slices[index]
+                firstSlice = slices[index]
+            }
+        })
+
+        return new Cube(
+            measures
+            , {
+                validShape : firstSlice.validShape
+                , n : this.n
+                , dimensions : firstSlice.dimensions
+                , query : this.query
+                , nMissing : this.nMissing
+                , weightId : this.weightId
+                , appliedFilters : this.appliedFilters
+            }
+        )
     }
 
     Object.defineProperties(Cube.prototype, {

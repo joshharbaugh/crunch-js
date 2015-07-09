@@ -48,26 +48,33 @@ function AnalysisFactory(_
             this.transition('empty')
         }
 
-        , 'remove-variable' : function(i) {
-            this.variables.remove(i)
+        , 'remove-variable' : function(i, avoidRecalculate) {
+            this.variables.remove(_.isString(i) ? this.variables.indexOf(i) : i)
 
             if(this.variables.isEmpty()) {
                 delete this.data
                 this.transition('empty')
             } else {
-                this.recalculate()
+                if(!avoidRecalculate) {
+                    this.recalculate()
+                }
             }
         }
 
         , 'replace-variable' : function(index, variableId) {
-            this.variables.replace(index, variableId)
-            .then(function() {
-                this.recalculate()
-            }.bind(this))
+            this.variables
+                .replace(index, variableId)
+                .then(this.recalculate.bind(this))
         }
 
-        , pivot : function(idx1, idx2) {
-            this.variables.pivot(idx1, idx2)
+        , 'insert-before' : function(index, variableId) {
+            this.variables
+                .insertBefore(index, variableId)
+                .then(this.recalculate.bind(this))
+        }
+
+        , pivot : function() {
+            this.variables.pivot()
             this.recalculate()
         }
 
@@ -163,6 +170,11 @@ function AnalysisFactory(_
                         this.recalculate()
                     }.bind(this))
                 }
+                , 'insert-before' : function(index, variableId) {
+                    this.variables
+                        .insertBefore(index, variableId)
+                        .then(this.recalculate.bind(this))
+                }
                 ,'measures-mean': function(variableId) {
                     this.measures.add('mean', variableId).then(function() {
                         this.recalculate()
@@ -208,15 +220,88 @@ function AnalysisFactory(_
 
 
                     variableTypes.forEach(function(t, i){
-                        if(t === "numeric" && i==0){
+                        if(t === "numeric" && i === 0){
                             graphType = "histogram"
-                        } else if (t === "datetime" && i==1){
+                        } else if (t === "datetime" && i === 1){
                             graphType = "timeplot"
                         }
                     })
                 }
 
                 return graphType
+            }
+        }
+
+        , categoricalArray : {
+            get : function() {
+                var catArray = null
+                    ;
+
+                this.variables.items.some(function(v) {
+                    var array = v.type === 'categorical_array'
+                        ;
+
+                    if(array) {
+                        catArray = v
+                    }
+
+                    return array
+                })
+
+                return catArray
+            }
+        }
+
+        , scalarVariable : {
+            get : function() {
+                var scalarFound = null
+                    ;
+
+                this.variables.items.some(function(v) {
+                    var scalar = v.type !== 'categorical_array'
+                        ;
+
+                    if(scalar) {
+                        scalarFound = v
+                    }
+
+                    return scalar
+                })
+
+                return scalarFound
+            }
+        }
+
+        , topMostVariable : {
+            get : function() {
+                var varb
+                    ;
+
+                switch(this.variablesCount) {
+                    case 1:
+                    case 3:
+                        varb = this.variables.at(0)
+                        break
+                    case 2:
+                        varb = this.variables.at(1)
+                        break
+                    default:
+                        varb = null
+                }
+
+                return varb
+            }
+        }
+
+        , dimension : {
+            get : function() {
+                return this.data && this.data.cube.dimension
+            }
+        }
+
+        , variablesCount : {
+            get : function() {
+                return this.variables.count()
             }
         }
     })
@@ -230,8 +315,8 @@ function AnalysisFactory(_
 
                     this.datasetId = params.datasetId
                     this.slideId = params.slideId
-                    this.analysis = params.analysis || undefined
-                    this.savedSettings = undefined
+                    this.analysis = params.analysis || null
+                    this.savedSettings = null
                     this.variables = new VariableList(params.datasetId)
                     this.measures = new MeasureList(params.datasetId)
 

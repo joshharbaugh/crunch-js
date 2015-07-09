@@ -70,6 +70,19 @@ function CategoricalDimensionFactory(_) {
                 return out
             }
         }
+        , 'countingSubscripts' : {
+            get : function() {
+                var out = []
+                var elements = this.data.type.categories.filter(function(el, idx) {
+                    var id = el.value && el.value.id || ''
+                    if (el.missing === false){
+                        out.push(idx)
+                        return true
+                    }
+                })
+                return out
+            }
+        }
         , 'length' : {
             get : function() {
                 return this.data.type.categories.length

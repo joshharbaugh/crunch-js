@@ -64,8 +64,8 @@ describe('Cube query builder', function(){
         })
         it('should make a query with them as the dimensions', function(){
             var expected = [
-                {function: 'selected_array', args: [{variable: '/api/datasets/123/variables/gender'}]}
-                ,{each: '/api/datasets/123/variables/gender'}
+                {function: 'selected_array', args: [{variable: '/api/datasets/123/variables/gender/'}]}
+                ,{each: '/api/datasets/123/variables/gender/'}
             ]
             result.dimensions.should.eql(expected)
         })
@@ -87,7 +87,7 @@ describe('Cube query builder', function(){
         })
         it('should bin by default', function(){
             var expected = [
-                {function: 'bin', args: [{variable: '/api/datasets/123/variables/age'}]}
+                {function: 'bin', args: [{variable: '/api/datasets/123/variables/age/'}]}
             ]
             result.dimensions.should.eql(expected)
         })

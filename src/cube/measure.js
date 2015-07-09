@@ -5,9 +5,11 @@ module.exports = MeasureFactory
 MeasureFactory.$inject = [
     'lodash'
     , 'ndarray'
+    , 'ndarrayScratch'
+    , 'ndarrayUnpack'
 ]
 
-function MeasureFactory(_, ndarray) {
+function MeasureFactory(_, ndarray, scratch, unpack) {
     var allowedTypes = ['mean', 'stddev', 'count']
         ;
 
@@ -17,32 +19,19 @@ function MeasureFactory(_, ndarray) {
         }
     }
 
-    function Measure(config) {
-        var dimensions = config.meta.dimensions
-            , missing = config.meta.missing
-            , shape = config.meta.shape
-            , validShape = config.meta.validShape
-            , type = config.type
-            , data = config.data
-            , isMissing
-            , validData
-        isMissing = prod.apply(this, missing)
-        .map(function(indices){
-            return indices.some(function(missing){
-                return missing
+    function cleanMissingData(missingElements, data) {
+        var missingEntries = prod.apply(this, missingElements)
+            .map(function(indices){
+                return indices.some(function(missing){
+                    return missing
+                })
             })
+
+        return data.filter(function(d,i){
+            return !missingEntries[i]
         })
-
-        validData = data.filter(function(d,i){
-            return !isMissing[i]
-        })
-
-        this.dimensions = dimensions
-        this.type = type
-        this.rawData = ndarray(data, shape)
-
-        this.cube = ndarray(validData, validShape)
     }
+
     function prod() {
         var args = [].slice.call(arguments)
             ,end = args.length - 1;
@@ -72,12 +61,88 @@ function MeasureFactory(_, ndarray) {
         }
         return result
     }
+
+    function Measure(type, dimensions, validData, rawData) {
+        this.type = type
+        this.dimensions = dimensions
+        this.rawData = rawData
+        this.cube = validData
+    }
+
+    Object.defineProperties(Measure.prototype, {
+        validShape : {
+            get : function() {
+                return this.dimensions.map(function(d) {
+                    return d.validLength
+                })
+            }
+        }
+
+        , shape : {
+            get : function() {
+                return this.dimensions.map(function(d) {
+                    return d.length
+                })
+            }
+
+        }
+
+        , slices : {
+            get : function() {
+                var slicedDimension = _.first(this.dimensions)
+                    , sliceDimensions = _.rest(this.dimensions)
+                    , sliceShape = sliceDimensions.map(function(d) {
+                        return d.length
+                    })
+                    , sliceValidShape = sliceDimensions.map(function(d) {
+                        return d.validLength
+                    })
+                    , sliceMissings = sliceDimensions.map(function(d) {
+                        return d.missing
+                    })
+                    , slicedLength = slicedDimension.length
+                    , type = this.type
+                    , rawData = this.rawData
+                    ;
+
+                return this._slices || (this._slices = _.range(0, slicedLength).map(function(sliceIndex) {
+                    slicedDimension
+                    unpack
+                    var rawSlice = scratch.clone(rawData.lo(sliceIndex).hi(1).pick(0))
+                        , clone = [].slice.call(rawSlice.data)
+                        , validData = cleanMissingData(sliceMissings, clone)
+                        ;
+
+                    scratch.free(rawSlice)
+
+                    return new Measure(
+                        type
+                        , sliceDimensions
+                        , ndarray(validData, sliceValidShape)
+                        , ndarray(clone, sliceShape)
+                    )
+                }))
+            }
+        }
+    })
+
     return {
         fromData : function(config) {
+            var validData
+                , meta
+                ;
+
             config = config || {}
             assertType(config.type)
 
-            return new Measure(config)
+            meta = config.meta
+            validData = cleanMissingData(meta.missing, config.data)
+
+            return new Measure(
+                config.type
+                , meta.dimensions
+                , ndarray(validData, meta.validShape)
+                , ndarray(config.data, meta.shape))
         }
     }
 }
