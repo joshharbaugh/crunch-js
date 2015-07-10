@@ -4,8 +4,8 @@ module.exports = Fixtures.call(this)
 function Fixtures(){
     var query = {
         dimensions:[
-            {'variable': '/api/datasets/123/variables/admit'}
-            ,{'variable': '/api/datasets/123/variables/gender'}
+            {'variable': '/api/datasets/123/variables/admit/'}
+            ,{'variable': '/api/datasets/123/variables/gender/'}
         ]
         ,measures:{'count': {'function': 'cube_count'}}
     }

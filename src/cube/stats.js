@@ -82,6 +82,65 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
             return out
         }
     }
+
+    function missing(cube){
+        if(cube.dimension > 2) {
+            throw new Error('Can only calculate missing for a 2d slice')
+        }
+        var data = cube.count.rawData
+        var indices = [],
+            types = [],
+            missing = 0
+        if (cube._dimensions.length === 1) {
+            indices = cube._dimensions[0].missingSubscripts
+            indices.forEach(function(i){
+                missing += data.get(i)
+            })
+            return missing
+        }
+        // on to 2d case
+        // first gather dim0 missing by dim1 missing
+        var subscripts = cube._dimensions.map(function(d, i){
+            types.push(d.type)
+            return d.missingSubscripts
+        })
+        if(_.flattenDeep(subscripts).length) {
+            indices = Cube.prod.apply(this, subscripts)
+        }
+        subscripts = cube._dimensions.map(function(d, i){
+            return i === 0 ? d.countingSubscripts : d.missingSubscripts
+        })
+        if(subscripts.every(function(i){ return i === undefined ? false : i.length })) {
+            indices = indices.concat(Cube.prod.apply(this, subscripts))
+        }
+
+        // last missing by counting
+        subscripts = cube._dimensions.map(function(d, i){
+            return i === 1 ? d.countingSubscripts : d.missingSubscripts
+        })
+        if(subscripts.every(function(i){ return i === undefined ? false : i.length})){
+            indices = indices.concat(Cube.prod.apply(this, subscripts))
+        }
+
+        var compositeDimension = types.indexOf('composite')
+        if(compositeDimension > -1){
+            subscripts = []
+            var offDimension = 1-compositeDimension
+            subscripts[compositeDimension] = cube._dimensions[compositeDimension].validSubscripts
+            subscripts[offDimension] = cube._dimensions[offDimension].missingSubscripts
+            indices = indices.concat(Cube.prod.apply(this, subscripts))
+            return indices.map(function(i){
+                return data.get.apply(data, i)
+            }).reduce(function(i,j){
+                return Math.max(i,j)
+            },missing)
+        }
+        indices.forEach(function(i){
+            missing += data.get.apply(data, i)
+        })
+        return missing
+    }
+
     function propTable(cube, axis, marginal, includeMissing){
         var includeMissing = includeMissing || false
         var table, tbl, marginal, total;
@@ -376,6 +435,7 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
     return {
         getPvalues: getPvalues
         ,margin: margin
+        ,missing: missing
         ,propTable: propTable
         ,diffTable: diffTable
         ,filterByMarginThreshold: filterByMarginThreshold

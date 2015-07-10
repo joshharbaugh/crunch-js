@@ -1,13 +1,15 @@
 'use strict'
 
-var mocks = require('angular-mocks')
-    , mainMod = require('../index')
+require('angular-mocks')
+
+var mainMod = require('../index')
     , machinaMod = require('../../machina-angular')
     ;
 
 describe('Analysis', function() {
     var Sut
         , fakeAnalysis
+        , fakeHierarchicalVariables
         , datasetId = '/datasets/123'
         ;
 
@@ -36,19 +38,28 @@ describe('Analysis', function() {
         })
 
         main.factory('cachedHierarchicalVariables', function($q) {
-            return {
+            return (fakeHierarchicalVariables = {
                 current : {
-                    byId : function(id) {
+                    defaultType : 'categorical'
+                    , byId : function(id) {
                         return {
                             self : id
                             , contains : angular.noop
+                            , type : this.defaultType
+                            , clone : function() {
+                                return this
+                            }
                             , map : function() {
                                 return $q.when(this)
                             }
                         }
                     }
+
+                    , setVariableType : function(type) {
+                        this.defaultType = type
+                    }
                 }
-            }
+            })
         })
 
         angular.mock.module(main.name, machina.name)
@@ -68,14 +79,14 @@ describe('Analysis', function() {
         })
     }
 
-    describe('when initializing', function() {
+    context('when initializing', function() {
         var sut
             ;
 
         beforeEach(buildModule)
         beforeEach(buildSut)
 
-        describe('given no parameters', function() {
+        context('given no parameters', function() {
             beforeEach(function() {
                 sut = Sut.create({ datasetId : datasetId })
                 flush()
@@ -86,10 +97,7 @@ describe('Analysis', function() {
             })
         })
 
-        describe('given an slide id', function() {
-            var triggered
-                ;
-
+        context('given an slide id', function() {
             beforeEach(function() {
                 sut = Sut.create({
                     datasetId : datasetId
@@ -108,7 +116,7 @@ describe('Analysis', function() {
         })
     })
 
-    describe('when loading a saved analysis', function() {
+    context('when loading a saved analysis', function() {
         var sut
             , triggered
             , changedTriggered
@@ -155,9 +163,9 @@ describe('Analysis', function() {
         })
     })
 
-    describe('when adding a variable', function() {
+    context('when adding a variable', function() {
         var sut
-            , triggered
+            , recalculated
             ;
 
         beforeEach(buildModule)
@@ -167,7 +175,7 @@ describe('Analysis', function() {
             fakeAnalysis.variables.push('/variable/123')
             sut = Sut.create({ datasetId : datasetId })
             sut.on('analysis.loaded', function() {
-                triggered = true
+                recalculated = true
             })
             flush()
 
@@ -182,15 +190,15 @@ describe('Analysis', function() {
         })
 
         it('should recalculate the analysis data', function() {
-            triggered.should.be.true
+            expect(recalculated).to.be.true
         })
     })
 
-    describe('when replacing a variable', function() {
+    context('when replacing a variable', function() {
         var sut
             ;
 
-        describe('given an analysis variable in the given index', function() {
+        context('given an analysis variable in the given index', function() {
             beforeEach(buildModule)
             beforeEach(buildSut)
             beforeEach(function() {
@@ -209,11 +217,11 @@ describe('Analysis', function() {
         })
     })
 
-    describe('when cleaning', function() {
+    context('when cleaning', function() {
         var sut
             ;
 
-        describe('given an analysis with two variables', function() {
+        context('given an analysis with two variables', function() {
             beforeEach(buildModule)
             beforeEach(buildSut)
             beforeEach(function() {
@@ -241,11 +249,11 @@ describe('Analysis', function() {
         })
     })
 
-    describe('when removing a variable in the given index', function() {
+    context('when removing a variable in the given index', function() {
         var sut
             ;
 
-        describe('given an analysis with two variables', function() {
+        context('given an analysis with two variables', function() {
             beforeEach(buildModule)
             beforeEach(buildSut)
             beforeEach(function() {
@@ -265,7 +273,7 @@ describe('Analysis', function() {
             })
         })
 
-        describe('given an analysis with one variable', function() {
+        context('given an analysis with one variable', function() {
             beforeEach(buildModule)
             beforeEach(buildSut)
             beforeEach(function() {
@@ -289,7 +297,7 @@ describe('Analysis', function() {
         })
     })
 
-    describe('when analysis calculation fails', function() {
+    context('when analysis calculation fails', function() {
         var sut
             , triggered
             ;
@@ -320,6 +328,99 @@ describe('Analysis', function() {
 
         it('should trigger analysis.error event', function() {
             triggered.should.be.true
+        })
+    })
+
+    describe('categoricalArray property', function() {
+        var sut
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(buildSut)
+        beforeEach(function() {
+            sut = Sut.create({ datasetId : datasetId })
+            fakeHierarchicalVariables.current.setVariableType('categorical_array')
+            sut.handle('add-variable', '/var/123')
+            flush()
+        })
+
+        it('should return a categorical array contained in the variable list', function() {
+            expect(sut.categoricalArray.self).to.equal('/var/123')
+        })
+    })
+
+    describe('scalarVariable property', function() {
+        var sut
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(buildSut)
+        beforeEach(function() {
+            sut = Sut.create({ datasetId : datasetId })
+            fakeHierarchicalVariables.current.setVariableType('categorical')
+            sut.handle('add-variable', '/var/456')
+            flush()
+            fakeHierarchicalVariables.current.setVariableType('categorical_array')
+            sut.handle('add-variable', '/var/123')
+            flush()
+        })
+
+        it('should return a variable that is not an array contained in the variable list', function() {
+            expect(sut.scalarVariable.self).to.equal('/var/456')
+        })
+    })
+
+    describe('topMostVariable property', function() {
+        var sut
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(buildSut)
+        beforeEach(function() {
+            sut = Sut.create({ datasetId : datasetId })
+        })
+
+        context('given a variable list with 1 variable', function() {
+            beforeEach(function() {
+                fakeHierarchicalVariables.current.setVariableType('categorical')
+                sut.handle('add-variable', '/var/456')
+                flush()
+            })
+
+            it('should return variable at index 0', function() {
+                expect(sut.topMostVariable.self).to.equal('/var/456')
+            })
+
+        })
+
+        context('given a variable list with 2 variables', function() {
+            beforeEach(function() {
+                fakeHierarchicalVariables.current.setVariableType('numeric')
+                sut.handle('add-variable', '/var/456')
+                flush()
+                sut.handle('add-variable', '/var/123')
+                flush()
+            })
+
+            it('should return variable at index 1', function() {
+                expect(sut.topMostVariable.self).to.equal('/var/123')
+            })
+        })
+
+        context('given a variable list with 3 variables', function() {
+            beforeEach(function() {
+                fakeHierarchicalVariables.current.setVariableType('numeric')
+                sut.handle('add-variable', '/var/456')
+                flush()
+                sut.handle('add-variable', '/var/123')
+                flush()
+                sut.handle('add-variable', '/var/789')
+                flush()
+            })
+
+            it('should return variable at index 0', function() {
+                expect(sut.topMostVariable.self).to.equal('/var/456')
+            })
         })
     })
 })

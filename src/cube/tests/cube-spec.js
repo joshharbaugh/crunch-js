@@ -1,11 +1,11 @@
 'use strict'
 
-var mocks = require('angular-mocks')
-    , mainMod = require('../index')
+require('angular-mocks')
+
+var  mainMod = require('../index')
     , fixtures = require('./fixtures')
-    , ndarray = require('ndarray')
+    , cube3dFixture = require('./cube-3-dimensions')
     , ops = require('ndarray-ops')
-    , show = require('ndarray-show')
     , unpack = require('ndarray-unpack')
     ;
 
@@ -33,7 +33,7 @@ describe('cube', function(){
     beforeEach(buildModule)
     beforeEach(createDeps)
 
-    describe('given a cube result', function(){
+    context('given a cube result', function(){
         beforeEach(function(){
             inject(function(cube){
                 cube.fromCrCube(fixtures.categoricalCount.value).then(function(it){
@@ -53,7 +53,7 @@ describe('cube', function(){
         })
     })
 
-    describe('with a 3d cube', function(){
+    context('with a 3d cube', function(){
         beforeEach(function(){
             inject(function(cube){
                 cube.fromCrCube(fixtures.count3d.value).then(function(it){
@@ -67,7 +67,7 @@ describe('cube', function(){
         })
     })
 
-    describe('with a categorical array cube having "enum" dimension', function(){
+    context('with a categorical array cube having "enum" dimension', function(){
         beforeEach(function(){
             inject(function(cube){
                 cube.fromCrCube(fixtures.categoricalArrayCube.value).then(function(it){
@@ -88,7 +88,7 @@ describe('cube', function(){
         })
     })
 
-    describe('when an index is missing', function(){
+    context('when an index is missing', function(){
         beforeEach(function(){
             inject(function(cube){
                 cube.fromCrCube(fixtures.arrayWithMissing.value).then(function(it){
@@ -105,6 +105,31 @@ describe('cube', function(){
         })
         it('should show missing=1', function(){
             sut.nMissing.should.equal(1)
+        })
+    })
+
+    context('when getting a slice at a given index', function() {
+        var sut
+            ;
+
+        beforeEach(function() {
+            inject(function(cube) {
+                cube.fromCrCube(cube3dFixture.value).then(function(it) {
+                    sut = it
+                })
+            })
+
+            scope.$digest()
+        })
+
+        it('should return a cube object whose measures are slices of the original cube measures', function() {
+            var slice = sut.getSliceAtIndex(0)
+                ;
+
+            expect(slice.count).to.be.ok
+            expect(slice.mean).to.be.ok
+            expect(ops.equals(slice.count.cube, sut.count.cube.lo(0).hi(1).pick(0))).to.be.true
+            expect(ops.equals(slice.mean.cube, sut.mean.cube.lo(0).hi(1).pick(0))).to.be.true
         })
     })
 
