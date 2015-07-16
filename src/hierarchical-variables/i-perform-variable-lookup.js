@@ -32,6 +32,20 @@ function IPerformVariableLookupFactory(iGetVariableHash) {
         return itemFound
     }
 
+    IPerformVariableLookup.prototype.byAlias = function(hierarchicalOrder, itemAlias) {
+        var itemFound
+            ;
+
+        hierarchicalOrder.flattened.some(function(item) {
+            if(item.alias === itemAlias) {
+                itemFound = item
+                return true
+            }
+        })
+
+        return itemFound
+    }
+
     IPerformVariableLookup.prototype.byId = function(hierarchicalOrder, itemId) {
         var index = this.indexOf(hierarchicalOrder, itemId)
             , item

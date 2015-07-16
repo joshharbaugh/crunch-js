@@ -239,6 +239,20 @@ describe('HierarchicalVariables',function(){
             })
         })
     })
+    
+    describe('when getting an item by alias', function() {
+        var sut
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(function() {
+            sut = buildSut([variablesFixture()], _.clone(fixtures.hierarchicalGrouped, true))
+        })
+
+        it('should return the item', function() {
+            expect(sut.byAlias('age4').name).to.equal('Age4')
+        })
+    })
 
     describe('when getting an item by name', function() {
         var sut
