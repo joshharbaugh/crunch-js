@@ -32,6 +32,7 @@ function VariableFactory(_
             , 'type'
             , 'id'
             , 'description'
+            , 'derivation'
             , 'rollup_resolution'
             , 'urls'
             , 'fragments'
