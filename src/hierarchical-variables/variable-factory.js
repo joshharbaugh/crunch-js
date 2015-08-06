@@ -127,6 +127,9 @@ function VariableFactory(_
                 return this.data[prop]
             }
             , set : function(value) {
+                //reset demoized properties
+                this._fullName = null
+                this._prunedName = null
                 this.data[prop] = value
             }
             ,enumerable : true
