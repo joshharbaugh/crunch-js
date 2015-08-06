@@ -206,6 +206,20 @@ function IMutateHierarchicalOrderFactory(iPerformVariableLookup, iGetVariableHas
         order.orderedIndex = rebuildOrderIdMapFromFlattenedIndex(order.flattened)
     }
 
+    IMutateHierarchicalOrder.prototype.removeVariable = function(order, variable) {
+        var index = iPerformVariableLookup.indexOf(order, variable.id)
+            , parent = variable.parent
+            ;
+
+        if(index === -1) {
+            throw new Error('Variable does not belong to the order')
+        }
+
+        parent.removeItem(variable)
+        order.flattened.splice(index, 1)
+        order.orderedIndex = rebuildOrderIdMapFromFlattenedIndex(order.flattened)
+    }
+
     return new IMutateHierarchicalOrder()
 }
 
