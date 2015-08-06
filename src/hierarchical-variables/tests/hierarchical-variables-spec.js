@@ -190,7 +190,7 @@ describe('HierarchicalVariables',function(){
         })
     })
 
-    describe.only('When fetched for a nested group with a variable in both', function(){
+    describe('When fetched for a nested group with a variable in both', function(){
         /*
         * This scenario contains one variable present in two nested groups.
         * The original bug was that the variable-catalogs-list would only
