@@ -9,51 +9,47 @@ VariableListFactory.$inject = [
 ]
 
 function VariableListFactory(_, $q, cachedHierarchicalVariables) {
-    var addStrategies = {
-        'categorical_array' : function(varInfo, items) {
+
+    var transformStrategies = {
+        categoricalArray : function(varInfo) {
             var columnVar = varInfo.clone()
                 ;
 
             varInfo.dimension = "each"
             columnVar.dimension = "variable"
-            items.push(varInfo, columnVar)
 
-            return items
+            return [varInfo, columnVar]
         }
 
-        , default : function(varInfo, items) {
+        , savedVariable : function(variableInfo, dimensionInfo) {
+            var clone = variableInfo.clone()
+                ;
+
+            clone.dimension = dimensionInfo.dimension
+
+            return [clone]
+        }
+
+        , default : function(varInfo) {
             varInfo.dimension = "variable"
-            items.push(varInfo)
-            return items
+            return [varInfo]
+        }
+
+        , executeStrategy : function(variableId, variableInfo) {
+            if(typeof variableId === 'object') {
+                return this.savedVariable(variableInfo, variableId)
+            } else if(variableInfo.type === 'categorical_array') {
+                return this.categoricalArray(variableInfo)
+            } else {
+                return this.default(variableInfo)
+            }
         }
     }
 
     function addVariable(variable) {
-        var strategy
-            , self = this
-            , promise
-            ;
-
-        if (typeof variable === 'object') { // if in a saved analysis
-            promise = getVariableInfo(variable.self).then(function(varInfo) {
-                var clone = varInfo.clone()
-                    ;
-
-                clone.dimension = variable.dimension
-                self.items = self.items.concat([clone])
-
-                return clone
-            })
-        } else {
-            promise = getVariableInfo(variable).then(function(varInfo) {
-                strategy = addStrategies[varInfo.type] || addStrategies.default
-                self.items = strategy(varInfo, self.items)
-                return varInfo
-            })
-
-        }
-
-        return promise
+        return getVariableInfo((variable.self || variable)).then(function(varInfo) {
+            return transformStrategies.executeStrategy(variable, varInfo)
+        })
     }
 
     function getVariableInfo(variableId) {
@@ -88,6 +84,25 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
     VariableList.prototype.at = function(idx) {
         return this.items[idx]
     }
+
+    VariableList.prototype.indexOf = function(variableId) {
+        var index = -1
+            ;
+
+        this.items.some(function(item, i) {
+            var found = item.self === variableId
+                ;
+
+            if(found) {
+                index = i
+            }
+
+            return found
+        })
+
+        return index
+    }
+
     VariableList.prototype.getTypes = function(){
         return this.items.map(function(each){
             return each.type
@@ -96,8 +111,6 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
 
     VariableList.prototype.add = function(items) {
          var itemList = items instanceof Array ? items : [items]
-            , add = addVariable.bind(this)
-            , promise
             , currentCount = this.items.length
             , self = this
             ;
@@ -108,7 +121,10 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
                 ;
 
             if(item) {
-                p = add(item).then(request)
+                p = addVariable(item).then(function(items) {
+                    self.items = self.items.concat(items)
+                    return request()
+                })
             } else {
                 p = $q.when(self.items.slice(currentCount))
             }
@@ -119,37 +135,52 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
         return request()
     }
 
-    VariableList.prototype.replace = function(index, variableId) {
-         var items = this.items
+    VariableList.prototype.insertBefore = function(index, variableId) {
+        var self = this
             , promise
-            , strategy
+            , indexes = _.isArray(index) ? index : [index]
             ;
 
-        if(items.length <= index) {
-            promise = addVariable.call(this, variableId)
-        } else {
-            promise = getVariableInfo(variableId).then(function(varInfo) {
-                strategy = addStrategies[varInfo.type] || addStrategies.default
-                items[index] = strategy(varInfo, [])[0]
-                return varInfo
+        promise = addVariable(variableId).then(function(newItems) {
+            indexes.forEach(function(index, i) {
+                self.items.splice.apply(self.items, [index, 0].concat(newItems[i]))
             })
-        }
+        })
 
         return promise
     }
 
-    VariableList.prototype.pivot = function(idx1, idx2) {
-        var items = this.items
-            , variable1 = items[idx1]
-            , variable2 = items[idx2]
+    VariableList.prototype.replace = function(index, variableId) {
+         var self = this
             ;
 
-        if(!_.isObject(variable1) || !_.isObject(variable2)) {
-            throw new Error('Some of the specified variables does not exist')
-        }
+        return addVariable(variableId).then(function(newItems) {
+            var items = self.items
+                ;
 
-        items[idx1] = variable2
-        items[idx2] = variable1
+            if(index >= items.length) {
+                self.items = items.concat(newItems)
+            } else {
+                items.splice.apply(items, [index, 1].concat(newItems))
+            }
+
+            return items[index]
+        })
+    }
+
+    VariableList.prototype.pivot = function() {
+        var items = this.items
+            , pivotted = []
+            ;
+
+        items.forEach(function(item, index) {
+            var next = (index >= items.length - 1) ? 0 : index + 1
+                ;
+
+            pivotted[next] = item
+        })
+
+        this.items = pivotted
     }
 
     VariableList.prototype.hasArrays = function() {
@@ -172,11 +203,11 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
 
     VariableList.prototype.remove = function(index) {
         if(!this.isEmpty() && index < this.items.length) {
-            if(this.items[index].type == 'categorical_array'){
+            if(this.items[index].type === 'categorical_array'){
                 // remove all the dims from an arrayvar
                 var variableId = this.items[index].self
                 this.items = this.items.filter(function(i){
-                    return i.self != variableId
+                    return i.self !== variableId
                 })
             } else {
                 this.items.splice(index, 1)

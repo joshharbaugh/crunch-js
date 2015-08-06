@@ -1,0 +1,1021 @@
+{
+  "self": "/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/cube/?query=%7B%22dimensions%22:%5B%7B%22function%22:%22selected_array%22,%22args%22:%5B%7B%22variable%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2Fd685aef5d3df464d82c747a03ebf936f%2F%22%7D%5D%7D,%7B%22each%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2Fd685aef5d3df464d82c747a03ebf936f%2F%22%7D,%7B%22function%22:%22selected_array%22,%22args%22:%5B%7B%22variable%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2F8515fe695b214b0c932b5226de2ca365%2F%22%7D%5D%7D,%7B%22each%22:%22https:%2F%2Falpha.crunch.io%2Fapi%2Fdatasets%2F63fe72a5f0504e7786cdb2b9db58c399%2Fvariables%2F8515fe695b214b0c932b5226de2ca365%2F%22%7D%5D,%22measures%22:%7B%22count%22:%7B%22function%22:%22cube_count%22,%22args%22:%5B%5D%7D%7D%7D",
+  "value": {
+    "query": {
+      "filters": [],
+      "measures": {
+        "count": {
+          "function": "cube_count",
+          "args": []
+        }
+      },
+      "dimensions": [
+        {
+          "function": "selected_array",
+          "args": [
+            {
+              "variable": "/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/d685aef5d3df464d82c747a03ebf936f/"
+            }
+          ]
+        },
+        {
+          "each": "/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/d685aef5d3df464d82c747a03ebf936f/"
+        },
+        {
+          "function": "selected_array",
+          "args": [
+            {
+              "variable": "/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/8515fe695b214b0c932b5226de2ca365/"
+            }
+          ]
+        },
+        {
+          "each": "/api/datasets/63fe72a5f0504e7786cdb2b9db58c399/variables/8515fe695b214b0c932b5226de2ca365/"
+        }
+      ],
+      "weight": null
+    },
+    "result": {
+      "dimensions": [
+        {
+          "derived": true,
+          "references": {
+            "description": "Thinking about the internet browsers you recognize, on which platforms are they available? Please check all that apply.",
+            "name": "Chrome Availability",
+            "format": null,
+            "dichotomous": true,
+            "discarded": false,
+            "alias": "platform:Chrome",
+            "is_subvar": null,
+            "header_order": null,
+            "view": {
+              "show_counts": false,
+              "include_noneoftheabove": false,
+              "include_missing": false,
+              "column_width": null
+            }
+          },
+          "type": {
+            "subtype": {
+              "class": "variable"
+            },
+            "elements": [
+              {
+                "id": 1,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Windows PC/Laptop",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Chrome:platform_1_1",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "d91314b479684248849699bffbe8adae",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 2,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Mac PC/Laptop",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Chrome:platform_1_2",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "96d114abf7024ede970aa3d0b05ad6a1",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 3,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "iPhone",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Chrome:platform_1_3",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "fe479f533b994528b6bfee1c012a10b4",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 4,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "iPad",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Chrome:platform_1_4",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "1a3ac11f68f841fa92b8346f38f56eb1",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 5,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Android phone",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Chrome:platform_1_5",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "881cca2894254ca2b279d3be8e7bd0b0",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 6,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Android tablet",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Chrome:platform_1_6",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "930cc8f90b1547f685a1acf7442ce5d8",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 7,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Windows phone",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Chrome:platform_1_7",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "73d9b3ea68d24f99a2357009c4fd2f4d",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 8,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Windows tablet",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Chrome:platform_1_8",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "f2558b50053342c29ef489269b96775f",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 9,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Blackberry",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Chrome:platform_1_9",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "5446e94853a04c199b610312739c2d54",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 10,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Don't know",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Chrome:platform_1_10",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "bfa3defc491a44c18df8b193e1dbd9c9",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": -1,
+                "value": null,
+                "missing": true
+              },
+              {
+                "id": -127,
+                "value": {
+                  "references": {},
+                  "derived": true,
+                  "id": "__none__",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 0,
+                "value": {
+                  "references": {},
+                  "derived": true,
+                  "id": "__any__",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              }
+            ],
+            "class": "enum"
+          }
+        },
+        {
+          "derived": true,
+          "references": {
+            "description": "Thinking about the internet browsers you recognize, on which platforms are they available? Please check all that apply.",
+            "name": "Firefox Availability",
+            "format": {
+              "summary": {
+                "digits": 2
+              }
+            },
+            "dichotomous": true,
+            "discarded": false,
+            "alias": "platform:Firefox",
+            "is_subvar": null,
+            "header_order": null,
+            "view": null
+          },
+          "type": {
+            "subtype": {
+              "class": "variable"
+            },
+            "elements": [
+              {
+                "id": 1,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Windows PC/Laptop",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Firefox:platform_3_1",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "b396baaec41947fbb4821f5ae6993201",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 2,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Mac PC/Laptop",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Firefox:platform_3_2",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "199b608a0e9f442db4a4d969077a9f7e",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 3,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "iPhone",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Firefox:platform_3_3",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "ee61670b549a4b6281777d6417d8d084",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 4,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "iPad",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Firefox:platform_3_4",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "d2b07c8b734844ab95e2d46e8476c03c",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 5,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Android phone",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Firefox:platform_3_5",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "c5811a3c3a5c499d83039f3969b7deee",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 6,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Android tablet",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Firefox:platform_3_6",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "d00cbd883dd94ac3b552bf653353fefc",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 7,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Windows phone",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Firefox:platform_3_7",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "2ff64479909144adb7098e606641272d",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 8,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Windows tablet",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Firefox:platform_3_8",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "861a3d4a2f3743afb7caa38d79e5cb61",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 9,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Blackberry",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Firefox:platform_3_9",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "8647214d4bfd4209be4659c0df6244e4",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 10,
+                "value": {
+                  "references": {
+                    "description": "",
+                    "name": "Don't know",
+                    "format": null,
+                    "dichotomous": true,
+                    "discarded": null,
+                    "alias": "platform:Firefox:platform_3_10",
+                    "is_subvar": true,
+                    "header_order": null,
+                    "view": {
+                      "show_counts": false,
+                      "column_width": null,
+                      "include_missing": false,
+                      "show_numeric_values": false
+                    }
+                  },
+                  "derived": false,
+                  "id": "5477fa5985ed4a67b0bb02312a1700a5",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": -1,
+                "value": null,
+                "missing": true
+              },
+              {
+                "id": -127,
+                "value": {
+                  "references": {},
+                  "derived": true,
+                  "id": "__none__",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              },
+              {
+                "id": 0,
+                "value": {
+                  "references": {},
+                  "derived": true,
+                  "id": "__any__",
+                  "type": {
+                    "class": "boolean",
+                    "missing_rules": {},
+                    "missing_reasons": {
+                      "No Data": -1
+                    }
+                  }
+                },
+                "missing": false
+              }
+            ],
+            "class": "enum"
+          }
+        }
+      ],
+      "missing": 542343,
+      "measures": {
+        "count": {
+          "data": [
+            23961,
+            9295,
+            2954,
+            3015,
+            6112,
+            5840,
+            3999,
+            4532,
+            1672,
+            2380,
+            2938,
+            75,
+            27164,
+            9285,
+            8348,
+            2279,
+            2321,
+            3201,
+            3141,
+            2312,
+            2572,
+            1175,
+            867,
+            939,
+            30,
+            10881,
+            4943,
+            3441,
+            2322,
+            2143,
+            2358,
+            2280,
+            1804,
+            1867,
+            977,
+            588,
+            568,
+            24,
+            5904,
+            4881,
+            3423,
+            2095,
+            2362,
+            2311,
+            2281,
+            1773,
+            1883,
+            971,
+            566,
+            502,
+            21,
+            5783,
+            10751,
+            5046,
+            2281,
+            2306,
+            5609,
+            5137,
+            3370,
+            3583,
+            1494,
+            1257,
+            972,
+            48,
+            12622,
+            9940,
+            4859,
+            2211,
+            2240,
+            5060,
+            5359,
+            3324,
+            3590,
+            1470,
+            1124,
+            778,
+            39,
+            11602,
+            5501,
+            3059,
+            1701,
+            1718,
+            3111,
+            3128,
+            3304,
+            3283,
+            1290,
+            623,
+            403,
+            24,
+            6437,
+            6015,
+            3313,
+            1716,
+            1780,
+            3169,
+            3255,
+            3202,
+            3843,
+            1319,
+            665,
+            446,
+            21,
+            6990,
+            2316,
+            1572,
+            1030,
+            1033,
+            1440,
+            1454,
+            1319,
+            1369,
+            1215,
+            263,
+            192,
+            16,
+            2737,
+            1062,
+            415,
+            133,
+            122,
+            204,
+            187,
+            133,
+            157,
+            62,
+            2157,
+            612,
+            10,
+            3333,
+            2092,
+            726,
+            196,
+            198,
+            256,
+            225,
+            132,
+            175,
+            82,
+            608,
+            535175,
+            5,
+            3031,
+            33,
+            18,
+            5,
+            4,
+            9,
+            10,
+            7,
+            4,
+            3,
+            5,
+            11,
+            20,
+            47,
+            26173,
+            10526,
+            3367,
+            3390,
+            6787,
+            6416,
+            4375,
+            4957,
+            1872,
+            4914,
+            4121,
+            98,
+            33035
+          ],
+          "n_missing": 542343,
+          "metadata": {
+            "derived": true,
+            "references": {},
+            "type": {
+              "integer": true,
+              "missing_rules": {},
+              "class": "numeric",
+              "missing_reasons": {
+                "No Data": -1
+              }
+            }
+          }
+        }
+      },
+      "n": 575543,
+      "margins": {
+        "1": {
+          "data": [
+            26206,
+            10544,
+            3372,
+            3394,
+            6796,
+            6426,
+            4382,
+            4961,
+            1875,
+            4919,
+            4132,
+            118,
+            33082
+          ]
+        },
+        "0": {
+          "data": [
+            27239,
+            10911,
+            5928,
+            5804,
+            12670,
+            11641,
+            6461,
+            7011,
+            2753,
+            3343,
+            3036,
+            67,
+            33133
+          ]
+        },
+        "data": [
+          33200
+        ]
+      },
+      "element": "crunch:cube"
+    }
+  },
+  "element": "shoji:view"
+}
