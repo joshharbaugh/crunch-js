@@ -143,6 +143,10 @@ function HierarchicalVariablesFactory(iBuildHierarchicalOrder, iPerformVariableL
         iMutateHierarchicalOrder.removeGroup(this.order, group)
     }
 
+    HierarchicalVariables.prototype.removeVariable = function(variable) {
+        iMutateHierarchicalOrder.removeVariable(this.order, variable)
+    }
+
     /**
      * @method variables - the variables resource used to build this instance
      * @return Resource the shoji resource at /variables/
