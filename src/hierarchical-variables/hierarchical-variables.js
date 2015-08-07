@@ -53,7 +53,7 @@ function HierarchicalVariablesFactory(iBuildHierarchicalOrder, iPerformVariableL
             throw new Error('Please provide a privateVariables catalog')
         }
 
-        if(!this.byName('My Variables') && privateCatalog.length) {
+        if(!this.byName('My Variables') && privateCatalog.index.length) {
 
             privateCatalog.index.forEach(function(variableTuple) {
                 variableTuple.private = true
