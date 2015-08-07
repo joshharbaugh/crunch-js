@@ -32,6 +32,11 @@ function VariableCatalogListFactory(_, iGetVariableHash) {
                 return true
             }
         })
+        if (subordinate && !variableFound && catalogs.length === 0) {
+            // Means that the variable was not found on the other catalogs.
+            // So let's get it from the first (principal) catalog
+            variableFound = this.catalogs[0].index[id]
+        }
 
         return variableFound
     }

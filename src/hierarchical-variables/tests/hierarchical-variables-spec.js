@@ -190,6 +190,71 @@ describe('HierarchicalVariables',function(){
         })
     })
 
+    describe('When fetched for a nested group with a variable in both', function(){
+        /*
+        * This scenario contains one variable present in two nested groups.
+        * The original bug was that the variable-catalogs-list would only
+        *
+        * */
+        var sut;
+        beforeEach(buildModule)
+        beforeEach(function() {
+            sut = buildSut([{
+               "element":"shoji:catalog",
+               "self":"/api/datasets/123/joins/456/variables/",
+               "specification":"/api/specifications/variables/",
+               "description":"List of Variables of this dataset",
+               "index":{
+                  "myvar/":{
+                     "name":"Var1",
+                     "discarded":false,
+                     "alias":"economytrend",
+                     "is_subvar":null,
+                     "type":"categorical",
+                     "id":"economytrend",
+                     "description":"Overall, do you think the economy is getting better or worse?"
+                  }
+                  ,"myvar2/":{
+                     "name":"Var2",
+                     "discarded":false,
+                     "alias":"economytrend",
+                     "is_subvar":null,
+                     "type":"categorical",
+                     "id":"economytrend",
+                     "description":"Overall, do you think the economy is getting better or worse?"
+                  }
+               },
+               "views":{
+                  "hierarchical_order":"/api/datasets/123/variables/hierarchical/"
+               }
+            }], _.clone({
+               "element":"shoji:order",
+               "self":"/api/datasets/123/variables/hier/",
+               "description":"Hierarchical ordering of dataset variables",
+               "graph": [
+                  {
+                      "parent": [{
+                         "A" : [
+                            "../myvar/"
+                         ]},{
+                         "B" : [
+                            "../myvar/"
+                            ,"../myvar2/"
+                         ]
+                      }]
+                  }
+               ]
+            }, true))
+        })
+        it('should put the variable in both groups', function() {
+            sut.order.ordered.items[0].items[0].name.should.equal('A')
+            sut.order.ordered.items[0].items[1].name.should.equal('B')
+            sut.order.ordered.items[0].items[0].items[0].data.name.should.equal('Var1')
+            sut.order.ordered.items[0].items[1].items[0].data.name.should.equal('Var1')
+
+        })
+    })
+
     describe('when fetched for a subordinate dataset (joins)', function() {
         var sut
             ;
