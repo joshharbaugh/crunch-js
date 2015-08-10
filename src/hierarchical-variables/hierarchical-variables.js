@@ -46,15 +46,16 @@ function HierarchicalVariablesFactory(iBuildHierarchicalOrder, iPerformVariableL
             , privateHierarchicalOrder
             , privateGroup
             , index = []
+            , privateCatalog = this.privateVariables.principal()
             ;
 
         if(!this.privateVariables) {
             throw new Error('Please provide a privateVariables catalog')
         }
 
-        if(!this.byName('My Variables')) {
+        if(!this.byName('My Variables') && privateCatalog.index.length) {
 
-            this.privateVariables.principal().index.forEach(function(variableTuple) {
+            privateCatalog.index.forEach(function(variableTuple) {
                 variableTuple.private = true
                 index.push(variableTuple)
             })
@@ -139,8 +140,22 @@ function HierarchicalVariablesFactory(iBuildHierarchicalOrder, iPerformVariableL
         return iMutateHierarchicalOrder.createGroupWithParent(this.order, name, parent)
     }
 
+    HierarchicalVariables.prototype.removeItem = function(item) {
+        switch(item.hierarchicalType) {
+            case 'variable':
+                this.removeVariable(item)
+                break
+            default:
+                this.removeGroup(item)
+        }
+    }
+
     HierarchicalVariables.prototype.removeGroup = function(group) {
         iMutateHierarchicalOrder.removeGroup(this.order, group)
+    }
+
+    HierarchicalVariables.prototype.removeVariable = function(variable) {
+        iMutateHierarchicalOrder.removeVariable(this.order, variable)
     }
 
     /**
@@ -167,6 +182,12 @@ function HierarchicalVariablesFactory(iBuildHierarchicalOrder, iPerformVariableL
         ,'weights' : {
             get : function() {
                 return this.catalogs.principal().urls.weights
+            }
+        }
+
+        , empty : {
+            get : function() {
+                return this.length === 0
             }
         }
 
