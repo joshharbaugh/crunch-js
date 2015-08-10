@@ -22,7 +22,9 @@ module.exports = (function() {
                     }
                 });
                 $rootScope.$on('$destroy', function() {
-                    bus.publish('rootScope.destroying');
+                    bus.publish({
+                        event : 'rootScope.destroying'
+                    });
                     untap()
                 });
                 bus.subscribe('error', function(data, env) {
