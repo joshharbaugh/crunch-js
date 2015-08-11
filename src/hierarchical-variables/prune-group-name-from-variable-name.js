@@ -11,7 +11,7 @@ function PruneGroupNameFromVariableNameFactory(_) {
     function getInverseHierarchy(group) {
         var current = group
             , temp
-            , first
+            , first = null
             ;
 
         while(current) {
@@ -43,7 +43,6 @@ function PruneGroupNameFromVariableNameFactory(_) {
     return function(variableName, group) {
         var current = getInverseHierarchy(group)
             , pruned  = variableName
-            , groupName
             ;
 
         while(current) {

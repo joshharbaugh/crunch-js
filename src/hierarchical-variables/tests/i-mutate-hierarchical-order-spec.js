@@ -197,6 +197,28 @@ describe('iMutateHierarchicalOrder', function() {
         })
     })
 
+    describe('when removing a variable', function() {
+        var order
+            , variableToRemove
+            , variableParent
+            ;
+
+        beforeEach(function() {
+            order = buildHierarchicalOrder()
+            variableToRemove = iPerformVariableLookup.byId(order, '/bornagain')
+            variableParent = variableToRemove.parent
+            sut.removeVariable(order, variableToRemove)
+        })
+
+        it('should remove the variable from its group', function() {
+            expect(variableParent.containsItem(variableToRemove)).to.be.false
+        })
+
+        it('should remove the variable from the variable index', function() {
+            expect(iPerformVariableLookup.indexOf(order, variableToRemove.id)).to.equal(-1)
+        })
+    })
+
     describe('when removing a group', function() {
 
         describe('given the group is the root node', function() {

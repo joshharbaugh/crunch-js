@@ -86,15 +86,33 @@ function IFetchHierarchicalVariablesFactory(currentDataset, Shoji, $q, VariableC
     }
 
     function buildWithPrivateVariables(acc, privateVariables) {
-        return new HierarchicalVariables(acc.variableCatalogs
-            , acc.order
-            , privateVariables
-        )
+        var deferred = $q.defer()
+            ;
+
+        try {
+            deferred.resolve(new HierarchicalVariables(acc.variableCatalogs
+                , acc.order
+                , privateVariables
+            ))
+        } catch(e) {
+            deferred.reject(new Error('invalid hierarchical variables'))
+        }
+
+        return deferred.promise
     }
 
     function build(acc, order) {
-        return new HierarchicalVariables(acc.variableCatalogs
-            , order)
+        var deferred = $q.defer()
+            ;
+
+        try {
+            deferred.resolve(new HierarchicalVariables(acc.variableCatalogs
+                , order))
+        } catch(e) {
+            deferred.reject(new Error('invalid hierarchical variables'))
+        }
+
+        return deferred.promise
     }
 
     /**

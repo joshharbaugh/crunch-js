@@ -51,10 +51,10 @@ function getIThrottleHierarchicalVariablesFetching($delegate, $log, $q, $timeout
                     $timeout(flush, 1000)
                     delete pendingPromises[datasetId]
                     return result
-                })
-                .catch(function() {
+                }, function(e) {
                     flush()
                     delete pendingPromises[datasetId]
+                    return $q.reject(e)
                 })
 
             pendingPromises[datasetId] = promise
