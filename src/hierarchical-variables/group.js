@@ -71,6 +71,28 @@ function GroupFactory(_, iCalculateItemLevel) {
         return removed[0]
     }
 
+    Group.prototype.byId = function(id) {
+        var itemFound = null
+            ;
+
+        this.items.some(function(item) {
+            var matches = item.self === id
+                ;
+
+            if(matches) {
+                itemFound = item
+            }
+
+            return matches
+        })
+
+        return itemFound
+    }
+
+    Group.prototype.indexOf = function(item) {
+        return this.items.indexOf(item)
+    }
+
     Group.prototype.containsItem = function(item) {
         return this.items.indexOf(item) > -1
     }
@@ -80,7 +102,7 @@ function GroupFactory(_, iCalculateItemLevel) {
     }
 
     Group.prototype.findItemNamed = function(name) {
-        var itemFound
+        var itemFound = null
             ;
 
         this.items.some(function(item) {

@@ -2,10 +2,7 @@
 
 module.exports = TraversableFactory
 
-TraversableFactory.$inject = [
-]
-
-function TraversableFactory(_){
+function TraversableFactory(){
     function isFunction(functionToCheck) {
         var getType = {};
         return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
@@ -35,7 +32,7 @@ function TraversableFactory(_){
             this.pctOverlap = 1
         } else {
             //this leaves the last half of the previous page on the next page
-            this.pctOverlap = (cfg.pctOverlap || .5);
+            this.pctOverlap = (cfg.pctOverlap || 0.5);
         }
     }
     Traversable.prototype._updateTraversal = function(){
@@ -78,6 +75,10 @@ function TraversableFactory(_){
         }
         this.page = (this.page - 1)
         this._updateTraversal()
+    }
+
+    Traversable.prototype.pageForIndex = function(index) {
+        return Math.floor((index / (this.pageLength * this.pctOverlap)))
     }
 
     /**
@@ -160,11 +161,10 @@ function TraversableFactory(_){
      * related to traversal
      * @note that this copies over references to the source object
      **/
-    Traversable.prototype.augment = function(traversable, listProperty) {
+    Traversable.prototype.augment = function(traversable) {
         var args = [].slice.call(arguments)
         var self = Traversable.prototype.interpret.apply(this,args)
 
-        var funcs = []
         //this augments behavior from this instance to the thing you want traversable
         for(var k in self) {
             var prop  = self[k]

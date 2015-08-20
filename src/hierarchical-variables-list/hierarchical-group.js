@@ -122,6 +122,7 @@ function HierarchicalGroupFactory(machina, HierarchicalVariable, Traversable) {
 
             this._traversable.augment(this, 'items')
         }
+
         ,states:{
             uninitialized: {
                 initialize: function(cfg){
@@ -143,6 +144,22 @@ function HierarchicalGroupFactory(machina, HierarchicalVariable, Traversable) {
                 ,'collapse-items' : function() {
                     this._collapseItems()
                 }
+                ,'go-to' : function(itemId) {
+                    var index = this.group.indexOf(this.group.byId(itemId))
+
+                    if(index > -1) {
+                        this.handle('expand')
+                        this.openAt(this.pageForIndex(index))
+                        if(this.parent) {
+                            this.parent.handle('go-to', this.self)
+                        }
+                    } else {
+                        this._createChildren()
+                        this.items.forEach(function(item) {
+                            item.handle('go-to', itemId)
+                        })
+                    }
+                }
             }
             ,expanded: {
                 _onEnter : function() {
@@ -156,6 +173,20 @@ function HierarchicalGroupFactory(machina, HierarchicalVariable, Traversable) {
                 }
                 ,'collapse-items' : function() {
                     this._collapseItems()
+                }
+                , 'go-to' : function(itemId) {
+                    var index = this.group.indexOf(this.group.byId(itemId))
+
+                    if(index > -1) {
+                        this.openAt(this.pageForIndex(index))
+                        if(this.parent) {
+                            this.parent.handle('go-to', this.self)
+                        }
+                    } else {
+                        this.items.forEach(function(item) {
+                            item.handle('go-to', itemId)
+                        })
+                    }
                 }
             }
         }
