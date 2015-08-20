@@ -78,7 +78,7 @@ function TraversableFactory(){
     }
 
     Traversable.prototype.pageForIndex = function(index) {
-        return Math.floor((index / (this.pageLength * this.pctOverlap)))
+        return Math.floor((index / (this.pageLength * this.pctOverlap))) - 1
     }
 
     /**
