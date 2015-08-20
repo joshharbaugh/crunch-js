@@ -30,11 +30,11 @@ describe('pruneGroupNameFromVariableName', function() {
                 ;
 
             beforeEach(function() {
-                pruned = sut('Unaided Awareness - Digital Content', { name : 'Unaided Awareness' })
             })
 
             it('should remove the group name along with spaces and - symbol', function() {
-                pruned.should.be.equal('Digital Content')
+                sut('Unaided Awareness - Digital Content', { name : 'Unaided Awareness' }).should.be.equal('Digital Content')
+                sut('Unaided Awareness | Digital Content', { name : 'Unaided Awareness' }).should.be.equal('Digital Content')
             })
         })
 

@@ -26,7 +26,7 @@ function PruneGroupNameFromVariableNameFactory(_) {
 
     function prune(variableName, groupName) {
         var pruned = variableName
-            , pattern = new RegExp('^' + cleanGroupName(groupName) + '[-\\s]+', 'gi')
+            , pattern = new RegExp('^' + cleanGroupName(groupName) + '[-|\\s]+', 'gi')
             ;
 
         if(_.isString(groupName)) {
