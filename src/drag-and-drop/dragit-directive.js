@@ -41,7 +41,7 @@ function DragItDirective(dragAndDrop, $log, $timeout){
                     e.dataTransfer.setData('application/json', data)
                 } catch(error) {
                     //IE does not support complex data payload
-                    e.dataTransfer.setData('text', JSON.stringify(data))
+                    e.dataTransfer.setData('text', 'no data')
                 }
 
                 scope.$apply(function(){
