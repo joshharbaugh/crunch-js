@@ -71,6 +71,11 @@ function HierarchicalVariablesListFactory(
                 , 'hvl.behaviors.update' : function(e, behaviors) {
                     this.applyBehaviors(behaviors)
                 }
+
+                , 'go-to' : function(itemId) {
+                    this.root.handle('go-to', itemId)
+                    this.emit('navigatedTo', itemId)
+                }
             }
 
             , refreshing : {
