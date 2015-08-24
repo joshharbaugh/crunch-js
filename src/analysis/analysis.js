@@ -304,6 +304,14 @@ function AnalysisFactory(_
                 return this.variables.count()
             }
         }
+
+        , displaySettings : {
+            get : function() {
+                return this.data &&
+                       this.data.analysis &&
+                       this.data.analysis.display_settings
+            }
+        }
     })
 
     var SavedAnalysis = Analysis.extend({
@@ -344,8 +352,6 @@ function AnalysisFactory(_
                             ;
 
                         self.data = data
-                        self.displaySettings = data.analysis.display_settings
-
                         promises.push(self.variables.add(data.variables))
 
                         if (data.measureVariables){
