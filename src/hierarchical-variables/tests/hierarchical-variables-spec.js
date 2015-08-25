@@ -319,6 +319,20 @@ describe('HierarchicalVariables',function(){
         })
     })
 
+    describe('when getting an item by alias', function() {
+        var sut
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(function() {
+            sut = buildSut([variablesFixture()], _.clone(fixtures.hierarchicalGrouped, true))
+        })
+
+        it('should return the first item that matches the given name', function() {
+            expect(sut.byAlias('leadershipMatrix').name).to.equal('Leadership array')
+        })
+    })
+
     describe('when getting the first variable in the hierarchy', function() {
         var sut
             ;

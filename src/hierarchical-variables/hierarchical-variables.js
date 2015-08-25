@@ -104,6 +104,10 @@ function HierarchicalVariablesFactory(iBuildHierarchicalOrder, iPerformVariableL
         return iPerformVariableLookup.byName(this.order, itemName)
     }
 
+    HierarchicalVariables.prototype.byAlias = function(itemAlias) {
+        return iPerformVariableLookup.byAlias(this.order, itemAlias)
+    }
+
     HierarchicalVariables.prototype.fromCatalog = function(variableId) {
         return iPerformVariableLookup.fromCatalog(this.catalogs.principal(), variableId)
     }
