@@ -293,6 +293,15 @@ function AnalysisFactory(_
             }
         }
 
+        , columnVariable : {
+            get : function() {
+                var count = this.variables.count()
+                    ;
+
+                return count > 1 ? this.variables.at(count - 1) : null
+            }
+        }
+
         , dimension : {
             get : function() {
                 return this.data && this.data.cube.dimension
