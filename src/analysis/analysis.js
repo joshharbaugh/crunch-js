@@ -293,6 +293,15 @@ function AnalysisFactory(_
             }
         }
 
+        , columnVariable : {
+            get : function() {
+                var count = this.variables.count()
+                    ;
+
+                return count > 1 ? this.variables.at(count - 1) : null
+            }
+        }
+
         , dimension : {
             get : function() {
                 return this.data && this.data.cube.dimension
@@ -302,6 +311,14 @@ function AnalysisFactory(_
         , variablesCount : {
             get : function() {
                 return this.variables.count()
+            }
+        }
+
+        , displaySettings : {
+            get : function() {
+                return this.data &&
+                       this.data.analysis &&
+                       this.data.analysis.display_settings
             }
         }
     })
@@ -344,8 +361,6 @@ function AnalysisFactory(_
                             ;
 
                         self.data = data
-                        self.displaySettings = data.analysis.display_settings
-
                         promises.push(self.variables.add(data.variables))
 
                         if (data.measureVariables){
