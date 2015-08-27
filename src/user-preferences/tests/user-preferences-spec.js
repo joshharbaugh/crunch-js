@@ -14,15 +14,6 @@ module.exports = (function() {
                     send: commands.push.bind(commands)
                 }
             })
-            mod.factory('iResourceUser', function($q){
-                return {
-                    current: function(){
-                        return $q.when({
-                            preferences: {}
-                        })
-                    }
-                }
-            })
 
             angular.mock.module('userpref.test', shoji.name)
         }
@@ -37,7 +28,15 @@ module.exports = (function() {
             })
         }
 
-        describe.only('when getting a preference', function() {
+        beforeEach(function(){
+            inject(function(userPreferences){
+                userPreferences.init({
+                    my_pref: true
+                })
+            })
+        })
+
+        describe('when getting a preference', function() {
             it('should have the correct value for individual', function() {
                 inject(function(userPreferences){
                     userPreferences.get('my_pref').should.equal(true)
@@ -55,6 +54,7 @@ module.exports = (function() {
                         ,prefName: 'my_pref'
                         ,value: 123
                     })
+                    userPreferences.get('my_pref').should.equal(123)
                 })
             })
         })
