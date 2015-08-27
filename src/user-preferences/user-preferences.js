@@ -3,14 +3,18 @@
 module.exports = UserPreferencesFactory
 
 UserPreferencesFactory.$inject = [
-    ,'bus'
-    ,'iResourceUser'
+    'bus'
 ]
 
-function UserPreferencesFactory(bus, iResourceUser) {
+function UserPreferencesFactory(bus) {
+    var userPrefs = {}
 
     return {
-        set: function(prefName, value){
+        init: function(prefs){
+            userPrefs  = prefs || {}
+        }
+        ,set: function(prefName, value){
+            userPrefs[prefName] = value
             bus.send({
                 command: 'setUserPreferences',
                 prefName: prefName,
@@ -18,10 +22,7 @@ function UserPreferencesFactory(bus, iResourceUser) {
             })
         }
         ,get: function(prefName){
-            // current() takes care of caching
-            return iResourceUser.current().then(function(user){
-                return user.preferences[prefName]
-            })
+            return userPrefs[prefName]
         }
     }
 }
