@@ -12,7 +12,6 @@ function buildModule(moduleName, cfg) {
         return _
     })
     mod.factory('userPreferences', require('./user-preferences'));
-    mod.factory('iFetchUserPreferences', require('./i-fetch-user-preferences'))
     mod.factory('setUserPreferencesHandler', require('./set-user-preferences-handler'))
     return mod
 }
