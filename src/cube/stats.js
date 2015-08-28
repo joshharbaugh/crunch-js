@@ -87,6 +87,9 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
         if(cube.dimension > 2) {
             throw new Error('Can only calculate missing for a 2d slice')
         }
+        if(cube.hasOwnProperty('mean')){
+            return cube.nMissing
+        }
         var data = cube.count.rawData
         var indices = [],
             types = [],

@@ -53,11 +53,11 @@ module.exports = (function() {
             var prefValue = 'abc'
 
             it('should update the API user preferences and raise an event', function(){
-                inject(function(setUserPreferencesHandler, Shoji, $httpBackend) {
-                    Shoji.API = Shoji('/api/');
+                inject(function(setUserPreferencesHandler, $httpBackend) {
                     $httpBackend.expectPATCH(userUrl).respond(204, {
                         entity: 'shoji:entity', body: {
                             preferences: {
+                                existing: 'pref',
                                 my_pref: prefValue
                             }
                         }
@@ -69,19 +69,23 @@ module.exports = (function() {
                         element: 'shoji:entity',
                         description: 'nope',
                         body: {
-                            preferences: {}
+                            preferences: {
+                                existing: 'pref'
+                            }
                         }
                     }, {
                         'ALLOW': 'PUT, PATCH'
                     });
                     setUserPreferencesHandler({
                         command: 'setUserPreferences',
-                        preferences: {'my_pref': prefValue}
+                        value: prefValue,
+                        prefName: 'my_pref'
                     });
                     $httpBackend.flush();
                     events[0].should.eql({
                         event: 'preferences.saved',
-                        preferences: {'my_pref': prefValue}
+                        prefName: 'my_pref',
+                        value: prefValue
                     })
                 })
             })
