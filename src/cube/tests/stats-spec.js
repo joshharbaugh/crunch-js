@@ -7,6 +7,7 @@ var mocks = require('angular-mocks')
     , mrMissing = require('./cube-mr-x-mr')
     , mrMissingUnivariate = require('./cube-mr')
     , arrayWithMissingCat = require('./cube-array-mis')
+    , singleMean = require('./single-mean')
     ;
 
 describe('cube stats', function(){
@@ -75,6 +76,20 @@ describe('cube stats', function(){
         })
         it('mr by mr', function(){
             sut.missing(rawcube).should.equal(1)
+        })
+    })
+    describe('missingness', function(){
+        beforeEach(function(){
+            inject(function(cube, stats, show){
+                cube.fromCrCube(singleMean.value).then(function(it){
+                    rawcube = it
+                    sut = stats
+                })
+            })
+            scope.$digest()
+        })
+        it('single mean', function(){
+            sut.missing(rawcube).should.equal(10)
         })
     })
     describe('margins and percentaging', function(){
