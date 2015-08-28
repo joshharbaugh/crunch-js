@@ -42,25 +42,27 @@ function CubeFactory($q, _, dimension, measure) {
     }
 
     Cube.prototype.getSliceAtIndex = function(index) {
+        // get the slice at a **valid** index
+        // numeric binned ones put a Missing (?:-1) index at 0
         var firstSlice
             , measures = {}
             , measureTypes = ['count', 'mean']
             , self = this
             ;
 
+        var validIndex = this._dimensions[0].validSubscripts[index]
         measureTypes.forEach(function(measure) {
             var slices
                 ;
-
             if(measure in self) {
                 slices = self[measure].slices
 
-                if(index >= slices.length || index < 0) {
+                if(validIndex >= slices.length || validIndex < 0) {
                     throw new Error('Invalid slice index')
                 }
 
-                measures[measure] = slices[index]
-                firstSlice = slices[index]
+                measures[measure] = slices[validIndex]
+                firstSlice = slices[validIndex]
             }
         })
 
@@ -125,13 +127,14 @@ function CubeFactory($q, _, dimension, measure) {
             })
         })
 
-        result = new Cube(measures, meta, raw.margins)
+        result = new Cube(measures, meta)
 
         return $q.when(result)
     }
 
     function gatherMetadata(result, dims, meta) {
-        meta.nMissing = result.measures[meta.measures[0]].n_missing || 0
+        var qi = result.measures.hasOwnProperty('mean') ? 'mean' : 'count'
+        meta.nMissing = result.measures[qi].n_missing || 0
             // Not yet clear use case where other measures different n_missing
         meta.n = result.n - meta.nMissing
 
