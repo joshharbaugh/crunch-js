@@ -50,7 +50,8 @@ function IBuildHierarchicalOrderFactory(HierarchicalOrder
                 previousItems = typeof previousItems === 'number' ?
                     { 'main' : previousItems } :
                     previousItems
-                previousItems[item.subordinateDataset] = numericIndex
+                previousItems[item.subordinateDataset ||
+                              ('main-' + (Object.keys(previousItems).length + 1))] = numericIndex
                 orderedIndex.set(item.id, previousItems)
             } else {
                 orderedIndex.set(item.id, numericIndex)
@@ -75,8 +76,11 @@ function IBuildHierarchicalOrderFactory(HierarchicalOrder
                 , variable
                 ;
 
-            //Case where two variables in the hierarchy have the same id
-            if(orderedIndex.has(varb.id)) {
+            /**Case where two variables in the hierarchy have the same id.
+             * It could be a subordinate variable. If it isn't (getVariable returns null)
+             * use the existing variable
+             */
+            if(orderedIndex.has(varb.id) && variables.getVariable(url, true)) {
                 varb = variables.getVariable(url, true)
             }
 
