@@ -1,0 +1,30 @@
+{
+    "function": "each",
+    "args": [{
+        "value": "COLS"
+    }, [{
+        "variable": "/api/datasets/123/variables/col1/"
+    }, {
+        "variable": "/api/datasets/123/variables/col2/"
+    }]],
+    "block": {
+        "function": "cube",
+        "args": [
+            [
+                {"variable": "/api/datasets/123/variables/row/"},
+                {"variable": "COLS"}
+            ],
+            {
+                "map": {
+                    "count": {
+                        "function": "cube_count",
+                        "args": []
+                    }
+                }
+            },
+            {
+                "value": null
+            }
+        ]
+    }
+}
