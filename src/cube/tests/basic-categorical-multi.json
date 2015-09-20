@@ -1,0 +1,273 @@
+{
+    "element": "shoji:view",
+    "self": "/api/datasets/123/cube/?query=%7B%0A%20%20%20%20%22function%22%3A%20%22each%22%2C%0A%20%20%20%20%22args%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%22value%22%3A%20%22COLS%22%0A%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22variable%22%3A%20%22https%3A%2F%2Fstable.crunch.io%2Fapi%2Fdatasets%2F123%2Fvariables%2F5bc524e25cf548559575c0e016aa1edc%2F%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22variable%22%3A%20%22https%3A%2F%2Fstable.crunch.io%2Fapi%2Fdatasets%2F123%2Fvariables%2F772559e879734d5dbda31d67bb0e7a2c%2F%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20%5D%2C%0A%20%20%20%20%22block%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%22function%22%3A%20%22cube%22%2C%0A%20%20%20%20%20%20%20%20%22args%22%3A%20%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20%5B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22variable%22%3A%20%22https%3A%2F%2Fstable.crunch.io%2Fapi%2Fdatasets%2F123%2Fvariables%2Frow%2F%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22variable%22%3A%20%22COLS%22%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%5D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22map%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22count%22%3A%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22function%22%3A%20%22cube_count%22%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22args%22%3A%20%5B%5D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%2C%0A%20%20%20%20%20%20%20%20%20%20%20%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%22value%22%3A%20null%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%5D%0A%20%20%20%20%7D%0A%7D",
+    "value": [{
+        "query": {
+            "measures": {
+                "map": {
+                    "count": {
+                        "function": "cube_count",
+                        "args": []
+                    }
+                }
+            },
+            "weight": "/api/datasets/123/variables/w/",
+            "dimensions": [{
+                "variable": "/api/datasets/123/variables/row/"
+            }, {
+                "variable": "COLS"
+            }],
+            "filters": []
+        },
+        "result": {
+            "element": "crunch:cube",
+            "measures": {
+                "count": {
+                    "data": [156, 129, 0, 0, 0, 197, 199, 0, 0, 0, 101, 141, 0, 0, 0, 2, 4, 0, 0, 0, 26, 42, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    "n_missing": 3,
+                    "metadata": {
+                        "references": {},
+                        "derived": true,
+                        "type": {
+                            "integer": true,
+                            "class": "numeric",
+                            "missing_reasons": {
+                                "No Data": -1
+                            },
+                            "missing_rules": {}
+                        }
+                    }
+                }
+            },
+            "dimensions": [{
+                "references": {
+                    "discarded": false,
+                    "alias": "ShutdownBlame",
+                    "name": "ShutdownBlame",
+                    "header_order": 0,
+                    "description": "If President Obama and the Republicans in Congress do not reach a budget agreement in time to avoid a shutdown of the fe"
+                },
+                "derived": false,
+                "type": {
+                    "ordinal": false,
+                    "class": "categorical",
+                    "categories": [{
+                        "numeric_value": 1,
+                        "id": 1,
+                        "name": "President Obama",
+                        "missing": false
+                    }, {
+                        "numeric_value": 2,
+                        "id": 2,
+                        "name": "Republicans in Congress",
+                        "missing": false
+                    }, {
+                        "numeric_value": 3,
+                        "id": 3,
+                        "name": "Both",
+                        "missing": false
+                    }, {
+                        "numeric_value": 4,
+                        "id": 4,
+                        "name": "Neither",
+                        "missing": false
+                    }, {
+                        "numeric_value": 5,
+                        "id": 5,
+                        "name": "Not sure",
+                        "missing": false
+                    }, {
+                        "numeric_value": 8,
+                        "id": 8,
+                        "name": "Skipped",
+                        "missing": true
+                    }, {
+                        "numeric_value": 9,
+                        "id": 9,
+                        "name": "Not Asked",
+                        "missing": true
+                    }, {
+                        "numeric_value": null,
+                        "id": -1,
+                        "name": "No Data",
+                        "missing": true
+                    }]
+                }
+            }, {
+                "references": {
+                    "discarded": false,
+                    "alias": "Gender",
+                    "name": "Gender",
+                    "header_order": 4,
+                    "description": "Are you male or female?"
+                },
+                "derived": false,
+                "type": {
+                    "ordinal": false,
+                    "class": "categorical",
+                    "categories": [{
+                        "numeric_value": 1,
+                        "id": 1,
+                        "name": "Male",
+                        "missing": false
+                    }, {
+                        "numeric_value": 2,
+                        "id": 2,
+                        "name": "Female",
+                        "missing": false
+                    }, {
+                        "numeric_value": 8,
+                        "id": 8,
+                        "name": "Skipped",
+                        "missing": true
+                    }, {
+                        "numeric_value": 9,
+                        "id": 9,
+                        "name": "Not Asked",
+                        "missing": true
+                    }, {
+                        "numeric_value": null,
+                        "id": -1,
+                        "name": "No Data",
+                        "missing": true
+                    }]
+                }
+            }],
+            "n": 1000
+        }
+    }, {
+        "query": {
+            "measures": {
+                "map": {
+                    "count": {
+                        "function": "cube_count",
+                        "args": []
+                    }
+                }
+            },
+            "weight": "/api/datasets/123/variables/w/",
+            "dimensions": [{
+                "variable": "/api/datasets/123/variables/row/"
+            }, {
+                "variable": "COLS"
+            }],
+            "filters": []
+        },
+        "result": {
+            "element": "crunch:cube",
+            "measures": {
+                "count": {
+                    "data": [31, 83, 105, 66, 0, 58, 121, 155, 62, 0, 30, 74, 99, 39, 0, 3, 1, 2, 0, 0, 27, 18, 17, 5, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                    "n_missing": 4,
+                    "metadata": {
+                        "references": {},
+                        "derived": true,
+                        "type": {
+                            "integer": true,
+                            "class": "numeric",
+                            "missing_reasons": {
+                                "No Data": -1
+                            },
+                            "missing_rules": {}
+                        }
+                    }
+                }
+            },
+            "dimensions": [{
+                "references": {
+                    "discarded": false,
+                    "alias": "ShutdownBlame",
+                    "name": "ShutdownBlame",
+                    "header_order": 0,
+                    "description": "If President Obama and the Republicans in Congress do not reach a budget agreement in time to avoid a shutdown of the fe"
+                },
+                "derived": false,
+                "type": {
+                    "ordinal": false,
+                    "class": "categorical",
+                    "categories": [{
+                        "numeric_value": 1,
+                        "id": 1,
+                        "name": "President Obama",
+                        "missing": false
+                    }, {
+                        "numeric_value": 2,
+                        "id": 2,
+                        "name": "Republicans in Congress",
+                        "missing": false
+                    }, {
+                        "numeric_value": 3,
+                        "id": 3,
+                        "name": "Both",
+                        "missing": false
+                    }, {
+                        "numeric_value": 4,
+                        "id": 4,
+                        "name": "Neither",
+                        "missing": false
+                    }, {
+                        "numeric_value": 5,
+                        "id": 5,
+                        "name": "Not sure",
+                        "missing": false
+                    }, {
+                        "numeric_value": 8,
+                        "id": 8,
+                        "name": "Skipped",
+                        "missing": true
+                    }, {
+                        "numeric_value": 9,
+                        "id": 9,
+                        "name": "Not Asked",
+                        "missing": true
+                    }, {
+                        "numeric_value": null,
+                        "id": -1,
+                        "name": "No Data",
+                        "missing": true
+                    }]
+                }
+            }, {
+                "references": {
+                    "discarded": false,
+                    "alias": "Age4",
+                    "name": "Age4",
+                    "header_order": 13,
+                    "description": "4 Category Age"
+                },
+                "derived": false,
+                "type": {
+                    "ordinal": false,
+                    "class": "categorical",
+                    "categories": [{
+                        "numeric_value": 1,
+                        "id": 1,
+                        "name": "18-29",
+                        "missing": false
+                    }, {
+                        "numeric_value": 2,
+                        "id": 2,
+                        "name": "30-44",
+                        "missing": false
+                    }, {
+                        "numeric_value": 3,
+                        "id": 3,
+                        "name": "45-64",
+                        "missing": false
+                    }, {
+                        "numeric_value": 4,
+                        "id": 4,
+                        "name": "65+",
+                        "missing": false
+                    }, {
+                        "numeric_value": null,
+                        "id": -1,
+                        "name": "No Data",
+                        "missing": true
+                    }]
+                }
+            }],
+            "n": 1000
+        }
+    }]
+}
