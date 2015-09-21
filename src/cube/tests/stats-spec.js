@@ -448,14 +448,10 @@ describe('cube stats', function(){
                 [-0.02517234950588154,-0.00012512580860102318,-0.08747258764091392,
                 0.6827938119048738,0.4670515105710662,6.483433470094724e-7]])
         })
-        it.skip('should do it for cell percentages', function(){
-            var out = unpack(sut.getPvalues(rawcube, undefined))
-            out.should.eql([[0.3679244119521772,0.10515594786192306,
-                0.46385589231963187,0.8476251509412416,
-                0.729435101189718,0.016681167114846573],
-                [0.25099766339570695,0.05319281231819595,
-                0.4347304395032887,0.8438341205266566,
-                0.7260451461165482,0.02975816673809084]])
+        it('should do it for an arbitrary column', function(){
+            var comparison = [.5, .5, .5, .5, .5, .5]
+            console.log(unpack(sut.propTable(rawcube, 1)))
+            var out = unpack(sut.getPvalues(rawcube, 1, comparison))
         })
     })
 })

@@ -131,6 +131,11 @@ function CubeFactory($q, _, dimension, measure) {
 
         return $q.when(result)
     }
+    Cube.fromMultiCube = function(raw) {
+        return $q.when(raw.map(function(subcube){
+            return this.fromCrCube(subcube)
+        }, this))
+    }
 
     function gatherMetadata(result, dims, meta) {
         var qi = result.measures.hasOwnProperty('mean') ? 'mean' : 'count'
