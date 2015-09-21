@@ -162,7 +162,10 @@ describe('Shoji', function() {
         beforeEach(function() {
             sut = Shoji(catalogFixture.self)
             newResource = {
-                name : 'new resource'
+                element : 'shoji:entity'
+                , body : {
+                    name : 'new resource'
+                }
             }
         })
 
@@ -186,6 +189,40 @@ describe('Shoji', function() {
                 expect(newResource.self).to.equal('/variables/self')
             })
             httpSupport.flushAndCheckExpectations()
+        })
+    })
+
+    context('When posting to a shoji object', function() {
+        var sut
+            , newResource
+            , transformedResource
+            ;
+
+        context('given the payload doesnt contain an element and body parts', function() {
+
+            beforeEach(function() {
+                sut = Shoji(catalogFixture.self)
+                newResource = {
+                    name : 'new resource'
+                }
+
+                transformedResource = {
+                    element : 'shoji:entity'
+                    , body : {
+                        name : 'new resource'
+                    }
+                }
+            })
+
+            it('should enclose the data sent in a body element and add the element attribute', function() {
+                httpSupport.expectPOST(catalogFixture.self, transformedResource, {
+                    Location : '/variables/self'
+                })
+                sut.save({
+                    data : newResource
+                })
+                httpSupport.flushAndCheckExpectations()
+            })
         })
     })
 
