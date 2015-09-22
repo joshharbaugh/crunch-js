@@ -6,11 +6,13 @@ AnalysisGeneratorFactory.$inject = [
     'lodash'
     , 'iGenerateAnalysisFromCube'
     , 'iGenerateAnalysisFromSaved'
+    , 'iGenerateMultitableFromCube'
 ]
 
 function AnalysisGeneratorFactory(_
     , iGenerateAnalysisFromCube
-    , iGenerateAnalysisFromSaved) {
+    , iGenerateAnalysisFromSaved
+    , iGenerateMultitableFromCube) {
 
     return {
         getGenerator : function(params) {
