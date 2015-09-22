@@ -4,6 +4,10 @@ var mocks = require('angular-mocks')
     , mainMod = require('../index')
     , fixtures = require('./fixtures')
     , show = require('ndarray-show')
+    , mrMissing = require('./cube-mr-x-mr')
+    , mrMissingUnivariate = require('./cube-mr')
+    , arrayWithMissingCat = require('./cube-array-mis')
+    , singleMean = require('./single-mean')
     ;
 
 describe('cube stats', function(){
@@ -32,6 +36,62 @@ describe('cube stats', function(){
     ;
     beforeEach(buildModule)
     beforeEach(createDeps)
+    describe('missing values, two multiple response vars', function(){
+        beforeEach(function(){
+            inject(function(cube, stats, show){
+                cube.fromCrCube(mrMissing.value).then(function(it){
+                    rawcube = it
+                    sut = stats
+                })
+            })
+            scope.$digest()
+        })
+        it('mr by mr', function(){
+            sut.missing(rawcube).should.equal(542343)
+        })
+    })
+    describe('missing values, one multiple response var', function(){
+        beforeEach(function(){
+            inject(function(cube, stats, show){
+                cube.fromCrCube(mrMissingUnivariate.value).then(function(it){
+                    rawcube = it
+                    sut = stats
+                })
+            })
+            scope.$digest()
+        })
+        it('mr by mr', function(){
+            sut.missing(rawcube).should.equal(538211)
+        })
+    })
+    describe('missing values, array', function(){
+        beforeEach(function(){
+            inject(function(cube, stats, show){
+                cube.fromCrCube(arrayWithMissingCat.value).then(function(it){
+                    rawcube = it
+                    sut = stats
+                })
+            })
+            scope.$digest()
+        })
+        it('mr by mr', function(){
+            sut.missing(rawcube).should.equal(1)
+        })
+    })
+    describe('missingness', function(){
+        beforeEach(function(){
+            inject(function(cube, stats, show){
+                cube.fromCrCube(singleMean.value).then(function(it){
+                    rawcube = it
+                    sut = stats
+                })
+            })
+            scope.$digest()
+        })
+        it('single mean', function(){
+            sut.missing(rawcube).should.equal(10)
+        })
+    })
     describe('margins and percentaging', function(){
         beforeEach(function(){
             inject(function(cube, stats, show){
@@ -56,6 +116,7 @@ describe('cube stats', function(){
             percentageMargin.should.eql([[0.521],[0.479]])
             var percentageMargin = unpack(sut.propTable(sut.margin(rawcube,1)))
             percentageMargin.should.eql([[0.025,0.135,0.331,0.16,0.144,0.205]])
+            sut.missing(rawcube).should.equal(0)
         })
         it('categorical percentaging', function(){
             var row = unpack(sut.propTable(rawcube, 0))
@@ -134,6 +195,9 @@ describe('cube stats', function(){
             row.should.eql([[0,1],[NaN,NaN],[NaN,NaN]]) // from div/0 on margin
             cell.should.eql([[0,0.25],[0,0],[0,0]])
         })
+        it('missing', function(){
+            sut.missing(rawcube).should.equal(0)
+        })
     })
     describe('categorical array', function(){
         beforeEach(function(){
@@ -161,6 +225,9 @@ describe('cube stats', function(){
             col.should.eql([[0.25,0.75],[0.75,0.25],[0.75,0.25]])
             var cell = unpack(sut.propTable(rawcube))
             cell.should.eql([[0.25,0.75],[0.75,0.25],[0.75,0.25]])
+        })
+        it('missing', function(){
+            sut.missing(rawcube).should.equal(0)
         })
     })
     describe('univariate multiple response', function(){
@@ -190,6 +257,9 @@ describe('cube stats', function(){
             var cell = unpack(sut.propTable(rawcube))
             cell.should.eql([[0.25],[0],[0]])
         })
+        it('missing', function(){
+            sut.missing(rawcube).should.equal(0)
+        })
     })
     describe('another array', function(){
         beforeEach(function(){
@@ -209,6 +279,9 @@ describe('cube stats', function(){
             col.should.eql([[ 3,3 ]])
             var total = unpack(sut.margin(rawcube))
             total.should.eql([[3]])
+        })
+        it('missing', function(){
+            sut.missing(rawcube).should.equal(1)
         })
     })
     describe('datetime univariate -- some dataset "wave" var', function(){
@@ -272,6 +345,9 @@ describe('cube stats', function(){
             col.should.eql(ans)
             cell.should.eql(ans)
         })
+        it('missing', function(){
+            sut.missing(rawcube).should.equal(0)
+        })
     })
     describe('datetime x categorical', function(){
         beforeEach(function(){
@@ -315,6 +391,9 @@ describe('cube stats', function(){
             row[0].should.eql([0.49595874700730885,0.5040412529926911])
             col[0].should.eql([0.006910511933871991,0.007332360038342683])
             cell[0].should.eql([0.0035296850891007505,0.0035872074153654203])
+        })
+        it('missing', function(){
+            sut.missing(rawcube).should.equal(0)
         })
     })
     describe('differences from margins', function(){
@@ -369,14 +448,10 @@ describe('cube stats', function(){
                 [-0.02517234950588154,-0.00012512580860102318,-0.08747258764091392,
                 0.6827938119048738,0.4670515105710662,6.483433470094724e-7]])
         })
-        it.skip('should do it for cell percentages', function(){
-            var out = unpack(sut.getPvalues(rawcube, undefined))
-            out.should.eql([[0.3679244119521772,0.10515594786192306,
-                0.46385589231963187,0.8476251509412416,
-                0.729435101189718,0.016681167114846573],
-                [0.25099766339570695,0.05319281231819595,
-                0.4347304395032887,0.8438341205266566,
-                0.7260451461165482,0.02975816673809084]])
+        it('should do it for an arbitrary column', function(){
+            var comparison = [.5, .5, .5, .5, .5, .5]
+            console.log(unpack(sut.propTable(rawcube, 1)))
+            var out = unpack(sut.getPvalues(rawcube, 1, comparison))
         })
     })
 })

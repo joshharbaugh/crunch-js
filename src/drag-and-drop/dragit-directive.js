@@ -36,7 +36,13 @@ function DragItDirective(dragAndDrop, $log, $timeout){
                 $log.debug('drag-and-drop','drag','start',e)
                 classList.add(discoverClass())
                 e.dataTransfer.effectAllowed = (attrs.dragitOperation || 'all')
-                e.dataTransfer.setData('application/json', data)
+
+                try {
+                    e.dataTransfer.setData('application/json', data)
+                } catch(error) {
+                    //IE does not support complex data payload
+                    e.dataTransfer.setData('text', 'no data')
+                }
 
                 scope.$apply(function(){
                     var inflight = {

@@ -89,6 +89,19 @@ function BinnedDimensionFactory(_) {
                 return out
             }
         }
+        , 'countingSubscripts' : {
+            get : function() {
+                var out = []
+                var elements = this.data.type.elements.filter(function(el, idx) {
+                    var id = el.value && el.value.id || ''
+                    if (el.missing === false){
+                        out.push(idx)
+                        return true
+                    }
+                })
+                return out
+            }
+        }
         , 'prunedExtents': {
             set : function(replacement) {
                 this.data.type.elements = replacement

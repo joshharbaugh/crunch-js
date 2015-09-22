@@ -12,69 +12,41 @@ function CubeQuery(_, $q){
         measures = measures || {"count": {"function": "cube_count"}}
 
         types.categorical = function(varb){
-            var variableId = varb.self
-            if (variableId[variableId.length - 1] === '/') {
-                variableId = variableId.substring(0, variableId.length - 1)
-            }
-            return {variable: variableId}
+            return {variable: varb.self }
         }
         types.categorical_array = function(varb){
-
-            var variableId = varb.self
-            if (variableId[variableId.length - 1] === '/'){
-                variableId = variableId.substring(0, variableId.length - 1)
-            }
-
             var d = {}
-            d[varb.dimension] = variableId
+            d[varb.dimension] = varb.self
             return d
         }
         types.numeric = function(varb){
             //TODO allow a unique-values query instead,
             //inspecting some config on the varb
             //TODO bin 'breaks' arg??
-            var variableId = varb.self
-            if (variableId[variableId.length - 1] === '/'){
-                variableId = variableId.substring(0, variableId.length - 1)
-            }
-
-            return {'function': 'bin', 'args': [{'variable': variableId}]}
+            return {'function': 'bin', 'args': [{ 'variable': varb.self }] }
         }
         types.text = function(varb){
-            var variableId = varb.self
-            if (variableId[variableId.length - 1] === '/'){
-                variableId = variableId.substring(0, variableId.length - 1)
-            }
-            return {variable: variableId}
+            return {variable: varb.self}
         }
         types.datetime = function(varb){
-            var variableId = varb.self
-            if (variableId[variableId.length - 1] === '/'){
-                variableId = variableId.substring(0, variableId.length - 1)
-            }
-            var res = varb.view.rollup_resolution || NULL;
-            var sanitizedRollup = res === "" ? NULL : res
+            var res = varb.view.rollup_resolution || null;
+            var sanitizedRollup = res === "" ? null : res
 
             return {'function': 'rollup',
                 'args': [
-                    {'variable': variableId}
+                    {'variable': varb.self }
                     ,{'value': sanitizedRollup}
                 ]}
         }
         types.multiple_response = function(varb){
 
-            // TODO: push this into crlib/backendhttp??
-            var variableId = varb.self
-            if (variableId[variableId.length - 1] === '/'){
-                variableId = variableId.substring(0, variableId.length - 1)
-            }
-
            return [
                 {'function': 'selected_array',
-                    'args': [{'variable': variableId}]}
-                ,{'each': variableId}
+                    'args': [ {'variable': varb.self } ] }
+                , { 'each': varb.self }
             ]
         }
+
         var dimensions = _.flatten(variables.map(function(varb){
                 return types[varb.type](varb)
             }, this), true)

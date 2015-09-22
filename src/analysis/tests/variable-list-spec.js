@@ -69,7 +69,7 @@ describe('VariableList', function() {
         })
     }
 
-    describe('when constructing', function() {
+    context('when constructing', function() {
         var sut
             ;
 
@@ -84,9 +84,9 @@ describe('VariableList', function() {
         })
     })
 
-    describe('when adding a new variable', function() {
+    context('when adding a new variable', function() {
 
-        describe('given a variable url', function() {
+        context('given a variable url', function() {
             var sut
                 , addedVariables
                 ;
@@ -111,7 +111,7 @@ describe('VariableList', function() {
             })
         })
 
-        describe('given a list of variable urls', function() {
+        context('given a list of variable urls', function() {
             var sut
                 , addedVariables
                 ;
@@ -122,8 +122,10 @@ describe('VariableList', function() {
                 sut = new VariableList(datasetId)
                 expectGET(hv.byId('/childrenunder18').self, {})
                 expectGET(hv.byId('/economytrend').self, {})
+                expectGET(hv.byId('/warcrime').self, {})
 
-                sut.add(['/childrenunder18', '/economytrend']).then(function(variables) {
+
+                sut.add(['/childrenunder18', '/economytrend', '/warcrime']).then(function(variables) {
                     addedVariables = variables
                 })
                 flush()
@@ -134,7 +136,7 @@ describe('VariableList', function() {
             })
         })
 
-        describe('given a categorical array variable', function() {
+        context('given a categorical array variable', function() {
             var sut
                 ;
 
@@ -163,7 +165,7 @@ describe('VariableList', function() {
             })
         })
 
-        describe('given a subvariable', function() {
+        context('given a subvariable', function() {
             var sut
                 ;
 
@@ -203,7 +205,7 @@ describe('VariableList', function() {
         })
     })
 
-    describe('when replacing a variable', function() {
+    context('when replacing a variable', function() {
         var sut
             , variable
             ;
@@ -214,14 +216,15 @@ describe('VariableList', function() {
             var self = hv.byId('/economytrend').self
                 ;
 
-            sut = new VariableList(datasetId)
             expectGET(hv.byId('/childrenunder18').self, {})
+            sut = new VariableList(datasetId)
             sut.add('/childrenunder18')
             flush()
+
+            expectGET(hv.byId('/economytrend').self, { self : self })
             sut.replace(0, '/economytrend').then(function(v) {
                 variable = v
             })
-            expectGET(hv.byId('/economytrend').self, { self : self })
             flush()
         })
 
@@ -231,7 +234,34 @@ describe('VariableList', function() {
         })
     })
 
-    describe('when removing a variable at a given index', function() {
+    context('when inserting a variable before another variable', function() {
+        var sut
+            , variable
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(buildSut)
+        beforeEach(function() {
+            var self = hv.byId('/economytrend').self
+                ;
+
+            expectGET(hv.byId('/childrenunder18').self, {})
+            sut = new VariableList(datasetId)
+            sut.add('/childrenunder18')
+            flush()
+
+            expectGET(hv.byId('/economytrend').self, { self : self })
+            sut.insertBefore(0, '/economytrend')
+            flush()
+        })
+
+        it('should add the item at the specified item and move existing items one position', function() {
+            expect(sut.items[0].id).to.be.equal('economytrend')
+            expect(sut.items[1].id).to.be.equal('childrenunder18')
+        })
+    })
+
+    context('when removing a variable at a given index', function() {
         var sut
             ;
 
@@ -250,12 +280,13 @@ describe('VariableList', function() {
         })
     })
 
-    describe('when pivoting', function() {
+    context('when pivoting', function() {
 
-        describe('given two variables', function() {
+        context('given three variables', function() {
             var sut
-                ,var1Id = '/api/datasets/123/variables/economytrend/'
-                ,var2Id = '/api/datasets/123/variables/childrenunder18/'
+                ,var1Id = 'economytrend'
+                ,var2Id = 'childrenunder18'
+                ,var3Id = 'worryaboutmortgage'
                 ;
 
             beforeEach(buildModule)
@@ -263,28 +294,33 @@ describe('VariableList', function() {
             beforeEach(function() {
                 var children = hv.byId('/childrenunder18')
                     , economyTrend = hv.byId('/economytrend')
+                    , worryAboutMortage = hv.byId('/worryaboutmortgage')
                     ;
 
                 sut = new VariableList(datasetId)
                 sut.add(var1Id)
                 sut.add(var2Id)
+                sut.add(var3Id)
                 expectGET(economyTrend.self, { self : economyTrend.self })
                 expectGET(children.self, { self : children.self })
-                flush()
+                expectGET(worryAboutMortage.self, { self : worryAboutMortage.self })
 
-                sut.pivot(1,0)
+                flush()
+                sut.pivot()
             })
 
-            it('should swap variables in index 0 and 1', function() {
-                sut.items[1].self.should.be.equal(var1Id)
-                sut.items[0].self.should.be.equal(var2Id)
+            it('should move variables one position to the right and put the last item on the first index', function() {
+                sut.items[0].id.should.be.equal(var3Id)
+                sut.items[1].id.should.be.equal(var1Id)
+                sut.items[2].id.should.be.equal(var2Id)
+
             })
         })
     })
 
-    describe('when looking for array variables', function() {
+    context('when looking for array variables', function() {
 
-        describe('given a variable with subvariables', function() {
+        context('given a variable with subvariables', function() {
             var sut
                 ;
 

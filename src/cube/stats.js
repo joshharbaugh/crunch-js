@@ -82,6 +82,68 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
             return out
         }
     }
+
+    function missing(cube){
+        if(cube.dimension > 2) {
+            throw new Error('Can only calculate missing for a 2d slice')
+        }
+        if(cube.hasOwnProperty('mean')){
+            return cube.nMissing
+        }
+        var data = cube.count.rawData
+        var indices = [],
+            types = [],
+            missing = 0
+        if (cube._dimensions.length === 1) {
+            indices = cube._dimensions[0].missingSubscripts
+            indices.forEach(function(i){
+                missing += data.get(i)
+            })
+            return missing
+        }
+        // on to 2d case
+        // first gather dim0 missing by dim1 missing
+        var subscripts = cube._dimensions.map(function(d, i){
+            types.push(d.type)
+            return d.missingSubscripts
+        })
+        if(_.flattenDeep(subscripts).length) {
+            indices = Cube.prod.apply(this, subscripts)
+        }
+        subscripts = cube._dimensions.map(function(d, i){
+            return i === 0 ? d.countingSubscripts : d.missingSubscripts
+        })
+        if(subscripts.every(function(i){ return i === undefined ? false : i.length })) {
+            indices = indices.concat(Cube.prod.apply(this, subscripts))
+        }
+
+        // last missing by counting
+        subscripts = cube._dimensions.map(function(d, i){
+            return i === 1 ? d.countingSubscripts : d.missingSubscripts
+        })
+        if(subscripts.every(function(i){ return i === undefined ? false : i.length})){
+            indices = indices.concat(Cube.prod.apply(this, subscripts))
+        }
+
+        var compositeDimension = types.indexOf('composite')
+        if(compositeDimension > -1){
+            subscripts = []
+            var offDimension = 1-compositeDimension
+            subscripts[compositeDimension] = cube._dimensions[compositeDimension].validSubscripts
+            subscripts[offDimension] = cube._dimensions[offDimension].missingSubscripts
+            indices = indices.concat(Cube.prod.apply(this, subscripts))
+            return indices.map(function(i){
+                return data.get.apply(data, i)
+            }).reduce(function(i,j){
+                return Math.max(i,j)
+            },missing)
+        }
+        indices.forEach(function(i){
+            missing += data.get.apply(data, i)
+        })
+        return missing
+    }
+
     function propTable(cube, axis, marginal, includeMissing){
         var includeMissing = includeMissing || false
         var table, tbl, marginal, total;
@@ -149,7 +211,6 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
         var strategies = {
             'row': dim0Pvalues
             ,'col': dim1Pvalues
-            ,'cell': dimBothPvalues
         }
         var s =
             margin === undefined ? 'cell' : margin === 0 ? 'row' : 'col'
@@ -284,55 +345,6 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
         ops.muleq(p, sign)
         return p
     }
-    function dimBothPvalues(rawcube, axis){
-        var tbl = rawcube.count.cube
-        var n = ops.sum(tbl) //argh
-        var shape = tbl.shape
-        var onesCt = scratch.malloc([1, shape[0]])
-        var onesR = scratch.malloc([shape[1], 1])
-        var colMargin = scratch.malloc([1, shape[1]])
-        var rowMargin = scratch.malloc([shape[0], 1])
-        function ones(){
-            return 1
-        }
-        fill(onesR, ones)
-        fill(onesCt, ones)
-
-        gemm(colMargin, onesCt, tbl)
-        gemm(rowMargin, tbl, onesR)
-        ops.divseq(tbl, n) // cell percentages
-        ops.divseq(colMargin, n)
-        ops.divseq(rowMargin, n)
-        var expected = scratch.zeros(shape)
-        gemm(expected, rowMargin, colMargin)
-        var Z = scratch.clone(expected) // alloc here, use later
-        var rightside = scratch.clone(expected)
-        ops.mulseq(rightside, -1)
-        ops.addseq(rightside, 1)
-        ops.muleq(expected, rightside)
-        scratch.free(rightside)
-
-        var se = scratch.zeros(shape)
-        fill(se, function(i,j){
-            var obs = tbl.get(i,j)
-            var v = obs * (1 - obs) + expected.get(i,j)
-            return Math.sqrt(v/n)
-        })
-        scratch.free(expected)
-
-        ops.mulseq(Z, -1)
-        ops.addeq(Z, tbl)
-        ops.diveq(Z, se)
-        // (p <- 2 * pnorm ( abs ( Z.r ) , lower.tail = FALSE ))
-        ops.abseq(Z)
-        var pnorm = normalDist(0,1).cdf
-        var p = scratch.zeros(shape)
-        fill(p, function(i,j){
-            return 2 * (1-pnorm(Z.get(i,j)))
-        })
-        // console.log("p",show(p))
-        return p
-    }
     function filterByMarginThreshold(cube, cutoff){
         // gather subscripts from each margin > cutoff
         var orig = cube.count.cube // =valid
@@ -376,6 +388,7 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
     return {
         getPvalues: getPvalues
         ,margin: margin
+        ,missing: missing
         ,propTable: propTable
         ,diffTable: diffTable
         ,filterByMarginThreshold: filterByMarginThreshold

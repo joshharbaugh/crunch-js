@@ -3,17 +3,15 @@
 module.exports = CubeFactory
 
 CubeFactory.$inject = [
-    '$log'
-    , '$q'
+    '$q'
     , 'lodash'
     , 'dimension'
     , 'measure'
 ]
 
-function CubeFactory($log, $q, _, dimension, measure) {
+function CubeFactory($q, _, dimension, measure) {
 
-    var Cube = function(measures, meta, margins) {
-        var shape = meta.shape
+    var Cube = function(measures, meta) {
         var validShape = meta.validShape
 
         this.dimension = validShape.length
@@ -24,9 +22,62 @@ function CubeFactory($log, $q, _, dimension, measure) {
         this.nMissing = meta.nMissing
         this.weightId = meta.weightId
         this.appliedFilters = _.cloneDeep(meta.appliedFilters)
+
         _.extend(this, measures)
 
         return this
+    }
+
+    Cube.prototype.isValidSlice = function(index) {
+        var valid = true
+            ;
+
+        try {
+            valid = this.getSliceAtIndex(index)
+        } catch(e) {
+            valid = false
+        }
+
+        return valid
+    }
+
+    Cube.prototype.getSliceAtIndex = function(index) {
+        // get the slice at a **valid** index
+        // numeric binned ones put a Missing (?:-1) index at 0
+        var firstSlice
+            , measures = {}
+            , measureTypes = ['count', 'mean']
+            , self = this
+            ;
+
+        var validIndex = this._dimensions[0].validSubscripts[index]
+        measureTypes.forEach(function(measure) {
+            var slices
+                ;
+            if(measure in self) {
+                slices = self[measure].slices
+
+                if(validIndex >= slices.length || validIndex < 0) {
+                    throw new Error('Invalid slice index')
+                }
+
+                measures[measure] = slices[validIndex]
+                firstSlice = slices[validIndex]
+            }
+        })
+
+        return new Cube(
+            measures
+            , {
+                validShape : firstSlice.validShape
+                , n : this.n
+                , dimensions : firstSlice.dimensions
+                , query : this.query
+                , nMissing : this.nMissing
+                , weightId : this.weightId
+                , appliedFilters : this.appliedFilters
+            }
+        )
     }
 
     Object.defineProperties(Cube.prototype, {
@@ -76,13 +127,20 @@ function CubeFactory($log, $q, _, dimension, measure) {
             })
         })
 
-        result = new Cube(measures, meta, raw.margins)
+        result = new Cube(measures, meta)
 
         return $q.when(result)
     }
+    
+    Cube.fromMultiCube = function(raw) {
+        return $q.when(raw.map(function(subcube){
+            return this.fromCrCube(subcube)
+        }, this))
+    }
 
     function gatherMetadata(result, dims, meta) {
-        meta.nMissing = result.measures[meta.measures[0]].n_missing || 0
+        var qi = result.measures.hasOwnProperty('mean') ? 'mean' : 'count'
+        meta.nMissing = result.measures[qi].n_missing || 0
             // Not yet clear use case where other measures different n_missing
         meta.n = result.n - meta.nMissing
 

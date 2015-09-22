@@ -57,7 +57,7 @@ function MultiResponseDimensionFactory(_, CompositeDimension) {
                 var elements = this.data.type.elements.filter(function(el, idx) {
                     var id = el.value && el.value.id || ''
                     // not any or none
-                    if(noneOrAny.indexOf(id) > -1 ? true : el.missing){
+                    if(el.missing){
                         out.push(idx)
                         return true
                     }
