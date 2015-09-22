@@ -5,7 +5,7 @@ var mocks = require('angular-mocks')
     , fixtures = require('./fixtures')
     ;
 
-describe('Cube query builder', function(){
+describe('Cube Multitable query builder', function(){
     function buildModule() {
         var mod = mainMod()
             ;
@@ -30,67 +30,27 @@ describe('Cube query builder', function(){
     beforeEach(buildModule)
     beforeEach(createDeps)
 
-    describe('given two categorical variables objects', function(){
+    describe('given two column variables objects and a row variable', function(){
         beforeEach(function(){
             inject(function(cubeMultitableQuery){
                 sut = cubeMultitableQuery.build([
-                        {variable: '/api/datasets/123/variables/admit/'}
-                        , {variable: '/api/datasets/123/variables/gender/'}
-                ])
+                        {variable: '/api/datasets/123/variables/admit'}
+                        , {variable: '/api/datasets/123/variables/gender'}
+                ], {self: '/api/datasets/123/variables/age/', type: 'categorical'})
                 .then(function(theQuery){
                     result = theQuery
                 })
             })
             scope.$digest()
         })
-        it('should make a query with them as the dimensions', function(){
-            console.log(result)
-            result.dimensions.should.eql(fixtures.query.dimensions)
+        it('should build a query with them', function(){
+            result.should.eql(fixtures.multitable_query)
         })
-        it('should have a `count` measure', function(){
-            result.measures.should.eql(fixtures.query.measures)
+        it('should contain array of two variables in the \'args\' object', function(){
+            result.args.should.eql(fixtures.multitable_query.args)
+        })
+        it('should contain row variable within the \'block\' object', function(){
+            result.block.args.should.eql(fixtures.multitable_query.block.args)
         })
     })
-    // describe('given a multiple response objects', function(){
-    //     beforeEach(function(){
-    //         inject(function(cubeMultitableQuery){
-    //             sut = cubeMultitableQuery.build([
-    //                     {self: '/api/datasets/123/variables/gender/', type: 'multiple_response'}
-    //             ])
-    //             .then(function(theQuery){
-    //                 result = theQuery
-    //             })
-    //         })
-    //         scope.$digest()
-    //     })
-    //     it('should make a query with them as the dimensions', function(){
-    //         var expected = [
-    //             {function: 'selected_array', args: [{variable: '/api/datasets/123/variables/gender'}]}
-    //             ,{each: '/api/datasets/123/variables/gender'}
-    //         ]
-    //         result.dimensions.should.eql(expected)
-    //     })
-    //     it('should have a `count` measure', function(){
-    //         result.measures.should.eql(fixtures.query.measures)
-    //     })
-    // })
-    // describe('given a numeric one', function(){
-    //     beforeEach(function(){
-    //         inject(function(cubeMultitableQuery){
-    //             sut = cubeMultitableQuery.build([
-    //                     {self: '/api/datasets/123/variables/age/', type: 'numeric'}
-    //             ])
-    //             .then(function(theQuery){
-    //                 result = theQuery
-    //             })
-    //         })
-    //         scope.$digest()
-    //     })
-    //     it('should bin by default', function(){
-    //         var expected = [
-    //             {function: 'bin', args: [{variable: '/api/datasets/123/variables/age'}]}
-    //         ]
-    //         result.dimensions.should.eql(expected)
-    //     })
-    // })
 })

@@ -10,6 +10,36 @@ function Fixtures(){
         ,measures:{'count': {'function': 'cube_count'}}
     }
 
+    var multitable_query = {
+        'function': 'each',
+        'args': [{
+            'value': 'COLS'
+        }, [
+            {'variable': '/api/datasets/123/variables/admit'}
+            ,{'variable': '/api/datasets/123/variables/gender'}
+        ]],
+        'block': {
+            'function': 'cube',
+            'args': [
+                [
+                    {'variable': '/api/datasets/123/variables/age'},
+                    {'variable': 'COLS'}
+                ],
+                {
+                    "map": {
+                      "count": {
+                        "function": "cube_count",
+                        "args": []
+                      }
+                    }
+                },
+                {
+                    "value": null
+                }
+            ]
+        }
+    }
+
     var categoricalCount = {'element': 'shoji:view',
  'self': '/api/datasets/123/cube/?query='
     + encodeURIComponent(JSON.stringify(query)),
@@ -595,6 +625,7 @@ function Fixtures(){
         ,multipleResponse1d: multipleResponse1d
         ,multipleResponseCategorical: multipleResponseCategorical
         ,query: query
+        ,multitable_query: multitable_query
         ,dataset: dataset
         ,statsTestCube: statsTestCube
         ,admitXgender: admitXgender

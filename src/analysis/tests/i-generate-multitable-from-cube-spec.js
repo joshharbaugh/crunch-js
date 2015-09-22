@@ -4,6 +4,7 @@ var mocks = require('angular-mocks')
     , mainMod = require('../index')
     , cubeMod = require('../../cube/index')
     , fixtures = require('./shoji-fixtures')
+    , multifixture = require('./basic-categorical-multi')
     ;
 
 describe('iGenerateMultitableFromCube', function() {
@@ -27,7 +28,7 @@ describe('iGenerateMultitableFromCube', function() {
         })
         cubeTest.factory('iFetchCubes', function($q){
             return function(){
-                return $q.when(fixtures.cube2x2.value)
+                return $q.when(multifixture.value)
             }
         })
         main.factory('datetimeFormatter', function(){
@@ -80,11 +81,16 @@ describe('iGenerateMultitableFromCube', function() {
                 inject(function(){
                     sut.execute({
                         datasetId: '/datasets/123/'
-                        , variables : {
+                        , multitable_variables : {
                             'valueOf': function(){ return [
                                 {self: '/variables/123', type: 'categorical'}
                                 , {self: '/variables/456', type: 'categorical'}
                             ]}
+                        }
+                        , row_variable: {
+                            'valueOf': function(){
+                                return {self: '/variables/789', type: 'categorical'}
+                            }
                         }
                         , measures: {
                             'valueOf': function() {}
