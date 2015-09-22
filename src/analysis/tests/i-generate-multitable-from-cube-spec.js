@@ -3,7 +3,6 @@
 var mocks = require('angular-mocks')
     , mainMod = require('../index')
     , cubeMod = require('../../cube/index')
-    , fixtures = require('./shoji-fixtures')
     , multifixture = require('./basic-categorical-multi')
     ;
 
@@ -13,14 +12,9 @@ describe('iGenerateMultitableFromCube', function() {
 
     function buildModule() {
         var main = mainMod('main.test')
-            ,cubeTest = cubeMod('cube.test')
+            , cubeTest = cubeMod('cube.test')
             ;
 
-        cubeTest.factory('iResourceVariable', function($q){
-            return function(varb){
-                return $q.when(varb)
-            }
-        })
         cubeTest.factory('iResourceDataset', function($q){
             return function(params){
                 return $q.when(params)
@@ -55,12 +49,7 @@ describe('iGenerateMultitableFromCube', function() {
     }
 
     function buildSut() {
-        angular.mock.inject(function(iGenerateMultitableFromCube, $rootScope) {
-            $rootScope.hierarchicalVariablesList = {
-                variable : function() {
-                    return { fullName : 'full name' }
-                }
-            }
+        angular.mock.inject(function(iGenerateMultitableFromCube) {
             sut = iGenerateMultitableFromCube
         })
     }
@@ -83,17 +72,14 @@ describe('iGenerateMultitableFromCube', function() {
                         datasetId: '/datasets/123/'
                         , multitable_variables : {
                             'valueOf': function(){ return [
-                                {self: '/variables/123', type: 'categorical'}
-                                , {self: '/variables/456', type: 'categorical'}
+                                {self: '/api/datasets/123/variables/gender/', type: 'categorical'}
+                                , {self: '/api/datasets/123/variables/age/', type: 'categorical'}
                             ]}
                         }
                         , row_variable: {
                             'valueOf': function(){
-                                return {self: '/variables/789', type: 'categorical'}
+                                return {self: '/api/datasets/123/variables/row/', type: 'categorical'}
                             }
-                        }
-                        , measures: {
-                            'valueOf': function() {}
                         }
                     })
 
