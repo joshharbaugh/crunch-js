@@ -49,6 +49,8 @@ describe('cube', function(){
         beforeEach(function(){
             angular.mock.inject(function(cube){
                 var columns = ['/api/datasets/123/variables/abc/']
+                // columns should be like a VariableList
+
                 cube.fromMultiCube(multifixture.value).then(function(it){
                     sut = Sut.create({
                     columns: columns,
