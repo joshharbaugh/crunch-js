@@ -20,12 +20,17 @@ function MultiTableFactory($q, cube, stats, ops, unpack, show){
         return $q.all(this.cubes).then(function(subcubes){
             var subtables =  subcubes.map(function(subcube){
                 return {
-                    labels: subcube.labels,
-                    tab: unpack(formatPercentage(stats.propTable(subcube,1)))
+                    rowLabels: subcube.labels[0]
+                    ,colLabels: subcube.labels[1]
+                    ,tab: unpack(formatPercentage(stats.propTable(subcube,1)))
                 }
             }, this)
+
+            var rowLabels = (subtables[0].rowLabels)
             var out = {
-                subtables: subtables
+                rowLabels: rowLabels
+                ,subtables: subtables
+                ,marginal: unpack(stats.margin(subcubes[0],0))
             }
             return out
         })
