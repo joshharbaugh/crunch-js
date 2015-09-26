@@ -26,7 +26,8 @@ function CubeMultitableQuery(_, $q){
             }
 
             var d = {}
-            d[varb.dimension] = variableId
+            d['each'] = variableId
+            d['variable'] = variableId
             return d
         }
         types.numeric = function(varb){
