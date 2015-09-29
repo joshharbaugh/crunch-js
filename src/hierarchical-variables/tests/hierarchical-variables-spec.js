@@ -2,7 +2,6 @@
 
 
 var mainModule = require('../index')
-    , mocks = require('angular-mocks')
     , mockShoji = require('../../test-support/mock-shoji')
     , _ = require('lodash')
     ,fixtures = {
@@ -18,6 +17,7 @@ var mainModule = require('../index')
         ,hierarchicalSubordinate : require('./hierarchical-subordinate')
         ,hierarchicalSubordinateDuplicateIds : require('./hierarchical-subordinate-duplicate-ids')
         ,subordinateVariables : require('./subordinate-variables')
+        ,hierarchicalRepeatedIds : require('./hierarchical-repeated-ids.json')
     }
     ;
 
@@ -406,6 +406,24 @@ describe('HierarchicalVariables',function(){
             expect(sut.byId('/joins/456/variables/economytrend/').subordinateDataset).to.equal('456')
             expect(sut.byId('/variables/economytrend/').subordinate).to.be.false
             expect(sut.byId('/variables/economytrend/').subordinateDataset).to.equal(null)
+        })
+    })
+
+    describe('when a variable appears two or more times in the order', function() {
+        var sut
+            ;
+
+        beforeEach(function() {
+            buildModule()
+            sut = buildSut([
+                variablesFixture()
+            ], _.clone(fixtures.hierarchicalRepeatedIds, true))
+        })
+
+        it('should put the variable in all the indexes in which it appears', function() {
+            expect(sut.byId('directionofcountry/')).to.be.ok
+            expect(sut.at(3).id).to.equal('directionofcountry')
+            expect(sut.at(8).id).to.equal('directionofcountry')
         })
     })
 })

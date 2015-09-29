@@ -26,6 +26,19 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
         return $q.reject(error)
     }
 
+    function transformData(params) {
+        var data = params.data || {}
+            ;
+
+        return _.extend(params, {
+            data : _.pick(_.defaults({}, data, {
+                element : 'shoji:entity'
+                , body : data
+            }), 'element', 'body')
+        })
+
+    }
+
     function processCallbacks() {
         var args = [].slice.call(arguments)
             , success = passThrough
@@ -82,9 +95,10 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
     };
 
     ShojiObject.prototype.save = function(params) {
-        return shojiDataOperations.post(this.self, params).then(function(newResourceLocation) {
-            return new ShojiObject(newResourceLocation)
-        })
+        return shojiDataOperations.post(this.self, transformData(params))
+                .then(function(newResourceLocation) {
+                    return new ShojiObject(newResourceLocation)
+                })
     }
 
     ShojiObject.prototype.update = function(params) {
