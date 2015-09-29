@@ -17,12 +17,19 @@ function MultiTableFactory($q, cube, stats, ops, unpack, show){
         return ops.mulseq(a, 100)
     }
     MultiTable.prototype.display = function(settings){
+        var body
+            ;
         return $q.all(this.cubes).then(function(subcubes){
             var subtables =  subcubes.map(function(subcube){
+                if (settings.countsOrPercents.value === 'percent') {
+                    body = formatPercentage(stats.propTable(subcube, 1))
+                } else {
+                    body = subcube.count.cube
+                }
                 return {
                     rowLabels: subcube.labels[0]
                     ,colLabels: subcube.labels[1]
-                    ,tab: unpack(formatPercentage(stats.propTable(subcube,1)))
+                    ,tab: unpack(body)
                 }
             }, this)
 
