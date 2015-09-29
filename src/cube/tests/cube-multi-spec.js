@@ -7,6 +7,7 @@ var  mainMod = require('../index')
     , multifixture = require('./basic-categorical-multi')
     , ops = require('ndarray-ops')
     , unpack = require('ndarray-unpack')
+    , analysisMod = require('../../analysis')
     ;
 
 describe('cube', function(){
@@ -19,7 +20,8 @@ describe('cube', function(){
                 return result
             }
         })
-        angular.mock.module(mod.name)
+        analysisMod('analysis.test')
+        angular.mock.module(mod.name, 'analysis.test')
     }
 
     function createDeps() {

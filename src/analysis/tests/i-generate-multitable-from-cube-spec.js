@@ -4,6 +4,7 @@ var mocks = require('angular-mocks')
     , mainMod = require('../index')
     , cubeMod = require('../../cube/index')
     , multifixture = require('./basic-categorical-multi')
+    , arrayresult = require('../../cube/tests/cube-3-dimensions')
     ;
 
 describe('iGenerateMultitableFromCube', function() {
@@ -21,7 +22,10 @@ describe('iGenerateMultitableFromCube', function() {
             }
         })
         cubeTest.factory('iFetchCubes', function($q){
-            return function(){
+            return function(command){
+                if(command && command.query.dimensions){
+                    return $q.when(arrayresult.value)
+                }
                 return $q.when(multifixture.value)
             }
         })
@@ -88,7 +92,7 @@ describe('iGenerateMultitableFromCube', function() {
                     flush()
                 })
             })
-            it('should do an array of stuff for arrays', function(){
+            it.only('should do an array of stuff for arrays', function(){
                 inject(function(){
                     sut.execute({
                         datasetId: '/datasets/123/'

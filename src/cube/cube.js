@@ -131,9 +131,9 @@ function CubeFactory($q, _, dimension, measure) {
 
         return $q.when(result)
     }
-    
+
     Cube.fromMultiCube = function(raw) {
-        return $q.when(raw.map(function(subcube){
+        return $q.all(raw.map(function makeSingleCube(subcube){
             return this.fromCrCube(subcube)
         }, this))
     }

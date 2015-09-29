@@ -5,9 +5,10 @@ module.exports = CubeMultitableQuery
 CubeMultitableQuery.$inject = [
     'lodash'
     ,'$q'
+    ,'cubeQuery'
 ]
-function CubeMultitableQuery(_, $q){
-    function build(multitable_variables, row_variable, measures){
+function CubeMultitableQuery(_, $q, cubeQuery){
+    function build(multitableVariables, rowVariable, measures){
         var types = {}
         measures = measures || {"count": {"function": "cube_count", "args": []}}
 
@@ -17,18 +18,6 @@ function CubeMultitableQuery(_, $q){
                 variableId = variableId.substring(0, variableId.length - 1)
             }
             return {variable: variableId}
-        }
-        types.categorical_array = function(varb){
-
-            var variableId = varb.self
-            if (variableId[variableId.length - 1] === '/'){
-                variableId = variableId.substring(0, variableId.length - 1)
-            }
-
-            var d = {}
-            d['each'] = variableId
-            d['variable'] = variableId
-            return d
         }
         types.numeric = function(varb){
             //TODO allow a unique-values query instead,
@@ -62,31 +51,32 @@ function CubeMultitableQuery(_, $q){
                     ,{'value': sanitizedRollup}
                 ]}
         }
-        types.multiple_response = function(varb){
+        // switch on variable type here: either an array of queries with
+        // concise magic syntax for arrays and multiple response;
+        // or a proper multi table query for other types.
 
-            // TODO: push this into crlib/backendhttp??
-            var variableId = varb.self
-            if (variableId[variableId.length - 1] === '/'){
-                variableId = variableId.substring(0, variableId.length - 1)
-            }
-
-           return [
-                {'function': 'selected_array',
-                    'args': [{'variable': variableId}]}
-                ,{'each': variableId}
-            ]
+        if (rowVariable.type === 'multiple_response' || rowVariable.type === 'categorical_array'){
+            return multitableVariables.map(function(colVariable){
+                var variables = [
+                    _.extend(rowVariable, {'dimension': 'variable'})
+                    ,_.extend(colVariable, {'dimension': 'variable'})
+                ]
+                if (rowVariable.type === 'categorical_array'){
+                    variables.shift(_.extend(rowVariable, {'dimension': 'variable'}))
+                }
+                return cubeQuery.build(variables = variables)
+            })
         }
-
         return $q.when({
             'function': 'each',
             'args': [{
                 'value': 'COLS'
-            }, multitable_variables],
+            }, multitableVariables],
             'block': {
                 'function': 'cube',
                 'args': [
                     [
-                        types[row_variable.type](row_variable),
+                        types[rowVariable.type](rowVariable),
                         {'variable': 'COLS'}
                     ],
                     {

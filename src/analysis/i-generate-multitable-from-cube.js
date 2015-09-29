@@ -34,14 +34,16 @@ function iGenerateMultitableFromCube(_
         }
         function fetchCubes(q){
             if(q instanceof Array){
-                return $q.all(q.map(function(subq){
-                    return iFetchCubes({
-                        query: subq
-                        ,datasetId: params.datasetId
+                return $q.all(q.map(function(promise){
+                    return promise.then(function(subq){
+                            return iFetchCubes({
+                            query: subq
+                            ,datasetId: params.datasetId
+                        })
                     })
                 }))
             }
-            return iFetchCubes({
+            else return iFetchCubes({
                 query: q
                 , datasetId: params.datasetId
             })
