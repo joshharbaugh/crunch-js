@@ -16,7 +16,8 @@ function MultiTableFactory($q, cube, stats, ops, unpack, show){
     function formatPercentage(a){
         return ops.mulseq(a, 100)
     }
-    MultiTable.prototype.display = function(){
+    MultiTable.prototype.display = function(settings){
+        console.log('MultiTable settings', settings)
         return $q.all(this.cubes).then(function(subcubes){
             var subtables =  subcubes.map(function(subcube){
                 return {
