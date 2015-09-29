@@ -23,7 +23,6 @@ function MultiTableFactory($q, cube, stats, ops, unpack, show){
                     rowLabels: subcube.labels[0]
                     ,colLabels: subcube.labels[1]
                     ,tab: unpack(formatPercentage(stats.propTable(subcube,1)))
-
                 }
             }, this)
 
