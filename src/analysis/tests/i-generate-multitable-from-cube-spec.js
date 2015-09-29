@@ -21,6 +21,11 @@ describe('iGenerateMultitableFromCube', function() {
                 return $q.when(params)
             }
         })
+        cubeTest.factory('iResourceVariable', function($q){
+            return function(params){
+                return $q.when(params)
+            }
+        })
         cubeTest.factory('iFetchCubes', function($q){
             return function(command){
                 if(command && command.query.dimensions){
