@@ -32,7 +32,15 @@ function iGenerateMultitableFromCube(_
                 , params.row_variable.valueOf()
             )
         }
-        function fetchCube(q){
+        function fetchCubes(q){
+            if(q instanceof Array){
+                return $q.all(q.map(function(subq){
+                    return iFetchCubes({
+                        query: subq
+                        ,datasetId: params.datasetId
+                    })
+                }))
+            }
             return iFetchCubes({
                 query: q
                 , datasetId: params.datasetId
@@ -44,7 +52,7 @@ function iGenerateMultitableFromCube(_
 
         var handlers = [
             buildQuery
-            , fetchCube
+            , fetchCubes
             , whaamCube
         ]
 

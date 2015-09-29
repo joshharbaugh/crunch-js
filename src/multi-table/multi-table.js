@@ -16,13 +16,14 @@ function MultiTableFactory($q, cube, stats, ops, unpack, show){
     function formatPercentage(a){
         return ops.mulseq(a, 100)
     }
-    MultiTable.prototype.display = function(){
+    MultiTable.prototype.display = function(settings){
         return $q.all(this.cubes).then(function(subcubes){
             var subtables =  subcubes.map(function(subcube){
                 return {
                     rowLabels: subcube.labels[0]
                     ,colLabels: subcube.labels[1]
                     ,tab: unpack(formatPercentage(stats.propTable(subcube,1)))
+
                 }
             }, this)
 
