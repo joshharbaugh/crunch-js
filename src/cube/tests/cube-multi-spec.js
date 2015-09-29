@@ -43,9 +43,7 @@ describe('cube', function(){
         it('first cube should have the right shape', function(){
             inject(function(cube){
                 cube.fromMultiCube(multifixture.value).then(function(it){
-                    it[0].then(function(subcube){
-                        sut = subcube
-                    })
+                    sut = it[0]
                 })
             })
             scope.$digest()
@@ -54,9 +52,7 @@ describe('cube', function(){
         it('second cube should have the right shape', function(){
             inject(function(cube){
                 cube.fromMultiCube(multifixture.value).then(function(it){
-                    it[1].then(function(subcube){
-                        sut = subcube
-                    })
+                    sut = it[1]
                 })
             })
             scope.$digest()

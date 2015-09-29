@@ -43,7 +43,7 @@ function iGenerateMultitableFromCube(_
                     })
                 }))
             }
-            else return iFetchCubes({
+            return iFetchCubes({
                 query: q
                 , datasetId: params.datasetId
             })

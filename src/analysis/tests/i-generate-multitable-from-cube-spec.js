@@ -92,7 +92,7 @@ describe('iGenerateMultitableFromCube', function() {
                     flush()
                 })
             })
-            it.only('should do an array of stuff for arrays', function(){
+            it('should do an array of stuff for arrays', function(){
                 inject(function(){
                     sut.execute({
                         datasetId: '/datasets/123/'
