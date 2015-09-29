@@ -67,11 +67,14 @@ function CubeMultitableQuery(_, $q, cubeQuery){
                 return cubeQuery.build(variables = variables)
             })
         }
+        var colrefs = multitableVariables.map(function(varb){
+            return {variable: varb.self}
+        })
         return $q.when({
             'function': 'each',
             'args': [{
                 'value': 'COLS'
-            }, multitableVariables],
+            }, colrefs],
             'block': {
                 'function': 'cube',
                 'args': [
