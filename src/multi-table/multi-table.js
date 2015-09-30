@@ -50,6 +50,14 @@ function MultiTableFactory(_, $q, cube, stats, ops, scratch, unpack, show){
                     })
                 })
             }
+            function makeLabels(vector,k){
+                return vector.map(function(l,i){
+                    return {
+                        value: l
+                        ,class: 'col-'+i
+                    }
+                })
+            }
             var rowLabels = subtables[0].rowLabels.map(function(l){ return {
                     value: l
                     ,class: 'row-label'
@@ -61,9 +69,13 @@ function MultiTableFactory(_, $q, cube, stats, ops, scratch, unpack, show){
                     ,class: 'marginal marginal-percentage'
                 }
             })
-            var colLabels = ['', 'All (%)']
+            var colLabels = ['', 'All (%)'].map(function(l){
+                return {
+                    value: l
+                }
+            })
             var subrows = subtables.map(function(sub, k){
-                colLabels.push(sub.colLabels)
+                colLabels.push(makeLabels(sub.colLabels))
                 return makeSubtableRows(sub.body, k)
             }, this)
 
