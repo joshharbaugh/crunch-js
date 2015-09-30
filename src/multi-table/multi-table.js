@@ -3,14 +3,16 @@
 module.exports = MultiTableFactory
 
 MultiTableFactory.$inject = [
-    '$q'
+    'lodash'
+    ,'$q'
     ,'cube'
     ,'stats'
     ,'ndarrayOps'
+    ,'ndarrayScratch'
     ,'ndarrayUnpack'
     ,'show'
 ]
-function MultiTableFactory($q, cube, stats, ops, unpack, show){
+function MultiTableFactory(_, $q, cube, stats, ops, scratch, unpack, show){
     function MultiTable(){
     }
     function formatPercentage(a){
@@ -29,15 +31,53 @@ function MultiTableFactory($q, cube, stats, ops, unpack, show){
                 return {
                     rowLabels: subcube.labels[0]
                     ,colLabels: subcube.labels[1]
-                    ,tab: unpack(body)
+                    ,body: unpack(body)
+                    ,width: subcube.labels[1].length
                 }
             }, this)
+            var total = stats.margin(subcubes[0]).get(0,0)
+            var marginal = scratch.clone(stats.margin(subcubes[0],0))
+            ops.divseq(marginal, total)
 
-            var rowLabels = (subtables[0].rowLabels)
+
+            function makeSubtableRows(matrix, k){
+                return matrix.map(function(row, i){
+                    return row.map(function(cell, j){
+                        return {
+                            value: cell
+                            ,class: 'subtable-'+k+' col-'+j
+                        }
+                    })
+                })
+            }
+            var rowLabels = subtables[0].rowLabels.map(function(l){ return {
+                    value: l
+                    ,class: 'row-label'
+                }
+            })
+            var marginrows = _.flatten(unpack(formatPercentage(marginal)), true).map(function(v){
+                return {
+                    value: v
+                    ,class: 'marginal marginal-percentage'
+                }
+            })
+            var colLabels = ['', 'All (%)']
+            var subrows = subtables.map(function(sub, k){
+                colLabels.push(sub.colLabels)
+                return makeSubtableRows(sub.body, k)
+            }, this)
+
+            var rows = _.zip(marginrows,
+                _.zip.apply(this,subrows))
+                .map(function(row) {return _.flatten(row, true)})
+            colLabels = _.flatten(colLabels)
+
             var out = {
-                rowLabels: rowLabels
+                rows: rows
+                ,colLabels: colLabels
+                ,spans: subtables.map(function(t){return t.width })
+                ,rowLabels: rowLabels
                 ,subtables: subtables
-                ,marginal: unpack(stats.margin(subcubes[0],0))
             }
             return out
         })
