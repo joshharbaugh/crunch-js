@@ -62,7 +62,8 @@ function CubeMultitableQuery(_, $q, cubeQuery){
                     ,_.extend(colVariable, {'dimension': 'variable'})
                 ]
                 if (rowVariable.type === 'categorical_array'){
-                    variables.unshift(_.extend(rowVariable, {'dimension': 'each'}))
+                    var otherdim = _.cloneDeep(rowVariable)
+                    variables.unshift(_.extend(otherdim, {'dimension': 'each', type: 'categorical_array', self: rowVariable.self}))
                 }
                 return cubeQuery.build(variables = variables)
             })
