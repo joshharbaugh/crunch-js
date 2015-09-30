@@ -32,7 +32,6 @@ function iGenerateMultitableFromCube(_
                 return iResourceVariable({variableId: params.row_variable.valueOf().self})
                 .then(function(varb){
                     params.row_variable = {valueOf: function() {return varb}}
-                    console.log(params.row_variable)
                     return params
                 })
             }

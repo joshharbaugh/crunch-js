@@ -62,7 +62,7 @@ function CubeMultitableQuery(_, $q, cubeQuery){
                     ,_.extend(colVariable, {'dimension': 'variable'})
                 ]
                 if (rowVariable.type === 'categorical_array'){
-                    variables.shift(_.extend(rowVariable, {'dimension': 'variable'}))
+                    variables.unshift(_.extend(rowVariable, {'dimension': 'variable'}))
                 }
                 return cubeQuery.build(variables = variables)
             })
