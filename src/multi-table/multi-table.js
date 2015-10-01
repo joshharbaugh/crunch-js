@@ -5,14 +5,16 @@ module.exports = MultiTableFactory
 MultiTableFactory.$inject = [
     'lodash'
     ,'$q'
+    ,'$filter'
     ,'cube'
     ,'stats'
     ,'ndarrayOps'
     ,'ndarrayScratch'
     ,'ndarrayUnpack'
     ,'show'
+    ,'datetimeFormatter'
 ]
-function MultiTableFactory(_, $q, cube, stats, ops, scratch, unpack, show){
+function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, show, datetimeFormatter){
     function MultiTable(){
     }
     function formatPercentage(a){
@@ -58,7 +60,46 @@ function MultiTableFactory(_, $q, cube, stats, ops, scratch, unpack, show){
                     }
                 })
             }
-            var rowLabels = subtables[0].rowLabels.map(function(l){ return {
+            function formatLabels(labels, typeinfo) {
+                if (!!!typeinfo){
+                    typeinfo = {class: 'default'}
+                }
+                // hack around no numeric subtype for enums
+                if(_.every(labels, function(l){
+                        return l instanceof Array
+                    })){
+                    typeinfo = {class: 'numeric'}
+                }
+                var formatters = {
+                    'datetime': function(labels) {
+                        return labels.map(function(each){
+                            return datetimeFormatter(each, dtypeToStrf(typeinfo.resolution))
+                        }.bind(this))
+                    }
+                    ,'numeric': function(labels) {
+                        return labels.map(function(each){
+                            return each.map(function(num) {
+                                var formatted = $filter('number')(num, 2)
+                                    ;
+
+                                return num - Math.floor(num) > 0 ? formatted : num
+                            }).join('\u202f\u2013\u202f') // thin nbsp around endash
+                        }.bind(this))
+                    }
+                    ,'default': function(labels){
+                        return labels
+                    }
+                }
+                return formatters[typeinfo.class] ?
+                    formatters[typeinfo.class](labels) :
+                    labels
+            }
+            var rowLabels = formatLabels(
+                subtables[0].rowLabels,
+                subcubes[0]._dimensions[0].type.subtype
+            )
+            var rowLabels = rowLabels.map(function(l){
+                return {
                     value: l
                     ,class: 'row-label'
                 }

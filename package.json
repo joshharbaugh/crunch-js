@@ -25,6 +25,7 @@
     "chai": "^2.2.0",
     "chai-things": "^0.2.0",
     "cwise": "~1.0.4",
+    "moment": "~2.5.1",
     "ndarray": "~1.0.15",
     "ndarray-ops": "~1.2.2",
     "ndarray-pack": "~1.1.1",
