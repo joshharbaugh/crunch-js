@@ -211,7 +211,6 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
         var strategies = {
             'row': dim0Pvalues
             ,'col': dim1Pvalues
-            ,'cell': dimBothPvalues
         }
         var s =
             margin === undefined ? 'cell' : margin === 0 ? 'row' : 'col'
@@ -344,55 +343,6 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
         })
         // return *signed* pvalues: consumers should use abs
         ops.muleq(p, sign)
-        return p
-    }
-    function dimBothPvalues(rawcube, axis){
-        var tbl = rawcube.count.cube
-        var n = ops.sum(tbl) //argh
-        var shape = tbl.shape
-        var onesCt = scratch.malloc([1, shape[0]])
-        var onesR = scratch.malloc([shape[1], 1])
-        var colMargin = scratch.malloc([1, shape[1]])
-        var rowMargin = scratch.malloc([shape[0], 1])
-        function ones(){
-            return 1
-        }
-        fill(onesR, ones)
-        fill(onesCt, ones)
-
-        gemm(colMargin, onesCt, tbl)
-        gemm(rowMargin, tbl, onesR)
-        ops.divseq(tbl, n) // cell percentages
-        ops.divseq(colMargin, n)
-        ops.divseq(rowMargin, n)
-        var expected = scratch.zeros(shape)
-        gemm(expected, rowMargin, colMargin)
-        var Z = scratch.clone(expected) // alloc here, use later
-        var rightside = scratch.clone(expected)
-        ops.mulseq(rightside, -1)
-        ops.addseq(rightside, 1)
-        ops.muleq(expected, rightside)
-        scratch.free(rightside)
-
-        var se = scratch.zeros(shape)
-        fill(se, function(i,j){
-            var obs = tbl.get(i,j)
-            var v = obs * (1 - obs) + expected.get(i,j)
-            return Math.sqrt(v/n)
-        })
-        scratch.free(expected)
-
-        ops.mulseq(Z, -1)
-        ops.addeq(Z, tbl)
-        ops.diveq(Z, se)
-        // (p <- 2 * pnorm ( abs ( Z.r ) , lower.tail = FALSE ))
-        ops.abseq(Z)
-        var pnorm = normalDist(0,1).cdf
-        var p = scratch.zeros(shape)
-        fill(p, function(i,j){
-            return 2 * (1-pnorm(Z.get(i,j)))
-        })
-        // console.log("p",show(p))
         return p
     }
     function filterByMarginThreshold(cube, cutoff){
