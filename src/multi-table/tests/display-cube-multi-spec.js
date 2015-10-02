@@ -20,6 +20,7 @@ describe('cube', function(){
                 return result
             }
         })
+        mod.factory('datetimeFormatter', function(){return angular.noop})
         angular.mock.module(mod.name, cube.name)
     }
     function createDeps() {
@@ -40,6 +41,7 @@ describe('cube', function(){
     var Sut
         ,sut
         ,scope
+        ,settings
         ;
     beforeEach(buildModule)
     beforeEach(buildSut)
@@ -47,6 +49,12 @@ describe('cube', function(){
 
     context('with a array cube of one cat. by two different cat.', function(){
         beforeEach(function(){
+            settings = {
+                countsOrPercents: {
+                    value: 'percent'
+                }
+            }
+
             angular.mock.inject(function(cube){
                 var columns = ['/api/datasets/123/variables/abc/']
                 // columns should be like a VariableList
@@ -60,7 +68,7 @@ describe('cube', function(){
                 flush()
             })
             sut.then(function(it){
-                scope.xtabs = it.display()
+                scope.xtabs = it.display(settings)
             })
             flush()
         })

@@ -17,6 +17,7 @@ module.exports = function buildModule(excludes) {
             , require('../multi-table')
             , require('../start-from')
             , require('../user-preferences')
+            , require('../datetime-formatter')
         ]
         , mod
         ;

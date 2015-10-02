@@ -5,6 +5,7 @@ module.exports = iGenerateMultitableFromCube
 iGenerateMultitableFromCube.$inject = [
     'lodash'
     , '$q'
+    , 'iResourceVariable'
     , 'analysisGenerator'
     , 'cube'
     , 'cubeMultitableQuery'
@@ -13,6 +14,7 @@ iGenerateMultitableFromCube.$inject = [
 
 function iGenerateMultitableFromCube(_
     , $q
+    , iResourceVariable
     , analysisGenerator
     , Cube
     , cubeMultitableQuery
@@ -25,14 +27,33 @@ function iGenerateMultitableFromCube(_
     }
 
     function getXtabFromCube(params){
-
+        function fetchVariableEntityIfNeeded(params){
+            if (params.row_variable.valueOf().type === 'datetime'){
+                return iResourceVariable({variableId: params.row_variable.valueOf().self})
+                .then(function(varb){
+                    params.row_variable = {valueOf: function() {return varb}}
+                    return params
+                })
+            }
+            return params
+        }
         function buildQuery(params){
             return cubeMultitableQuery.build(
                 params.multitable_variables.valueOf()
                 , params.row_variable.valueOf()
             )
         }
-        function fetchCube(q){
+        function fetchCubes(q){
+            if(q instanceof Array){
+                return $q.all(q.map(function(promise){
+                    return promise.then(function(subq){
+                            return iFetchCubes({
+                            query: subq
+                            ,datasetId: params.datasetId
+                        })
+                    })
+                }))
+            }
             return iFetchCubes({
                 query: q
                 , datasetId: params.datasetId
@@ -43,8 +64,9 @@ function iGenerateMultitableFromCube(_
         }
 
         var handlers = [
-            buildQuery
-            , fetchCube
+            fetchVariableEntityIfNeeded
+            , buildQuery
+            , fetchCubes
             , whaamCube
         ]
 

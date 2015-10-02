@@ -7,6 +7,7 @@ var  mainMod = require('../index')
     , multifixture = require('./basic-categorical-multi')
     , ops = require('ndarray-ops')
     , unpack = require('ndarray-unpack')
+    , analysisMod = require('../../analysis')
     ;
 
 describe('cube', function(){
@@ -19,7 +20,8 @@ describe('cube', function(){
                 return result
             }
         })
-        angular.mock.module(mod.name)
+        analysisMod('analysis.test')
+        angular.mock.module(mod.name, 'analysis.test')
     }
 
     function createDeps() {
@@ -41,9 +43,7 @@ describe('cube', function(){
         it('first cube should have the right shape', function(){
             inject(function(cube){
                 cube.fromMultiCube(multifixture.value).then(function(it){
-                    it[0].then(function(subcube){
-                        sut = subcube
-                    })
+                    sut = it[0]
                 })
             })
             scope.$digest()
@@ -52,9 +52,7 @@ describe('cube', function(){
         it('second cube should have the right shape', function(){
             inject(function(cube){
                 cube.fromMultiCube(multifixture.value).then(function(it){
-                    it[1].then(function(subcube){
-                        sut = subcube
-                    })
+                    sut = it[1]
                 })
             })
             scope.$digest()
