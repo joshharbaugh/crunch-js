@@ -14,6 +14,7 @@ module.exports = function buildModule(excludes) {
             , require('../hierarchical-variables-list')
             , require('../analysis')
             , require('../cube')
+            , require('../multi-table')
             , require('../start-from')
             , require('../user-preferences')
         ]
