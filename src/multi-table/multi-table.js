@@ -144,7 +144,7 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
                     })
                     subscripts = stats.getSortedSubscripts(vector)
                 }
-                if(settings.sortDirection.value === -1){
+                if(settings.sortDirection && settings.sortDirection.value === -1){
                     subscripts = subscripts.reverse()
                 }
                 rowLabels = permute(rowLabels, subscripts)
