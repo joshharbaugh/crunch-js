@@ -22,8 +22,11 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
     }
     MultiTable.prototype.display = function(settings){
         var body
-            ;
+            , marginal
+        ;
         return $q.all(this.cubes).then(function(subcubes){
+            var total = stats.margin(subcubes[0]).get(0,0)
+            marginal = scratch.clone(stats.margin(subcubes[0], 0))
             var subtables =  subcubes.map(function(subcube){
                 if (settings.countsOrPercents.value === 'percent') {
                     body = formatPercentage(stats.propTable(subcube, 1))
@@ -37,9 +40,7 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
                     ,width: subcube.labels[1].length
                 }
             }, this)
-            var total = stats.margin(subcubes[0]).get(0,0)
-            var marginal = scratch.clone(stats.margin(subcubes[0],0))
-            ops.divseq(marginal, total)
+
 
 
             function makeSubtableRows(matrix, k){
@@ -104,13 +105,18 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
                     ,class: 'row-label'
                 }
             })
-            var marginrows = _.flatten(unpack(formatPercentage(marginal)), true).map(function(v){
+            if (settings.countsOrPercents.value === 'percent') {
+                ops.divseq(marginal,total)
+                marginal = formatPercentage(marginal)
+            }
+            var marginrows = _.flatten(unpack(marginal, true))
+            .map(function(v){
                 return {
                     value: v
                     ,class: 'marginal marginal-percentage'
                 }
             })
-            var colLabels = ['', 'All (%)'].map(function(l){
+            var colLabels = ['All'].map(function(l){
                 return {
                     value: l
                 }
@@ -123,6 +129,39 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
             var rows = _.zip(marginrows,
                 _.zip.apply(this,subrows))
                 .map(function(row) {return _.flatten(row, true)})
+
+            function doSort(){
+                if (settings.sortDirection === 0) return
+                var subscripts = _.range(0, rows.length)
+                if (settings.sortSource==='labels'){
+                    subscripts = stats.getSortedSubscripts(
+                        rowLabels.map(function(l) {return l.value})
+                    )
+                }
+                if (settings.sortSource==='bodyCols'){
+                    var vector = rows.map(function(row) {
+                        return row[settings.sortKey].value
+                    })
+                    subscripts = stats.getSortedSubscripts(vector)
+                }
+                if(settings.sortDirection.value === -1){
+                    subscripts = subscripts.reverse()
+                }
+                rowLabels = permute(rowLabels, subscripts)
+                rows = permute(rows, subscripts)
+            }
+            function permute(arr, subscripts){
+                var out = []
+                if(arr===undefined) {
+                    return []
+                }
+                subscripts.forEach(function(i){
+                    out.push(arr[i])
+                }, this)
+                return out
+            }
+
+            doSort()
             colLabels = _.flatten(colLabels)
 
             var out = {
