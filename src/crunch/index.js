@@ -18,6 +18,7 @@ module.exports = function buildModule(excludes) {
             , require('../start-from')
             , require('../user-preferences')
             , require('../datetime-formatter')
+            , require('../label-formatter')
         ]
         , mod
         ;

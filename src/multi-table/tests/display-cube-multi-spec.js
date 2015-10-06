@@ -20,7 +20,7 @@ describe('cube', function(){
                 return result
             }
         })
-        mod.factory('datetimeFormatter', function(){return angular.noop})
+        mod.factory('labelFormatter', function(){return angular.noop})
         angular.mock.module(mod.name, cube.name)
     }
     function createDeps() {
