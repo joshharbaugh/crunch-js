@@ -61,7 +61,7 @@ function HierarchicalBehaviorsFactory($log) {
 
         //Allow nested groups
         if (item.hierarchicalType === 'group') {
-            return true
+            return item.items ? item.items.length > 0 : true
         }
 
         if (!item.type) {
