@@ -20,7 +20,11 @@ describe('cube', function(){
                 return result
             }
         })
-        mod.factory('labelFormatter', function(){return angular.noop})
+        mod.factory('labelFormatter', function(){
+            return function() {
+                return ['President Obama', 'Republicans in Congress', 'Both', 'Neither', 'Not sure']
+            }
+        })
         angular.mock.module(mod.name, cube.name)
     }
     function createDeps() {
@@ -53,6 +57,8 @@ describe('cube', function(){
                 countsOrPercents: {
                     value: 'percent'
                 }
+                , sortSource: 'labels'
+                , sortDirection: -1
             }
 
             angular.mock.inject(function(cube){
