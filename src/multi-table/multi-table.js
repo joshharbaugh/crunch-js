@@ -37,17 +37,17 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
                     rowLabels: subcube.labels[0]
                     ,colLabels: subcube.labels[1]
                     ,body: unpack(body)
+                    ,pValues: unpack(stats.getPvalues(subcube, 1))
                     ,width: subcube.labels[1].length
                 }
             }, this)
 
-
-
-            function makeSubtableRows(matrix, k){
+            function makeSubtableRows(matrix, pValues, k){
                 return matrix.map(function(row, i){
                     return row.map(function(cell, j){
                         return {
                             value: cell
+                            ,p: pValues[i][j]
                             ,class: 'subtable-'+k+' col-'+j
                         }
                     })
@@ -92,7 +92,7 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
             })
             var subrows = subtables.map(function(sub, k){
                 colLabels.push(makeLabels(sub.colLabels))
-                return makeSubtableRows(sub.body, k)
+                return makeSubtableRows(sub.body, sub.pValues, k)
             }, this)
 
             var rows = _.zip(marginrows,
