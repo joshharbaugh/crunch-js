@@ -47,7 +47,7 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
                     return row.map(function(cell, j){
                         return {
                             value: cell
-                            ,p: pValues[i][j]
+                            ,pValue: pValues[i][j]
                             ,class: 'subtable-'+k+' col-'+j
                         }
                     })
