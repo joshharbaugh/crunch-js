@@ -133,9 +133,12 @@ function CubeFactory($q, _, dimension, measure) {
     }
 
     Cube.fromMultiCube = function(raw) {
-        return $q.all(raw.map(function makeSingleCube(subcube){
-            return this.fromCrCube(subcube)
-        }, this))
+        var self=this;
+        return $q.all(_.flatten(raw)).then(function(subcubes){
+            return _.flatten(subcubes).map(function makeSingleCube(subcube){
+                return self.fromCrCube(subcube)
+            }, this)
+        })
     }
 
     function gatherMetadata(result, dims, meta) {
