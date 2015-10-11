@@ -32,25 +32,29 @@ describe('Cube Multitable query builder', function(){
 
     describe('given two column variables objects and a row variable', function(){
         beforeEach(function(){
-            inject(function(cubeMultitableQuery){
+            inject(function($q, cubeMultitableQuery){
                 sut = cubeMultitableQuery.build([
                         {self: '/api/datasets/123/variables/admit'}
                         , {self: '/api/datasets/123/variables/gender'}
                 ], {self: '/api/datasets/123/variables/age/', type: 'categorical'})
-                .then(function(theQuery){
+
+                $q.all(sut).then(function(theQuery){
                     result = theQuery
                 })
             })
             scope.$digest()
         })
         it('should build a query with them', function(){
-            result.should.eql(fixtures.multitable_query)
+            result.multi.should.eql(fixtures.multitable_query)
         })
         it('should contain array of two variables in the \'args\' object', function(){
-            result.args.should.eql(fixtures.multitable_query.args)
+            result.multi.args.should.eql(fixtures.multitable_query.args)
         })
         it('should contain row variable within the \'block\' object', function(){
-            result.block.args.should.eql(fixtures.multitable_query.block.args)
+            result.multi.block.args.should.eql(fixtures.multitable_query.block.args)
+        })
+        it('should have a `row` member', function(){
+            result.row.should.be.ok
         })
     })
 })

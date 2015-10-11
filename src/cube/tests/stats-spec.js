@@ -450,7 +450,6 @@ describe('cube stats', function(){
         })
         it('should do it for an arbitrary column', function(){
             var comparison = [.5, .5, .5, .5, .5, .5]
-            console.log(unpack(sut.propTable(rawcube, 1)))
             var out = unpack(sut.getPvalues(rawcube, 1, comparison))
         })
     })
