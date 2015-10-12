@@ -38,25 +38,22 @@ describe('cube', function(){
 
     context('with a array cube of one cat. by two different cat.', function(){
         beforeEach(function(){
-            // Is there a way to just unwrap _all_ the promises here?
+            inject(function($q, $rootScope, cube){
+                cube.fromMultiCube(multifixture.value).then(function(them){
+                    sut = them
+                })
+            })
+            scope.$digest()
         })
         it('first cube should have the right shape', function(){
-            inject(function(cube){
-                cube.fromMultiCube(multifixture.value).then(function(it){
-                    sut = it[0]
-                })
+            sut[0].then(function(the){
+                the.count.cube.shape.slice().should.eql([5,2])
             })
-            scope.$digest()
-            sut.count.cube.shape.slice().should.eql([5,2])
         })
         it('second cube should have the right shape', function(){
-            inject(function(cube){
-                cube.fromMultiCube(multifixture.value).then(function(it){
-                    sut = it[1]
-                })
+            sut[1].then(function(the){
+                the.count.cube.shape.slice().should.eql([5,4])
             })
-            scope.$digest()
-            sut.count.cube.shape.slice().should.eql([5,4])
         })
     })
 

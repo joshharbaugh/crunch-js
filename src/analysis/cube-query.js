@@ -46,7 +46,6 @@ function CubeQuery(_, $q){
                 , { 'each': varb.self }
             ]
         }
-
         var dimensions = _.flatten(variables.map(function(varb){
                 return types[varb.type](varb)
             }, this), true)
