@@ -38,25 +38,52 @@ function iGenerateMultitableFromCube(_
             return params
         }
         function buildQuery(params){
-            return cubeMultitableQuery.build(
+            return {
+                datasetId: params.datasetId
+                ,q: cubeMultitableQuery.build(
                 params.multitable_variables.valueOf()
                 , params.row_variable.valueOf()
-            )
-        }
-        function fetchCubes(q){
-            if(q instanceof Array){
-                return $q.all(q.map(function(promise){
-                    return promise.then(function(subq){
-                            return iFetchCubes({
-                            query: subq
-                            ,datasetId: params.datasetId
-                        })
-                    })
-                }))
+                )
             }
-            return iFetchCubes({
-                query: q
-                , datasetId: params.datasetId
+        }
+        function fetchFirstCube(params){
+            return params.q.row.then(function(rq){
+                return iFetchCubes({
+                        query: rq
+                        , datasetId: params.datasetId
+                    })
+                .then(function(result){
+                    return {
+                        row: result
+                        , multi: params.q.multi
+                        , datasetId: params.datasetId
+                    }
+                })
+            })
+        }
+        function fetchMulti(params){
+            return params.multi.then(function(q){
+                if(q instanceof Array){
+                    return $q.all([q.map(function(promise){
+                            return promise.then(function(subq){
+                                    return iFetchCubes({
+                                    query: subq
+                                    , datasetId: params.datasetId
+                                })
+                            })
+                        })])
+                        .then(function(multiResult){
+                            multiResult.unshift(params.row)
+                            return multiResult
+                        })
+                }
+                return $q.all([
+                    params.row
+                    ,iFetchCubes({
+                        query: q
+                        , datasetId: params.datasetId
+                    })
+                ])
             })
         }
         function whaamCube(crunchCube){
@@ -66,10 +93,11 @@ function iGenerateMultitableFromCube(_
         var handlers = [
             fetchVariableEntityIfNeeded
             , buildQuery
-            , fetchCubes
+            , fetchFirstCube
+            , fetchMulti
             , whaamCube
         ]
-
+        var datasetId = params.datasetId
         return handlers.reduce($q.when, params)
     }
 

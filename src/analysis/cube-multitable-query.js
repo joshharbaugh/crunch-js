@@ -56,22 +56,33 @@ function CubeMultitableQuery(_, $q, cubeQuery){
         // or a proper multi table query for other types.
 
         if (rowVariable.type === 'multiple_response' || rowVariable.type === 'categorical_array'){
-            return multitableVariables.map(function(colVariable){
-                var variables = [
-                    _.extend(rowVariable, {'dimension': 'variable'})
-                    ,_.extend(colVariable, {'dimension': 'variable'})
-                ]
-                if (rowVariable.type === 'categorical_array'){
-                    var otherdim = _.cloneDeep(rowVariable)
-                    variables.unshift(_.extend(otherdim, {'dimension': 'each', type: 'categorical_array', self: rowVariable.self}))
-                }
-                return cubeQuery.build(variables = variables)
+            var r = _.cloneDeep(rowVariable)
+            var rowPart = [_.extend(r, {'dimension': 'variable', type: rowVariable.type, self: rowVariable.self})]
+            if (rowVariable.type === 'categorical_array'){
+                var otherdim = _.cloneDeep(rowVariable)
+                rowPart.unshift(_.extend(otherdim, {'dimension': 'each', type: rowVariable.type, self: rowVariable.self}))
+            }
+            var multi = multitableVariables.map(function(colVariable){
+                var variables = _.cloneDeep(rowPart)
+                variables.push(_.extend(colVariable, {'dimension': 'variable'}))
+                return cubeQuery.build(variables)
             })
+            return {
+                row: cubeQuery.build(rowPart)
+                ,multi: $q.when(multi)
+            }
         }
         var colrefs = multitableVariables.map(function(varb){
             return {variable: varb.self}
         })
-        return $q.when({
+        var rowDim = types[rowVariable.type](rowVariable)
+        var rowQuery = {
+            dimensions: [rowDim],
+            measures: measures
+        }
+        return {
+            row: $q.when(rowQuery),
+            multi: $q.when({
             'function': 'each',
             'args': [{
                 'value': 'COLS'
@@ -80,7 +91,7 @@ function CubeMultitableQuery(_, $q, cubeQuery){
                 'function': 'cube',
                 'args': [
                     [
-                        types[rowVariable.type](rowVariable),
+                        rowDim,
                         {'variable': 'COLS'}
                     ],
                     {
@@ -91,7 +102,7 @@ function CubeMultitableQuery(_, $q, cubeQuery){
                     }
                 ]
             }
-        })
+        })}
     }
     return {
         build: build
