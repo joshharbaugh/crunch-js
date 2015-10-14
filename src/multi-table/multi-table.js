@@ -27,6 +27,7 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
         return $q.all(this.cubes).then(function(subcubes){
             var total = stats.margin(subcubes[0]).get(0,0)
             marginal = scratch.clone(stats.margin(subcubes[0], 0))
+            subcubes.shift() // remove the first (row unconditional/univariate)
             var subtables =  subcubes.map(function(subcube){
                 if (settings.countsOrPercents.value === 'percent') {
                     body = formatPercentage(stats.propTable(subcube, 1))
@@ -40,8 +41,6 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
                     ,width: subcube.labels[1].length
                 }
             }, this)
-
-
 
             function makeSubtableRows(matrix, k){
                 return matrix.map(function(row, i){
