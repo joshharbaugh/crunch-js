@@ -42,8 +42,8 @@ function CubeMultitableQuery(_, $q, cubeQuery){
             if (variableId[variableId.length - 1] === '/'){
                 variableId = variableId.substring(0, variableId.length - 1)
             }
-            var res = varb.view.rollup_resolution || NULL;
-            var sanitizedRollup = res === "" ? NULL : res
+            var res = varb.view.rollup_resolution || null;
+            var sanitizedRollup = res === "" ? null : res
 
             return {'function': 'rollup',
                 'args': [
