@@ -4,16 +4,28 @@ module.exports = ShojiCatalogFactory
 
 function ShojiCatalogFactory(_, url, ShojiObject, $q) {
 
-    var tupleOperations = {
-        map : function() {
-            var self = this
-                ;
-
-            return new ShojiObject(this.self).map().then(function(shojiObject) {
-                return _.defaults(shojiObject, _.omit(self, '_self'))
-            })
-        }
+    function Tuple(tupleKey, catalogUrl, data) {
+        this.__tupleKey = tupleKey
+        this.__catalogUrl = catalogUrl
+        _.extend(this, data)
     }
+
+    Tuple.prototype.map =   function() {
+        var self = this
+            ;
+
+        return new ShojiObject(this.self).map().then(function(shojiObject) {
+            return _.defaults(shojiObject, _.omit(self, '_self'))
+        })
+    }
+
+    Object.defineProperties(Tuple.prototype, {
+        self : {
+            get : function() {
+                return this._self || (this._self = url.resolve(this.__catalogUrl, this.__tupleKey))
+            }
+        }
+    })
 
     function defineFinalProp(obj, prop, value) {
         Object.defineProperty(obj, prop, { value : value, enumerable : false })
@@ -78,13 +90,7 @@ function ShojiCatalogFactory(_, url, ShojiObject, $q) {
             ;
 
         _.each(indexData, function(tuple, key) {
-            index[key] = Object.defineProperties(_.extend(tuple, tupleOperations), {
-                self : {
-                    get : function() {
-                        return this._self || (this._self = url.resolve(self, key))
-                    }
-                }
-            })
+            index[key] = new Tuple(key, self, tuple)
         })
 
         return index
