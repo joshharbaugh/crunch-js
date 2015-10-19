@@ -36,8 +36,8 @@
     "ndgemm": "~0.0.0",
     "ndarray-fill": "1.0.1",
     "gaussian": "1.0.0",
-    "es6-map": "^0.1.1",
-    "es6-set": "^0.1.1",
+    "es6-map": "0.1.1",
+    "es6-set": "0.1.1",
     "simulate-event": "0.0.3"
   },
   "devDependencies": {
