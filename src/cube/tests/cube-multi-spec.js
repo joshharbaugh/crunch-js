@@ -46,14 +46,10 @@ describe('cube', function(){
             scope.$digest()
         })
         it('first cube should have the right shape', function(){
-            sut[0].then(function(the){
-                the.count.cube.shape.slice().should.eql([5,2])
-            })
+            sut[0].count.cube.shape.slice().should.eql([5,2])
         })
         it('second cube should have the right shape', function(){
-            sut[1].then(function(the){
-                the.count.cube.shape.slice().should.eql([5,4])
-            })
+            sut[1].count.cube.shape.slice().should.eql([5,4])
         })
     })
 
