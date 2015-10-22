@@ -39,6 +39,20 @@ function CachedHierarchicalVariablesFactory(_, $q) {
         return deferred.promise
     }
 
+    CachedHierarchicalVariables.prototype.reject = function(error) {
+        executionQueue.forEach(function(deferred) {
+            deferred.reject(error)
+        })
+
+        waitForPopulationQueue.forEach(function(deferred) {
+            deferred.reject(error)
+        })
+
+        executionQueue.length = 0
+        waitForPopulationQueue.length = 0
+        refreshing = false
+    }
+
     CachedHierarchicalVariables.prototype.refresh = function() {
         refreshing = true
     }
