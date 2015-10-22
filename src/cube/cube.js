@@ -135,7 +135,6 @@ function CubeFactory($q, _, dimension, measure) {
     Cube.fromMultiCube = function(raw) {
         var self=this;
         // [ {} , [ {}, {} ]]
-        console.log(raw)
         return $q.all(_.flatten(raw).map(function(subcube){
             return this.fromCrCube.call(this, subcube) }, this
         ))
