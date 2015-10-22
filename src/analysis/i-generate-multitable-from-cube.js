@@ -64,18 +64,20 @@ function iGenerateMultitableFromCube(_
         function fetchMulti(params){
             return params.multi.then(function(q){
                 if(q instanceof Array){
-                    return $q.all([q.map(function(promise){
-                            return promise.then(function(subq){
-                                    return iFetchCubes({
-                                    query: subq
-                                    , datasetId: params.datasetId
-                                })
+                    return $q.all(q).then(function(subqs){
+                        return subqs.map(function(subq){
+                                return iFetchCubes({
+                                query: subq
+                                , datasetId: params.datasetId
                             })
-                        })])
-                        .then(function(multiResult){
-                            multiResult.unshift(params.row)
-                            return multiResult
                         })
+                    })
+                    .then(function(multiResult){
+                        return $q.all(multiResult)
+                        .then(function(done){
+                            return [params.row, done]
+                        })
+                    }) // [ {}, [{} , {}]  ]
                 }
                 return $q.all([
                     params.row
@@ -83,7 +85,7 @@ function iGenerateMultitableFromCube(_
                         query: q
                         , datasetId: params.datasetId
                     })
-                ])
+                ]) //[ {}, [ {}, {} ]]
             })
         }
         function whaamCube(crunchCube){
