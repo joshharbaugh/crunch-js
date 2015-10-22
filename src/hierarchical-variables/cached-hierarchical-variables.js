@@ -6,7 +6,9 @@ function CachedHierarchicalVariablesFactory(_, $q) {
     var executionQueue = []
         , waitForPopulationQueue = []
         , current
+        , empty = true
         , refreshing = false
+        , error
         ;
 
     function CachedHierarchicalVariables() {
@@ -19,6 +21,8 @@ function CachedHierarchicalVariablesFactory(_, $q) {
 
         if(refreshing === true) {
             executionQueue.push(deferred)
+        } else if (error) {
+            deferred.reject(error)
         } else {
             deferred.resolve(this.current)
         }
@@ -30,8 +34,10 @@ function CachedHierarchicalVariablesFactory(_, $q) {
         var deferred = $q.defer()
             ;
 
-        if(!current || refreshing) {
+        if(empty || refreshing) {
             waitForPopulationQueue.push(deferred)
+        } else if(error) {
+            deferred.reject(error)
         } else {
             deferred.resolve(this.current)
         }
@@ -39,7 +45,9 @@ function CachedHierarchicalVariablesFactory(_, $q) {
         return deferred.promise
     }
 
-    CachedHierarchicalVariables.prototype.reject = function(error) {
+    CachedHierarchicalVariables.prototype.reject = function(e) {
+        error = e
+
         executionQueue.forEach(function(deferred) {
             deferred.reject(error)
         })
@@ -51,6 +59,7 @@ function CachedHierarchicalVariablesFactory(_, $q) {
         executionQueue.length = 0
         waitForPopulationQueue.length = 0
         refreshing = false
+        empty = false
     }
 
     CachedHierarchicalVariables.prototype.refresh = function() {
@@ -74,9 +83,11 @@ function CachedHierarchicalVariablesFactory(_, $q) {
                     deferred.resolve(current)
                 })
 
+                error = null
                 executionQueue.length = 0
                 waitForPopulationQueue.length = 0
                 refreshing = false
+                empty = false
             }
         }
     })
