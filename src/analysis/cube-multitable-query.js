@@ -54,8 +54,12 @@ function CubeMultitableQuery(_, $q, cubeQuery){
         // switch on variable type here: either an array of queries with
         // concise magic syntax for arrays and multiple response;
         // or a proper multi table query for other types.
-
-        if (rowVariable.type === 'multiple_response' || rowVariable.type === 'categorical_array'){
+        var hasMRcolumn = _.some(multitableVariables.map(function(col){
+            return col.type === 'multiple_response'
+        }))
+        if (rowVariable.type === 'multiple_response' ||
+            rowVariable.type === 'categorical_array' ||
+            hasMRcolumn){
             var r = _.cloneDeep(rowVariable)
             var rowPart = [_.extend(r, {'dimension': 'variable', type: rowVariable.type, self: rowVariable.self})]
             if (rowVariable.type === 'categorical_array'){
