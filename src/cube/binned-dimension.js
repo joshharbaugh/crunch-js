@@ -23,6 +23,12 @@ function BinnedDimensionFactory(_) {
             value : 'binned'
         }
 
+        , 'subtype': {
+            get: function(){
+                return this.data.type.subtype
+            }
+        }
+
         ,'labels' : {
             get : function() {
                 return this.validExtents.map(function(el) {

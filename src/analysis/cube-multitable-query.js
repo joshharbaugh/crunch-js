@@ -77,8 +77,8 @@ function CubeMultitableQuery(_, $q, cubeQuery){
             }
         }
         var colrefs = multitableVariables.map(function(varb){
-            return {variable: varb.self}
-        })
+            return types[varb.type](varb) // filtery viewmodel. clean this up.
+        }, this)
         var rowDim = types[rowVariable.type](rowVariable)
         var rowQuery = {
             dimensions: [rowDim],
