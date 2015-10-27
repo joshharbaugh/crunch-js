@@ -34,8 +34,8 @@ describe('Cube Multitable query builder', function(){
         beforeEach(function(){
             inject(function($q, cubeMultitableQuery){
                 sut = cubeMultitableQuery.build([
-                        {self: '/api/datasets/123/variables/admit'}
-                        , {self: '/api/datasets/123/variables/gender'}
+                        {self: '/api/datasets/123/variables/admit', type: 'categorical'}
+                        , {self: '/api/datasets/123/variables/gender', type: 'categorical'}
                 ], {self: '/api/datasets/123/variables/age/', type: 'categorical'})
 
                 $q.all(sut).then(function(theQuery){
