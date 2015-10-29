@@ -6,10 +6,11 @@ module.exports = {
 
 getICacheHierarchicalVariablesFetching.$inject = [
     '$delegate'
+    , '$q'
     , 'cachedHierarchicalVariables'
 ]
 
-function getICacheHierarchicalVariablesFetching($delegate, cachedHierarchicalVariables) {
+function getICacheHierarchicalVariablesFetching($delegate, $q , cachedHierarchicalVariables) {
 
     function cache(){
         var params = arguments[0] || {}
@@ -27,6 +28,9 @@ function getICacheHierarchicalVariablesFetching($delegate, cachedHierarchicalVar
                 }
 
                 return hierarchicalVariables
+            }, function(e) {
+                cachedHierarchicalVariables.reject(e)
+                return $q.reject(e)
             })
     }
 
