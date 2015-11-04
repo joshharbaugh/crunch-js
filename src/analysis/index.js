@@ -15,6 +15,7 @@ function buildModule(moduleName, cfg) {
     mod.factory('iGenerateAnalysisFromCube', require('./i-generate-analysis-from-cube'))
     mod.factory('iGenerateAnalysisFromSaved', require('./i-generate-analysis-from-saved-analysis'))
     mod.factory('iGenerateMultitableFromCube', require('./i-generate-multitable-from-cube'))
+    mod.factory('iGenerateAnalysisFromPublicAnalysis', require('./i-generate-analysis-from-public-analysis'))
     mod.factory('analysisGeneratorFactory', require('./analysis-generator-factory'))
 
     mod.factory('cubeQuery', require('./cube-query'))
