@@ -10,16 +10,16 @@ MeasureListFactory.$inject = [
 
 function MeasureListFactory(_, $q, cachedHierarchicalVariables) {
 
-    function assertDatasetId(datasetId) {
-        if(!datasetId) {
-            throw new Error('datasetId is required by the measure list')
-        }
+    function MeasureList() {
+        this.measures = {}
     }
 
-    function MeasureList(datasetId) {
-        assertDatasetId(datasetId)
-        this.datasetId = datasetId
-        this.measures = {}
+    MeasureList.fromDefinitions = function(measureDefinitions) {
+        var list = new MeasureList()
+
+        list.measures = measureDefinitions
+
+        return list
     }
 
     function serialize (variables, measure) {

@@ -71,6 +71,11 @@ describe('iGenerateAnalysisFromPublicAnalysis', function() {
                 "self" : "https://my/variable/3/"
                 , "element": "shoji:entity"
             })
+            expect(results.variables[2]).to.deep.contain({
+                "self" : "https://my/variable/4/"
+                , "element": "shoji:entity"
+                , "dimension" : "each"
+            })
         })
 
         it('should return a results object containing a list of variables', function() {

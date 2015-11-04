@@ -8,6 +8,7 @@
                     {
                         "variable": "https://my/variable/1/"
                     },
+
                     {
                         "function": "rollup",
                         "args": [
@@ -18,6 +19,10 @@
                                 "value": "M"
                             }
                         ]
+                    },
+                    {
+                        "function": "each",
+                        "args": [ {"variable": "https://my/variable/4/"}]
                     }
                 ],
                 "measures": {
@@ -106,6 +111,9 @@
                 "element": "shoji:entity"
             },
             "https://my/variable/3/": {
+                "element": "shoji:entity"
+            },
+            "https://my/variable/4/": {
                 "element": "shoji:entity"
             },
             "https://my/filter/": {

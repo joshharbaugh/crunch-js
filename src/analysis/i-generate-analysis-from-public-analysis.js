@@ -14,7 +14,7 @@ function IGenerateAnalysisFromPublicAnalysis(_, Shoji, crFindVariables, cube) {
     function createAnalysis(publicAnalysisData) {
         var references = createReferenceResources(publicAnalysisData.definitions)
             , variableIds = getQueryVariables(publicAnalysisData.queries[0])
-            , variables = mapToShojiResources(variableIds, references)
+            , variables = mapQueryVariablesToShojiResource(variableIds, references)
             , measures = mapQueryMeasuresToShojiResources(publicAnalysisData.queries[0], references)
             , filters = mapFiltersToShojiResources(publicAnalysisData.query_environment.filters, references)
             ;
@@ -37,6 +37,25 @@ function IGenerateAnalysisFromPublicAnalysis(_, Shoji, crFindVariables, cube) {
         return mapToShojiResources(filters, references)
     }
 
+    function mapQueryVariablesToShojiResource(queryVariables, references) {
+        return queryVariables.map(function(queryVariable) {
+            var variableResource = mapToShojiResource(queryVariable.variableId, references)
+                ;
+
+            variableResource.dimension = queryVariable.dimension
+            return variableResource
+        })
+    }
+
+    function getQueryVariables(query) {
+        return query.variables.map(function(variableExpression) {
+            return {
+                variableId : crFindVariables(variableExpression)
+                , dimension : variableExpression.function === 'each' ? 'each' : 'variable'
+            }
+        })
+    }
+
     function mapQueryMeasuresToShojiResources(query, referencesMap) {
         return Object.keys(query.measures).map(function(type) {
             return {
@@ -49,12 +68,6 @@ function IGenerateAnalysisFromPublicAnalysis(_, Shoji, crFindVariables, cube) {
     function createReferenceResources(referencesMap) {
         return Object.keys(referencesMap).map(function(referenceURL) {
             return Shoji(referenceURL).parse(referencesMap[referenceURL])
-        })
-    }
-
-    function getQueryVariables(query) {
-        return query.variables.map(function(variableExpression) {
-            return crFindVariables(variableExpression)
         })
     }
 

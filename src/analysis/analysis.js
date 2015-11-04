@@ -22,6 +22,10 @@ function AnalysisFactory(_
         return _.isString(params.slideId)
     }
 
+    function hasPublicAnalysisURL(params) {
+        return _.isString(params.publicAnalysisURL)
+    }
+
     function assertDatasetId(cfg) {
         if(!cfg.datasetId) {
             throw new Error('please provide a valid datasetId')
@@ -31,6 +35,12 @@ function AnalysisFactory(_
     function assertSlideId(cfg) {
         if(!_.isString(cfg.slideId)) {
             throw new Error('please provide a valid slideId')
+        }
+    }
+
+    function assertPublicAnalysisURL(cfg) {
+        if(!_.isString(cfg.publicAnalysisURL)) {
+            throw new Error('please provide a valid publicAnalysisURL')
         }
     }
 
@@ -323,6 +333,50 @@ function AnalysisFactory(_
         }
     })
 
+    var PublicAnalysis = Analysis.extend({
+        states : {
+            uninitialized : {
+                initialize : function(params) {
+                    assertPublicAnalysisURL(params)
+
+                    this.publicAnalysisURL = params.publicAnalysisURL
+                    this.variables = new VariableList()
+                    this.measures = new MeasureList()
+
+                    this.transition('empty')
+                }
+            }
+
+            , empty : {
+                load : function() {
+                    var generate
+                        , self = this
+                        ;
+
+                    generate = analysisGeneratorFactory.getGenerator({
+                        publicAnalysisURL : self.publicAnalysisURL
+                    })
+
+                    self.transition('loading')
+
+                    generate()
+                    .then(function(data) {
+                        self.data = data
+                        self.variables = VariableList.fromDefinitions(data.variables)
+                        self.measures = MeasureList.fromDefinitions(data.measures)
+
+                        self.emit('savedAnalysis.loaded', self.data)
+                        self.transition('loaded')
+                    })
+                    .catch(function() {
+                        self.transition('error')
+                    })
+                }
+            }
+        }
+    })
+
+
     var SavedAnalysis = Analysis.extend({
         states : {
             uninitialized : {
@@ -388,7 +442,14 @@ function AnalysisFactory(_
 
             cfg = cfg || {}
 
-            analysis = hasSlideId(cfg) ? new SavedAnalysis() : new Analysis()
+            if(hasSlideId(cfg)) {
+                analysis = new SavedAnalysis()
+            } else if(hasPublicAnalysisURL(cfg)) {
+                analysis = new PublicAnalysis()
+            } else {
+                analysis = new Analysis()
+            }
+
             analysis.handle('initialize', cfg)
 
             return analysis
