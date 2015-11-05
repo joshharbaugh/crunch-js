@@ -7,9 +7,11 @@ IGenerateAnalysisFromPublicAnalysis.$inject = [
     , 'Shoji'
     , 'crFindVariables'
     , 'cube'
+    , 'analysisGenerator'
 ]
 
-function IGenerateAnalysisFromPublicAnalysis(_, Shoji, crFindVariables, cube) {
+function IGenerateAnalysisFromPublicAnalysis(_, Shoji, crFindVariables, cube, analysisGenerator) {
+    var generator = Object.create(analysisGenerator)
 
     function createAnalysis(publicAnalysisData) {
         var references = createReferenceResources(publicAnalysisData.definitions)
@@ -83,17 +85,17 @@ function IGenerateAnalysisFromPublicAnalysis(_, Shoji, crFindVariables, cube) {
         })[0]
     }
 
-    function iGenerateAnalysisFromPublicAnalysis(params) {
-        return Shoji(params.publicAnalysisURL).map().then(function(publicAnalysis) {
+    generator.execute = function(params) {
+        return Shoji(params.publicAnalysisURL).map({ withCredentials : false }).then(function(publicAnalysis) {
             return createAnalysis(publicAnalysis.value)
         })
     }
 
-    iGenerateAnalysisFromPublicAnalysis.accepts = function(params) {
+    generator.accepts = function(params) {
         return params &&
                _.isString(params.publicAnalysisURL) &&
                params.publicAnalysisURL.length > 0
     }
 
-    return iGenerateAnalysisFromPublicAnalysis
+    return generator
 }
