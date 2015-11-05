@@ -37,65 +37,74 @@
         "display_settings": {},
         "results": [
             {
-                "query": {
-                    "measures": {
-                        "count": {
-                            "function": "cube_count",
-                            "args": []
+                "element" : "shoji:view",
+                "value" : {
+                    "query": {
+                        "measures": {
+                            "count": {
+                                "function": "cube_count",
+                                "args": []
+                            },
+                            "mean": {
+                                "function": "cube_mean",
+                                "args": [
+                                    {
+                                        "variable": "/api/datasets/a/variables/000014/"
+                                    }
+                                ]
+                            }
                         },
-                        "mean": {
-                            "function": "cube_mean",
-                            "args": [{
-                                "variable": "/api/datasets/a/variables/000014/"
-                            }]
-                        }
+                        "weight": null,
+                        "dimensions": [],
+                        "filters": []
                     },
-                    "weight": null,
-                    "dimensions": [],
-                    "filters": []
-                },
-                "result": {
-                    "dimensions": [],
-                    "missing": 0,
-                    "measures": {
-                        "count": {
-                            "data": [2276],
-                            "n_missing": 0,
-                            "metadata": {
-                                "references": {},
-                                "derived": true,
-                                "type": {
-                                    "integer": true,
-                                    "class": "numeric",
-                                    "missing_reasons": {
-                                        "No Data": -1
-                                    },
-                                    "missing_rules": {}
+                    "result": {
+                        "dimensions": [],
+                        "missing": 0,
+                        "measures": {
+                            "count": {
+                                "data": [
+                                    2276
+                                ],
+                                "n_missing": 0,
+                                "metadata": {
+                                    "references": {},
+                                    "derived": true,
+                                    "type": {
+                                        "integer": true,
+                                        "class": "numeric",
+                                        "missing_reasons": {
+                                            "No Data": -1
+                                        },
+                                        "missing_rules": {}
+                                    }
+                                }
+                            },
+                            "mean": {
+                                "data": [
+                                    1.7297891036906854
+                                ],
+                                "n_missing": 10,
+                                "metadata": {
+                                    "references": {},
+                                    "derived": true,
+                                    "type": {
+                                        "integer": null,
+                                        "class": "numeric",
+                                        "missing_reasons": {
+                                            "No Data": -1
+                                        },
+                                        "missing_rules": {}
+                                    }
                                 }
                             }
                         },
-                        "mean": {
-                            "data": [1.7297891036906854],
-                            "n_missing": 10,
-                            "metadata": {
-                                "references": {},
-                                "derived": true,
-                                "type": {
-                                    "integer": null,
-                                    "class": "numeric",
-                                    "missing_reasons": {
-                                        "No Data": -1
-                                    },
-                                    "missing_rules": {}
-                                }
-                            }
-                        }
-                    },
-                    "element": "crunch:cube",
-                    "margins": {
-                        "data": []
-                    },
-                    "n": 2276
+                        "element": "crunch:cube",
+                        "margins": {
+                            "data": []
+                        },
+                        "n": 2276
+                    }
                 }
             }
         ],

@@ -35,7 +35,7 @@ function IGenerateAnalysisFromPublicAnalysis(_, Shoji, crFindVariables, cube, an
     }
 
     function createCubeFromResult(result) {
-        return cube.fromCrCube(result)
+        return cube.fromCrCube(result.value)
     }
 
     function mapFiltersToShojiResources(filters, references) {
