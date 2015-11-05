@@ -27,12 +27,15 @@ function IGenerateAnalysisFromPublicAnalysis(_, Shoji, crFindVariables, cube, an
                 , measureVariables : measures
                 , cube : cube
                 , filters : filters
+                , analysis : {
+                    display_settings : publicAnalysisData.display_settings
+                }
             }
         })
     }
 
     function createCubeFromResult(result) {
-        return cube.fromCrCube(result.value)
+        return cube.fromCrCube(result)
     }
 
     function mapFiltersToShojiResources(filters, references) {
@@ -50,7 +53,7 @@ function IGenerateAnalysisFromPublicAnalysis(_, Shoji, crFindVariables, cube, an
     }
 
     function getQueryVariables(query) {
-        return query.variables.map(function(variableExpression) {
+        return query.dimensions.map(function(variableExpression) {
             return {
                 variableId : crFindVariables(variableExpression)
                 , dimension : variableExpression.function === 'each' ? 'each' : 'variable'

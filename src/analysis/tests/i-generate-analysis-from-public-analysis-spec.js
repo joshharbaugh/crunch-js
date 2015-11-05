@@ -56,7 +56,7 @@ describe('iGenerateAnalysisFromPublicAnalysis', function() {
 
         beforeEach(function() {
             expectGET(publicAnalysisFixture.self, publicAnalysisFixture)
-            sut({ publicAnalysisURL : publicAnalysisFixture.self }).then(function(r) {
+            sut.execute({ publicAnalysisURL : publicAnalysisFixture.self }).then(function(r) {
                 results = r
             })
             flush()

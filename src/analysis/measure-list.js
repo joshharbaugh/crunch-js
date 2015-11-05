@@ -17,7 +17,7 @@ function MeasureListFactory(_, $q, cachedHierarchicalVariables) {
     MeasureList.fromDefinitions = function(measureDefinitions) {
         var list = new MeasureList()
 
-        list.measures = measureDefinitions
+        list.measures = measureDefinitions || {}
 
         return list
     }

@@ -4,7 +4,7 @@
     "value" : {
         "queries": [
             {
-                "variables": [
+                "dimensions": [
                     {
                         "variable": "https://my/variable/1/"
                     },
@@ -37,69 +37,65 @@
         "display_settings": {},
         "results": [
             {
-                "element": "shoji:view",
-                "self": "/api/datasets/a/cube/?query=%7B%22dimensions%22:%5B%5D,%22measures%22:%7B%22mean%22:%7B%22function%22:%22cube_mean%22,%22args%22:%5B%7B%22variable%22:%22http:%2F%2Flocal.crunch.io:8080%2Fapi%2Fdatasets%2Fa%2Fvariables%2F000014%2F%22%7D%5D%7D,%22count%22:%7B%22function%22:%22cube_count%22,%22args%22:%5B%5D%7D%7D%7D",
-                "value": {
-                    "query": {
-                        "measures": {
-                            "count": {
-                                "function": "cube_count",
-                                "args": []
-                            },
-                            "mean": {
-                                "function": "cube_mean",
-                                "args": [{
-                                    "variable": "/api/datasets/a/variables/000014/"
-                                }]
-                            }
+                "query": {
+                    "measures": {
+                        "count": {
+                            "function": "cube_count",
+                            "args": []
                         },
-                        "weight": null,
-                        "dimensions": [],
-                        "filters": []
+                        "mean": {
+                            "function": "cube_mean",
+                            "args": [{
+                                "variable": "/api/datasets/a/variables/000014/"
+                            }]
+                        }
                     },
-                    "result": {
-                        "dimensions": [],
-                        "missing": 0,
-                        "measures": {
-                            "count": {
-                                "data": [2276],
-                                "n_missing": 0,
-                                "metadata": {
-                                    "references": {},
-                                    "derived": true,
-                                    "type": {
-                                        "integer": true,
-                                        "class": "numeric",
-                                        "missing_reasons": {
-                                            "No Data": -1
-                                        },
-                                        "missing_rules": {}
-                                    }
-                                }
-                            },
-                            "mean": {
-                                "data": [1.7297891036906854],
-                                "n_missing": 10,
-                                "metadata": {
-                                    "references": {},
-                                    "derived": true,
-                                    "type": {
-                                        "integer": null,
-                                        "class": "numeric",
-                                        "missing_reasons": {
-                                            "No Data": -1
-                                        },
-                                        "missing_rules": {}
-                                    }
+                    "weight": null,
+                    "dimensions": [],
+                    "filters": []
+                },
+                "result": {
+                    "dimensions": [],
+                    "missing": 0,
+                    "measures": {
+                        "count": {
+                            "data": [2276],
+                            "n_missing": 0,
+                            "metadata": {
+                                "references": {},
+                                "derived": true,
+                                "type": {
+                                    "integer": true,
+                                    "class": "numeric",
+                                    "missing_reasons": {
+                                        "No Data": -1
+                                    },
+                                    "missing_rules": {}
                                 }
                             }
                         },
-                        "element": "crunch:cube",
-                        "margins": {
-                            "data": []
-                        },
-                        "n": 2276
-                    }
+                        "mean": {
+                            "data": [1.7297891036906854],
+                            "n_missing": 10,
+                            "metadata": {
+                                "references": {},
+                                "derived": true,
+                                "type": {
+                                    "integer": null,
+                                    "class": "numeric",
+                                    "missing_reasons": {
+                                        "No Data": -1
+                                    },
+                                    "missing_rules": {}
+                                }
+                            }
+                        }
+                    },
+                    "element": "crunch:cube",
+                    "margins": {
+                        "data": []
+                    },
+                    "n": 2276
                 }
             }
         ],

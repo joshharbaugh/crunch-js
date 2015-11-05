@@ -365,7 +365,6 @@ function AnalysisFactory(_
                         self.variables = VariableList.fromDefinitions(data.variables)
                         self.measures = MeasureList.fromDefinitions(data.measures)
 
-                        self.emit('savedAnalysis.loaded', self.data)
                         self.transition('loaded')
                     })
                     .catch(function() {

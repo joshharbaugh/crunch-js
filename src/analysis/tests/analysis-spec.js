@@ -38,7 +38,7 @@ describe('Analysis', function() {
                     if(params.publicAnalysisURL) {
                         //use the real generator to test integration
                         return function() {
-                            return iGenerateAnalysisFromPublicAnalysis(params)
+                            return iGenerateAnalysisFromPublicAnalysis.execute(params)
                         }
                     } else {
                         return function() {
@@ -233,16 +233,12 @@ describe('Analysis', function() {
         })
 
         it('should initialize the variables from the existing analysis', function() {
-            expect(sut.variables.count()).to.equal(publicAnalysisFixture.value.queries[0].variables.length)
+            expect(sut.variables.count()).to.equal(publicAnalysisFixture.value.queries[0].dimensions.length)
         })
 
         it('should transition to loaded state', function() {
             sut.priorState.should.be.equal('loading')
             sut.state.should.be.equal('loaded')
-        })
-
-        it('should emit savedAnalysis.loaded event', function() {
-            expect(triggered).to.be.true
         })
 
         it('should emit analysis.loaded event', function() {
