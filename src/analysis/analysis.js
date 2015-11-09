@@ -47,6 +47,7 @@ function AnalysisFactory(_
     var analysisOperations = {
 
         'add-variable' : function(variableId) {
+            this.transition('loading')
             this.variables.add(variableId).then(function() {
                 this.recalculate()
             }.bind(this))
@@ -72,18 +73,21 @@ function AnalysisFactory(_
         }
 
         , 'replace-variable' : function(index, variableId) {
+            this.transition('loading')
             this.variables
                 .replace(index, variableId)
                 .then(this.recalculate.bind(this))
         }
 
         , 'insert-before' : function(index, variableId) {
+            this.transition('loading')
             this.variables
                 .insertBefore(index, variableId)
                 .then(this.recalculate.bind(this))
         }
 
         , pivot : function() {
+            this.transition('loading')
             this.variables.pivot()
             this.recalculate()
         }
@@ -93,6 +97,7 @@ function AnalysisFactory(_
         }
 
         , 'measures-mean': function(variableId) {
+            this.transition('loading')
             this.measures.add('mean', variableId).then(function() {
                 this.recalculate()
             }.bind(this))
@@ -176,16 +181,19 @@ function AnalysisFactory(_
                     this.measures.clean()
                 }
                 ,'add-variable' : function(variableId) {
+                    this.transition('loading')
                     this.variables.add(variableId).then(function() {
                         this.recalculate()
                     }.bind(this))
                 }
                 , 'insert-before' : function(index, variableId) {
+                    this.transition('loading')
                     this.variables
                         .insertBefore(index, variableId)
                         .then(this.recalculate.bind(this))
                 }
                 ,'measures-mean': function(variableId) {
+                    this.transition('loading')
                     this.measures.add('mean', variableId).then(function() {
                         this.recalculate()
                     }.bind(this))
