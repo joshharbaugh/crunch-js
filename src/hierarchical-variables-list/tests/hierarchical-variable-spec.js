@@ -98,4 +98,64 @@ describe('HierarchicalVariable',function(){
 
         })
     })
+
+    describe('Given a multiple response variable',function(){
+        beforeEach(function(){
+            buildModule()
+            inject(function (_$httpBackend_, _$q_) {
+                $httpBackend = _$httpBackend_
+                $q = _$q_
+            })
+            // Fetches subvariables
+            $httpBackend.expectGET('/url/to/subvariables/catalog/').
+                respond(200, {
+                    'element': 'shoji:catalog',
+                    'self': '/url/to/subvariables/catalog/',
+                    'description': 'subvariables catalog',
+                    'index': {
+                        '/leadershipbiden': {
+                            'name': 'Biden'
+                        }
+                        , '/leadershipobama': {
+                            'name': 'Obama'
+                        }
+                        , '/leadershipclinton': {
+                            'name': 'Clinton'
+                        }
+                    }
+            })
+        })
+        beforeEach(function(){
+            inject(function(HierarchicalVariable){
+                var cfg = {
+                    variable: {
+                        self: '/leadershipMatrix'
+                        ,name: 'leadership'
+                        ,type: 'multiple_response'
+                        ,subvariables: [
+                            '/leadershipbiden'
+                            ,'/leadershipobama'
+                            ,'/leadershipclinton'
+                        ],
+                        subvariables_catalog: '/url/to/subvariables/catalog/'
+                    }
+                    ,group: {
+                        group: 'a'
+                        , handle : angular.noop
+                    }
+                }
+                variable = HierarchicalVariable.create(cfg)
+                variable.data.getSubvariables = function() {
+                    return $q.when([])
+                }
+            })
+        })
+        it('will fetch the subvariables on expand', function(){
+            variable.expansion.subvarsLoaded.should.be.false
+            variable.expansion.handle('toggle')
+            flush()
+            variable.expansion.subvarsLoaded.should.be.true
+
+        })
+    })
 })
