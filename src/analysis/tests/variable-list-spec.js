@@ -1,7 +1,6 @@
 'use strict'
 
-var mocks = require('angular-mocks')
-    , mainMod = require('../index')
+var mainMod = require('../index')
     , mockHierarchicalVariables = require('../../test-support/mock-hierarchical-variables')
     , varsFixture = require('../../hierarchical-variables/tests/variables')
     , orderFixture = require('../../hierarchical-variables/tests/hierarchical-grouped')
@@ -236,7 +235,6 @@ describe('VariableList', function() {
 
     context('when inserting a variable before another variable', function() {
         var sut
-            , variable
             ;
 
         beforeEach(buildModule)

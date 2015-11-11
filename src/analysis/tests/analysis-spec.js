@@ -4,6 +4,9 @@ require('angular-mocks')
 
 var mainMod = require('../index')
     , machinaMod = require('../../machina-angular')
+    , shojiMod = require('../../shoji')
+    , cubeMod = require('../../cube')
+    , publicAnalysisFixture = require('./external-resource-analysis-fixture.json')
     ;
 
 describe('Analysis', function() {
@@ -16,6 +19,8 @@ describe('Analysis', function() {
     function buildModule() {
         var main = mainMod()
             , machina = machinaMod('machina.test')
+            , shoji = shojiMod()
+            , cube = cubeMod()
             ;
 
         fakeAnalysis = {
@@ -27,11 +32,18 @@ describe('Analysis', function() {
             , analysis : { query : { named_args : { variables : ['/var/123'] } } }
         }
 
-        main.factory('analysisGeneratorFactory', function($q) {
+        main.factory('analysisGeneratorFactory', function($q, iGenerateAnalysisFromPublicAnalysis) {
             return {
-                getGenerator : function() {
-                    return function() {
-                        return $q.when(fakeAnalysis)
+                getGenerator : function(params) {
+                    if(params.publicAnalysisURL) {
+                        //use the real generator to test integration
+                        return function() {
+                            return iGenerateAnalysisFromPublicAnalysis.execute(params)
+                        }
+                    } else {
+                        return function() {
+                            return $q.when(fakeAnalysis)
+                        }
                     }
                 }
             }
@@ -62,7 +74,7 @@ describe('Analysis', function() {
             })
         })
 
-        angular.mock.module(main.name, machina.name)
+        angular.mock.module(main.name, machina.name, shoji.name, cube.name)
 
         return main
     }
@@ -76,6 +88,20 @@ describe('Analysis', function() {
     function flush() {
         angular.mock.inject(function($rootScope) {
             $rootScope.$digest()
+        })
+    }
+
+    function expectGET(url, result) {
+        angular.mock.inject(function($httpBackend) {
+            $httpBackend.expectGET(url).respond(200, result)
+        })
+    }
+
+    function httpFlush() {
+        angular.mock.inject(function($httpBackend, $rootScope) {
+            $rootScope.$digest()
+            $httpBackend.flush()
+            $httpBackend.verifyNoOutstandingExpectation()
         })
     }
 
@@ -112,6 +138,23 @@ describe('Analysis', function() {
 
             it('should transition to empty state', function() {
                 sut.state.should.be.equal('empty')
+            })
+        })
+
+        context('given a publicAnalysisURL', function() {
+            beforeEach(function() {
+                sut = Sut.create({
+                    publicAnalysisURL : '/slide/123'
+                })
+                flush()
+            })
+
+            it('should set the publicAnalysisURL property', function() {
+                expect(sut.publicAnalysisURL).to.be.equal('/slide/123')
+            })
+
+            it('should transition to empty state', function() {
+                expect(sut.state).to.be.equal('empty')
             })
         })
     })
@@ -156,6 +199,46 @@ describe('Analysis', function() {
 
         it('should emit savedAnalysis.loaded event', function() {
             expect(triggered).to.be.true
+        })
+
+        it('should emit analysis.loaded event', function() {
+            expect(changedTriggered).to.be.true
+        })
+    })
+
+    context('when loading a public analysis', function() {
+        var sut
+            , triggered
+            , changedTriggered
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(buildSut)
+        beforeEach(function() {
+            sut = Sut.create({
+                publicAnalysisURL : publicAnalysisFixture.self
+            })
+
+            sut.on('savedAnalysis.loaded', function() {
+                triggered = true
+            })
+
+            sut.on('analysis.loaded', function() {
+                changedTriggered = true
+            })
+
+            expectGET(publicAnalysisFixture.self, publicAnalysisFixture)
+            sut.handle('load')
+            httpFlush()
+        })
+
+        it('should initialize the variables from the existing analysis', function() {
+            expect(sut.variables.count()).to.equal(publicAnalysisFixture.value.queries[0].dimensions.length)
+        })
+
+        it('should transition to loaded state', function() {
+            sut.priorState.should.be.equal('loading')
+            sut.state.should.be.equal('loaded')
         })
 
         it('should emit analysis.loaded event', function() {

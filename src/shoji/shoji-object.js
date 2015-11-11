@@ -61,7 +61,7 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
     ShojiObject.prototype.map = function(params) {
         var promise = shojiDataOperations
                 .get(this.self, _.isPlainObject(params) ? params : {})
-                .then(this.parse)
+                .then(this.parse.bind(this))
 
         return promise.then.apply(promise, processCallbacks.apply(this, arguments))
     }
@@ -131,9 +131,15 @@ function ShojiObjectFactory($injector, shojiDataOperations, _, assert, $q, $log)
 
     ShojiObject.prototype.parse = function(data) {
         var shojiParser = $injector.get('shojiParser')
+            , parsed = shojiParser.parse(data)
             ;
 
-        return shojiParser.parse(data)
+        if(parsed && !parsed.self) {
+            parsed.self = this.self
+        }
+
+
+        return parsed
     }
 
     metadataProps = (['urls', 'fragments', 'views', 'catalogs']).reduce(function(props, meta) {

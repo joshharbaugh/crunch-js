@@ -12,7 +12,7 @@ function CrFindVariablesFactory(){
             ,func = expr.function || false
             ,each = expr.each || false
             ,args = expr instanceof Array || false
-            ,string = typeof expr == 'string' || false
+            ,string = typeof expr === 'string' || false
             ;
         if (variable){
             return variable
