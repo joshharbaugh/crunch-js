@@ -39,8 +39,12 @@ function ShojiDataOperationsFactory($q, $http, $log, _) {
                 outer.resolve(data)
             })
             .error(function(response) {
+                var status = response && response.status
+                    ;
+
                 outer.reject(createError('The shoji object with URI ' + uri +
-                    ' could not be obtained. Error code' + response.status, response))
+                    ' could not be obtained. Error code' + status))
+
                 $log.error(response)
             })
 

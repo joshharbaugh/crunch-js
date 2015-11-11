@@ -6,7 +6,6 @@ IGenerateAnalysisFromSavedFactory.$inject = [
     'lodash'
     , 'analysisGenerator'
     , 'iResourceDataset'
-    , 'Shoji'
     , 'crFindVariables'
     , 'cube'
     , 'iFetchCubes'
@@ -15,7 +14,6 @@ IGenerateAnalysisFromSavedFactory.$inject = [
 function IGenerateAnalysisFromSavedFactory(_
     , analysisGenerator
     , iResourceDataset
-    , Shoji
     , findVariables
     , Cube
     , iFetchCubes) {

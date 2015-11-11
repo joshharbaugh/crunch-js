@@ -69,16 +69,16 @@ function VariableListFactory(_, $q, cachedHierarchicalVariables) {
         return promise
     }
 
-    function assertDatasetId(datasetId) {
-        if(!datasetId) {
-            throw new Error('Dataset id is required by the variable list')
-        }
+    function VariableList() {
+        this.items = []
     }
 
-    function VariableList(datasetId) {
-        assertDatasetId(datasetId)
-        this.datasetId = datasetId
-        this.items = []
+    VariableList.fromDefinitions = function(variableDefinitions) {
+        var list = new VariableList()
+
+        list.items = variableDefinitions
+
+        return list
     }
 
     VariableList.prototype.at = function(idx) {

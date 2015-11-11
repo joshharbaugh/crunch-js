@@ -10,7 +10,6 @@ var mocks = require('angular-mocks')
 
 describe('MeasureList', function() {
     var MeasureList
-        , fakeVariable
         , hv
         , datasetId = '/datasets/123'
         , subvariableFixture = {
@@ -113,6 +112,8 @@ describe('MeasureList', function() {
             expect(measureVar).to.have.property('name', 'LeadershipObama')
         })
     })
+
+
     describe('when serializing', function() {
 
         describe('given a measure list with a mean measure', function() {

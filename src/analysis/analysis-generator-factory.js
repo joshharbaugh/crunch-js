@@ -6,13 +6,13 @@ AnalysisGeneratorFactory.$inject = [
     'lodash'
     , 'iGenerateAnalysisFromCube'
     , 'iGenerateAnalysisFromSaved'
-    , 'iGenerateMultitableFromCube'
+    , 'iGenerateAnalysisFromPublicAnalysis'
 ]
 
 function AnalysisGeneratorFactory(_
     , iGenerateAnalysisFromCube
     , iGenerateAnalysisFromSaved
-    , iGenerateMultitableFromCube) {
+    , iGenerateAnalysisFromPublicAnalysis) {
 
     return {
         getGenerator : function(params) {
@@ -20,6 +20,7 @@ function AnalysisGeneratorFactory(_
                 ;
 
             iGenerateAnalysisFromSaved.next = iGenerateAnalysisFromCube
+            iGenerateAnalysisFromCube.next = iGenerateAnalysisFromPublicAnalysis
 
             return _.partial(first.generate.bind(first), params)
         }
