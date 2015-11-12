@@ -10,8 +10,7 @@ function HierarchicalVariableFactory(machina, bus) {
         create: function(cfg) {
             var varb;
 
-            if((cfg.variable.type === 'categorical_array' || cfg.variable.type === 'multiple_response')
-                && cfg.variable.subvariables && cfg.variable.subvariables.length) {
+            if(cfg.variable.subvariables.length) {
                 varb = CompositeVariable.create(cfg)
             } else {
                 varb = ScalarVariable.create(cfg)
