@@ -341,8 +341,7 @@ describe('Analysis', function() {
             beforeEach(buildSut)
             beforeEach(function() {
                 sut = Sut.create({ datasetId : datasetId })
-                sut.handle('add-variable', '/variable/123')
-                sut.handle('add-variable', '/variable/456')
+                sut.handle('add-variable', ['/variable/123', '/variable/456'])
                 flush()
             })
 
