@@ -151,7 +151,7 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
                 ,filter_names: filter_names
                 // ,weight_var: weight_var
             }
-            console.log(JSON.stringify(out,null,2))
+            // console.log(JSON.stringify(out,null,2))
             return out
         })
     }
