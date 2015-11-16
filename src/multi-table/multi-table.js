@@ -15,7 +15,7 @@ MultiTableFactory.$inject = [
     ,'labelFormatter'
 ]
 function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, show, labelFormatter){
-    function MultiTable(){
+    function MultiTable(params){
     }
     function formatPercentage(a){
         return ops.mulseq(a, 100)
@@ -23,6 +23,9 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
     MultiTable.prototype.display = function(settings){
         var body
             , marginal
+            , rowTitle = this.rowTitle
+            , columns = this.columns
+            , rowVariableName = this.rowVariableName
         ;
         return $q.all(this.cubes).then(function(subcubes){
             var total = stats.margin(subcubes[0]).get(0,0)
@@ -140,6 +143,8 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
                 ,spans: subtables.map(function(t){return t.width })
                 ,rowLabels: rowLabels
                 ,subtables: subtables
+                ,rowTitle: rowTitle
+                ,rowVariableName: rowVariableName
             }
             return out
         })
@@ -147,10 +152,12 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
 
     return{
         create: function(params){
-            var result = new MultiTable()
-            result.columns = params.columns
+            var result = new MultiTable(params)
             return $q.when(params.result).then(function(them){
                 result.cubes = them
+                result.rowTitle = params.rowTitle
+                result.rowVariableName = params.rowVariableName
+                result.columns = params.columns
                 return result
             })
         }
