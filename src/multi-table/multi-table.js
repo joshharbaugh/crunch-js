@@ -26,6 +26,8 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
             , rowTitle = this.rowTitle
             , columns = this.columns
             , rowVariableName = this.rowVariableName
+            , filter_names = this.filter_names
+            // , weight_var = this.weight_var
         ;
         return $q.all(this.cubes).then(function(subcubes){
             var total = stats.margin(subcubes[0]).get(0,0)
@@ -145,7 +147,11 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
                 ,subtables: subtables
                 ,rowTitle: rowTitle
                 ,rowVariableName: rowVariableName
+                ,colTitles: columns.map(function(varb){return varb.name})
+                ,filter_names: filter_names
+                // ,weight_var: weight_var
             }
+            console.log(JSON.stringify(out,null,2))
             return out
         })
     }
@@ -158,6 +164,8 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
                 result.rowTitle = params.rowTitle
                 result.rowVariableName = params.rowVariableName
                 result.columns = params.columns
+                result.filter_names = params.filter_names
+                // result.weight_var = params.weight_var
                 return result
             })
         }
