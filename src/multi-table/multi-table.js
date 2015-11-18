@@ -15,7 +15,7 @@ MultiTableFactory.$inject = [
     ,'labelFormatter'
 ]
 function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, show, labelFormatter){
-    function MultiTable(){
+    function MultiTable(params){
     }
     function formatPercentage(a){
         return ops.mulseq(a, 100)
@@ -23,6 +23,11 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
     MultiTable.prototype.display = function(settings){
         var body
             , marginal
+            , rowTitle = this.rowTitle
+            , columns = this.columns
+            , rowVariableName = this.rowVariableName
+            , filter_names = this.filter_names
+            // , weight_var = this.weight_var
         ;
         return $q.all(this.cubes).then(function(subcubes){
             var total = stats.margin(subcubes[0]).get(0,0)
@@ -140,17 +145,27 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
                 ,spans: subtables.map(function(t){return t.width })
                 ,rowLabels: rowLabels
                 ,subtables: subtables
+                ,rowTitle: rowTitle
+                ,rowVariableName: rowVariableName
+                ,colTitles: columns.map(function(varb){return varb.name})
+                ,filter_names: filter_names
+                // ,weight_var: weight_var
             }
+            // console.log(JSON.stringify(out,null,2))
             return out
         })
     }
 
     return{
         create: function(params){
-            var result = new MultiTable()
-            result.columns = params.columns
+            var result = new MultiTable(params)
             return $q.when(params.result).then(function(them){
                 result.cubes = them
+                result.rowTitle = params.rowTitle
+                result.rowVariableName = params.rowVariableName
+                result.columns = params.columns
+                result.filter_names = params.filter_names
+                // result.weight_var = params.weight_var
                 return result
             })
         }
