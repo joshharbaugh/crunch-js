@@ -16,10 +16,10 @@ describe('iGenerateMultitableFromCube', function() {
             , cubeTest = cubeMod('cube.test')
             ;
 
-        cubeTest.factory('iResourceDataset', function($q){
-            return function(params){
+        cubeTest.factory('currentDataset', function($q){
+            return {fetch: function(){
                 return $q.when(params)
-            }
+            }}
         })
         cubeTest.factory('iResourceVariable', function($q){
             return function(params){
@@ -79,16 +79,12 @@ describe('iGenerateMultitableFromCube', function() {
                 inject(function(){
                     sut.execute({
                         datasetId: '/datasets/123/'
-                        , multitable_variables : {
-                            'valueOf': function(){ return [
-                                {self: '/api/datasets/123/variables/gender/', type: 'categorical'}
-                                , {self: '/api/datasets/123/variables/age/', type: 'categorical'}
-                            ]}
-                        }
-                        , row_variable: {
-                            'valueOf': function(){
-                                return {self: '/api/datasets/123/variables/row/', type: 'categorical'}
-                            }
+                        , columnQueries : [
+                            {variable: '/api/datasets/123/variables/gender/'}
+                            , {variable: '/api/datasets/123/variables/age/'}
+                        ]
+                        , rowVariable: {
+                             self: '/api/datasets/123/variables/row/', type: 'categorical'
                         }
                     }).then(function(result){
                         result.cube.should.be.ok
@@ -101,16 +97,12 @@ describe('iGenerateMultitableFromCube', function() {
                 inject(function(){
                     sut.execute({
                         datasetId: '/datasets/123/'
-                        , multitable_variables : {
-                            'valueOf': function(){ return [
-                                {self: '/api/datasets/123/variables/gender/', type: 'categorical'}
-                                , {self: '/api/datasets/123/variables/age/', type: 'categorical'}
-                            ]}
-                        }
-                        , row_variable: {
-                            'valueOf': function(){
-                                return {self: '/api/datasets/123/variables/row/', type: 'categorical_array'}
-                            }
+                        , columnQueries : [
+                            {variable: '/api/datasets/123/variables/gender/'}
+                            , {variable: '/api/datasets/123/variables/age/'}
+                        ]
+                        , rowVariable: {
+                             self: '/api/datasets/123/variables/row/', type: 'categorical_array'
                         }
                     }).then(function(result){
                         result.cube.should.be.ok

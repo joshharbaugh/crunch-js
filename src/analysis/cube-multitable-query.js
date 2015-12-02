@@ -8,7 +8,7 @@ CubeMultitableQuery.$inject = [
     ,'cubeQuery'
 ]
 function CubeMultitableQuery(_, $q, cubeQuery){
-    function build(multitableVariables, rowVariable, measures){
+    function build(columnQueries, rowVariable, measures){
         var types = {}
         measures = measures || {"count": {"function": "cube_count", "args": []}}
 
@@ -51,62 +51,60 @@ function CubeMultitableQuery(_, $q, cubeQuery){
                     ,{'value': sanitizedRollup}
                 ]}
         }
-        // switch on variable type here: either an array of queries with
-        // concise magic syntax for arrays and multiple response;
-        // or a proper multi table query for other types.
-        var hasMRcolumn = _.some(multitableVariables.map(function(col){
-            return col.type === 'multiple_response'
-        }))
-        if (rowVariable.type === 'multiple_response' ||
-            rowVariable.type === 'categorical_array' ||
-            hasMRcolumn){
-            var r = _.cloneDeep(rowVariable)
-            var rowPart = [_.extend(r, {'dimension': 'variable', type: rowVariable.type, self: rowVariable.self})]
-            if (rowVariable.type === 'categorical_array'){
-                var otherdim = _.cloneDeep(rowVariable)
-                rowPart.unshift(_.extend(otherdim, {'dimension': 'each', type: rowVariable.type, self: rowVariable.self}))
-            }
-            var multi = multitableVariables.map(function(colVariable){
-                var variables = _.cloneDeep(rowPart)
-                variables.push(_.extend(colVariable, {'dimension': 'variable'}))
-                return cubeQuery.build(variables)
-            })
-            return {
-                row: cubeQuery.build(rowPart)
-                ,multi: $q.when(multi)
-            }
+        types.multiple_response = function(varb){
+
+           return [
+                {'function': 'selected_array',
+                    'args': [ {'variable': varb.self } ] }
+                , { 'each': varb.self }
+            ]
         }
-        var colrefs = multitableVariables.map(function(varb){
-            return types[varb.type](varb) // filtery viewmodel. clean this up.
-        }, this)
+        types.categorical_array = function(varb){
+           return [
+                { 'each': varb.self }
+                ,{'variable': varb.self}
+            ]
+        }
         var rowDim = types[rowVariable.type](rowVariable)
         var rowQuery = {
-            dimensions: [rowDim],
+            dimensions: _.flatten([rowDim]),
             measures: measures
         }
+        var multi = columnQueries.map(function(col){
+            var q = _.cloneDeep(rowQuery)
+            q.dimensions.push(col.query)
+            q.dimensions = _.flatten(q.dimensions)
+            return q
+        })
+
+        // The composed syntax seemingly does not respect filters.
+        // Until this can be confirmed and fixed on backend,
+        // all queries to use multiple queries: sad face.
+        // var composed_multi = {
+        //     'function': 'each',
+        //     'args': [{
+        //         'value': 'COLS'
+        //     }, colrefs],
+        //     'block': {
+        //         'function': 'cube',
+        //         'args': [
+        //             [
+        //                 rowDim,
+        //                 {'variable': 'COLS'}
+        //             ],
+        //             {
+        //                 "map": measures
+        //             },
+        //             {
+        //                 "value": null
+        //             }
+        //         ]
+        //     }
+        // }
         return {
             row: $q.when(rowQuery),
-            multi: $q.when({
-            'function': 'each',
-            'args': [{
-                'value': 'COLS'
-            }, colrefs],
-            'block': {
-                'function': 'cube',
-                'args': [
-                    [
-                        rowDim,
-                        {'variable': 'COLS'}
-                    ],
-                    {
-                        "map": measures
-                    },
-                    {
-                        "value": null
-                    }
-                ]
-            }
-        })}
+            multi: $q.when(multi)
+        }
     }
     return {
         build: build

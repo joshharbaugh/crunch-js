@@ -20,18 +20,12 @@ function iGenerateMultitableFromCube(_
     , cubeMultitableQuery
     , iFetchCubes) {
 
-    function assertVariables(params) {
-        if(!_.isObject(params) || !_.isArray(params.multitable_variables)) {
-            throw new Error('provide an array of variables')
-        }
-    }
-
     function getXtabFromCube(params){
         function fetchVariableEntityIfNeeded(params){
-            if (params.row_variable.valueOf().type === 'datetime'){
-                return iResourceVariable({variableId: params.row_variable.valueOf().self})
+            if (params.rowVariable.type === 'datetime'){
+                return iResourceVariable({variableId: params.rowVariable.self})
                 .then(function(varb){
-                    params.row_variable = {valueOf: function() {return varb}}
+                    params.rowVariable = varb
                     return params
                 })
             }
@@ -41,8 +35,8 @@ function iGenerateMultitableFromCube(_
             return {
                 datasetId: params.datasetId
                 ,q: cubeMultitableQuery.build(
-                params.multitable_variables.valueOf()
-                , params.row_variable.valueOf()
+                    params.columnQueries
+                    , params.rowVariable
                 )
             }
         }
@@ -110,12 +104,9 @@ function iGenerateMultitableFromCube(_
     }
 
     iGenerateMultitableFromCube.execute = function(params) {
-        params.multitable_variables = params.multitable_variables.valueOf()
-        params.row_variable = params.row_variable.valueOf()
-        assertVariables(params)
         return getXtabFromCube(params)
         .then(function(result){
-            return {cube: result, columns: params.multitable_variables}
+            return {cube: result, columns: params.columnQueries}
         })
     }
 
