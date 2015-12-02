@@ -81,15 +81,20 @@ function CubeFactory($q, _, dimension, measure) {
     }
 
     Object.defineProperties(Cube.prototype, {
-        'labels': {
-            'get': function() {
+        labels: {
+            get: function() {
                 return this._dimensions.map(function(dim) {
                     return dim.labels
                 })
             }
         },
-        'subscripts': {
-            'get': function() {
+        dimensions : {
+            get : function() {
+                return this._dimensions
+            }
+        },
+        subscripts: {
+            get: function() {
                 return this._dimensions.map(function(dim) {
                     return dim.validSubscripts
                 })

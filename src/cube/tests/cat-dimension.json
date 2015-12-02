@@ -1,51 +1,56 @@
 {
-  "derived": false,
-  "references": {
-    "alias": "Dept",
-    "discarded": false,
-    "header_order": 2,
-    "name": "Dept"
-  },
-  "type": {
-    "categories": [
-      {
-        "id": 1,
-        "missing": false,
-        "name": "A",
-        "numeric_value": null
-      },
-      {
-        "id": 2,
-        "missing": false,
-        "name": "B",
-        "numeric_value": null
-      },
-      {
-        "id": 3,
-        "missing": false,
-        "name": "C",
-        "numeric_value": null
-      },
-      {
-        "id": 4,
-        "missing": false,
-        "name": "D",
-        "numeric_value": null
-      },
-      {
-        "id": 5,
-        "missing": false,
-        "name": "E",
-        "numeric_value": null
-      },
-      {
-        "id": 6,
-        "missing": false,
-        "name": "F",
-        "numeric_value": null
-      }
-    ],
-    "class": "categorical",
-    "ordinal": false
-  }
+    "derived": false,
+    "references": {
+        "alias": "x",
+        "name": "x",
+        "description": "Numeric variable with value labels"
+    },
+    "type": {
+        "ordinal": false,
+        "class": "categorical",
+        "categories": [
+            {
+                "numeric_value": 1,
+                "id": 1,
+                "name": "red",
+                "missing": false
+            },
+            {
+                "numeric_value": 2,
+                "id": 2,
+                "name": "green",
+                "missing": false
+            },
+            {
+                "numeric_value": 3,
+                "id": 3,
+                "name": "blue",
+                "missing": false
+            },
+            {
+                "numeric_value": 4,
+                "id": 4,
+                "name": "4",
+                "missing": false
+            },
+            {
+                "numeric_value": 8,
+                "id": 8,
+                "name": "8",
+                "missing": true
+            },
+            {
+                "numeric_value": 9,
+                "id": 9,
+                "name": "9",
+                "missing": false
+            },
+            {
+                "numeric_value": null,
+                "id": -1,
+                "name": "No Data",
+                "missing": true
+            }
+        ]
+    }
 }
