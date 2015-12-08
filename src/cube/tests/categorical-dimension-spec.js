@@ -5,7 +5,7 @@ var mocks = require('angular-mocks')
     , catDimensionFixture = require('./cat-dimension')
     ;
 
-describe.only('CategoricalDimension', function() {
+describe('CategoricalDimension', function() {
     var CategoricalDimension
         , sut
         ;
