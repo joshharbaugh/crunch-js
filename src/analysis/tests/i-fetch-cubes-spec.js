@@ -19,13 +19,13 @@ module.exports = (function() {
         }
         beforeEach(function() {
             mod = mainModule('cube.test');
-            mod.factory('iResourceDataset', function(
+            mod.factory('currentDataset', function(
                 Shoji, $q) {
-                return function(q) {
+                return {fetch: function(q) {
                     return $q.when(Shoji(fixtures.dataset
                             .self)
                         .parse(fixtures.dataset))
-                }
+                }}
             });
             shojiModule('shoji.test');
             angular.mock.module('cube.test', 'shoji.test')
