@@ -52,11 +52,22 @@ function CompositeDimensionFactory(_) {
 
         , 'validExtents' : {
             get : function() {
-                return this.data.type.elements.filter(function(el) {
+                return this.extents.filter(function(el) {
                     return el.missing === false
                 })
             }
         }
+
+        , extents : {
+            get : function() {
+                return this.data.type.elements
+            }
+
+            , set : function(value) {
+                this.data.type.elements = value
+            }
+        }
+
         , 'subscripts' : {
             get: function(){
                 return this.data.type.categories.map(function(e, i) { return i })

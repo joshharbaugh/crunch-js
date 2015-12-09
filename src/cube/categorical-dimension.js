@@ -83,6 +83,10 @@ function CategoricalDimensionFactory() {
             get : function() {
                 return this.data.type.categories
             }
+
+            , set : function(value) {
+                return this.data.type.categories = value
+            }
         }
 
         , missingExtents : {
