@@ -2,14 +2,14 @@
 var _ = require('lodash')
 
 IFetchCubes.$inject = [
-    'iResourceDataset'
+    'currentDataset'
 ]
 
 module.exports = IFetchCubes
 
-function IFetchCubes(iResourceDataset) {
+function IFetchCubes(currentDataset) {
     return function execute(q) {
-        return iResourceDataset({datasetId: q.datasetId}).then(function(ds) {
+        return currentDataset.fetch().then(function(ds) {
                 return ds.urls.cube.map({params: {query: (q.query)}
             }).then(function(it){
                 return it.value
