@@ -8,7 +8,6 @@ IResourceAccount.$inject = [
 function IResourceAccount(Shoji) {
     return {
         current: function() {
-            console.log(Shoji.API)
             return Shoji.API.map(function(api) {
                 return api.urls.account.map()
             })

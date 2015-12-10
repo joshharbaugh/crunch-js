@@ -3,6 +3,7 @@ var mainModule = require('../index'),
     shojiModule = require('../../shoji/index'),
     mocks = require('angular-mocks'),
     fixtures = {
+        api : require('../../test-support/fixtures/root'),
         datasets : require('../../test-support/fixtures/dataset-catalog'),
         datasetsOnly123 : require('../../test-support/fixtures/dataset-catalog-1')
     };
@@ -19,19 +20,8 @@ describe('IResourceDatasets', function() {
         .respond(200, fixture, headers)
     }
 
-    function mockIResourceDataset(main) {
-        main.factory('iResourceDataset', function(Shoji, $q) {
-            return function(q) {
-                var res = Shoji(fixtures.datasets.self)
-                .parse(fixtures.datasets)
-                return $q.when(res)
-            }
-        })
-    }
-
     beforeEach(function() {
         main = mainModule('resource.test');
-        mockIResourceDataset(main);
         shojiModule('shoji.test');
         angular.mock.module('resource.test', 'shoji.test')
     });
@@ -46,6 +36,7 @@ describe('IResourceDatasets', function() {
         var result;
         describe('given no dataset_id', function() {
             beforeEach(function() {
+                GET(fixtures.api)
                 GET(fixtures.datasets);
                 inject(function(iResourceDatasets) {
                     iResourceDatasets()
@@ -53,6 +44,7 @@ describe('IResourceDatasets', function() {
                         result = its
                     })
                 });
+                $httpBackend.flush()
             });
             it(
                 'should return the datasets catalog', function() {
@@ -68,6 +60,7 @@ describe('IResourceDatasets', function() {
         var result;
         describe('given a dataset_id', function() {
             beforeEach(function() {
+                GET(fixtures.api)
                 GET(fixtures.datasetsOnly123, '?dataset_id=123');
                 inject(function(iResourceDatasets) {
                     iResourceDatasets({
@@ -77,6 +70,7 @@ describe('IResourceDatasets', function() {
                         result = its
                     })
                 });
+                $httpBackend.flush()
             });
             it(
                 'should return the datasets catalog', function() {

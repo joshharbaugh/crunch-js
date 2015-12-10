@@ -1,10 +1,12 @@
-;
 module.exports = (function() {
     'use strict';
-    var mainModule = require('../index')
-        ,shojiModule = require('../../shoji/index')
-        ,mocks = require('angular-mocks')
-        ,fixtures = require('./i-resource-account-fixtures');
+    var mainModule = require('../index'),
+        shojiModule = require('../../shoji/index'),
+        mocks = require('angular-mocks'),
+        fixtures = {
+            api : require('../../test-support/fixtures/root'),
+            account : require('../../test-support/fixtures/account-entity')
+        };
 
     describe('IResourceAccount', function() {
         var $httpBackend
@@ -18,29 +20,8 @@ module.exports = (function() {
                 ''))
                 .respond(200, fixture, headers)
         }
-
-        // function mockServices(main) {
-        //     main.factory('iResourceUser', function(Shoji, $q) {
-        //         return {
-        //             current: function() {
-        //                 var res = Shoji(
-        //                     '/api/users/test_user/')
-        //                     .parse({
-        //                         self: '/api/users/test_user/'
-        //                         , element: 'shoji:entity'
-        //                         , urls: {
-        //                             account_url: fixtures
-        //                                 .account.self
-        //                         }
-        //                     });
-        //                 return $q.when(res)
-        //             }
-        //         }
-        //     })
-        // }
         beforeEach(function() {
             main = mainModule('resource.test');
-            // mockServices(main);
             shojiModule('shoji.test');
             angular.mock.module('resource.test', 'shoji.test')
         });

@@ -1,16 +1,20 @@
 ;
 module.exports = (function() {
     'use strict';
-    var mainModule = require('../index')
-        ,shojiModule = require('../../shoji/index')
-        ,mocks = require('angular-mocks')
-        ,fixtures = require('./i-resource-user-fixtures');;
+    var mainModule = require('../index'),
+        shojiModule = require('../../shoji/index'),
+        mocks = require('angular-mocks'),
+        fixtures = {
+            api : require('../../test-support/fixtures/root'),
+            user : require('../../test-support/fixtures/user-entity')
+        };
+    
     describe('IResourceUser', function() {
-        var $httpBackend
-            , headers = {
+        var $httpBackend,
+            headers = {
                 ALLOW: 'GET,POST,PUT,DELETE'
-            }
-            , main;
+            },
+            main;
 
         function GET(fixture, params) {
             $httpBackend.expectGET(fixture.self + (params ||
@@ -44,8 +48,7 @@ module.exports = (function() {
                 })
             });
             it('should return current user', function() {
-                result.self.should.equal(fixtures.user
-                    .self)
+                result.self.should.equal(fixtures.user.self)
             })
         })
     })

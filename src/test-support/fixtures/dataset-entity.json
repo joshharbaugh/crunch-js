@@ -16,37 +16,37 @@
         }
     },
     "catalogs": {
-        "batches": "/api/datasets/c977ba/batches/",
-        "decks": "/api/datasets/c977ba/decks/",
-        "filters": "/api/datasets/c977ba/filters/",
-        "permissions": "/api/datasets/c977ba/permissions/",
-        "sources": "/api/datasets/c977ba/sources/",
-        "variables": "/api/datasets/c977ba/variables/",
-        "actions": "/api/datasets/c977ba/actions/",
-        "savepoints": "/api/datasets/c977ba/savepoints/",
-        "multitables": "/api/datasets/c977ba/multitables/",
-        "comparisons": "/api/datasets/c977ba/comparisons/",
-        "joins": "/api/datasets/c977ba/joins/",
-        "weight_variables": "/api/datasets/c977ba/weight_variables/"
+        "batches": "/api/datasets/123/batches/",
+        "decks": "/api/datasets/123/decks/",
+        "filters": "/api/datasets/123/filters/",
+        "permissions": "/api/datasets/123/permissions/",
+        "sources": "/api/datasets/123/sources/",
+        "variables": "/api/datasets/123/variables/",
+        "actions": "/api/datasets/123/actions/",
+        "savepoints": "/api/datasets/123/savepoints/",
+        "multitables": "/api/datasets/123/multitables/",
+        "comparisons": "/api/datasets/123/comparisons/",
+        "joins": "/api/datasets/123/joins/",
+        "weight_variables": "/api/datasets/123/weight_variables/"
     },
     "fragments": {
-        "table": "/api/datasets/c977ba/table/",
-        "state": "/api/datasets/c977ba/state/",
-        "exclusion": "/api/datasets/c977ba/exclusion/",
-        "stream": "/api/datasets/c977ba/stream/",
-        "main_deck": "/api/datasets/c977ba/decks/150519fdf8e5468a8bcd6e7cd5c333ca/"
+        "table": "/api/datasets/123/table/",
+        "state": "/api/datasets/123/state/",
+        "exclusion": "/api/datasets/123/exclusion/",
+        "stream": "/api/datasets/123/stream/",
+        "main_deck": "/api/datasets/123/decks/150519fdf8e5468a8bcd6e7cd5c333ca/"
     },
     "views": {
-        "applied_filters": "/api/datasets/c977ba/applied_filters/",
-        "cube": "/api/datasets/c977ba/cube/",
-        "summary": "/api/datasets/c977ba/summary/",
-        "xtab": "/api/datasets/c977ba/xtab/"
+        "applied_filters": "/api/datasets/123/applied_filters/",
+        "cube": "/api/datasets/123/cube/",
+        "summary": "/api/datasets/123/summary/",
+        "xtab": "/api/datasets/123/xtab/"
     },
     "description": [
         "Detail for a given dataset"
     ],
     "element": "shoji:entity",
-    "self": "/api/datasets/c977ba/",
+    "self": "/api/datasets/123/",
     "specification": "/api/specifications/datasets/",
     "urls": {
         "owner_url": "/api/users/00002/"

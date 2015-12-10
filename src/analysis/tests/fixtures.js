@@ -418,40 +418,6 @@ function Fixtures(){
             }
         }
     }
-
-    var dataset = {
-        element: 'shoji:entity'
-        , self: '/api/datasets/123/'
-        , specification: '/api/specifications/datasets/'
-        , description: 'Detail for a given dataset'
-        , body: {
-            userid: 'test_user'
-            , name: 'oyster.csv'
-            , row_names_variable: null
-            , sources: ['51c685100f029130e2368b93']
-            , id: '123'
-            , categories: []
-            , description: ''
-        }
-        , urls: {
-            filters_url: '/some/dataset/123/filters/'
-            , applied_filters_url: '/some/dataset/123/applied_filters/'
-            , redo_url: '/api/datasets/123/redo/'
-            , all_variables_url: '/api/datasets/123/all_variables/'
-            , table_url: '/api/datasets/123/table/'
-            , undo_url: '/api/datasets/123/undo/'
-            , sources_url: '/api/datasets/123/sources/'
-            , rows_url: '/api/datasets/123/rows/'
-            , variables_url: '/api/datasets/123/variables/'
-            , row_names_url: '/api/datasets/123/row_names/'
-            , actions_url: '/api/datasets/123/actions/'
-            , summary_url: '/api/datasets/123/summary/'
-            , users_url: '/api/datasets/123/users/'
-            , tags_list: '/api/datasets/123/tags_list/'
-            , analyze_url: '/api/datasets/123/analyze/'
-            , cube_url: '/api/datasets/123/cube/'
-        }
-    }
     var cube1d = {"element": "shoji:view", "self": "/api/datasets/8aed476b31474552882e3c2e45565857/cube/?query=%7B%22dimensions%22:%5B%7B%22variable%22:%22https:%2F%2F%2Fapi%2Fdatasets%2F8aed476b31474552882e3c2e45565857%2Fvariables%2Ffc0540c0a2574758ad191e40bf804474%2F%22%7D%5D,%22measures%22:%7B%22count%22:%7B%22function%22:%22cube_count%22,%22args%22:%5B%5D%7D%7D%7D", "value": {"sources": [{"variable": "/api/datasets/8aed476b31474552882e3c2e45565857/variables/fc0540c0a2574758ad191e40bf804474/"}], "margins": {"data": [1000]}, "filters": [], "description": "A Crunch Cube of data for this dataset.", "result": {"element": "crunch:cube", "measures": {'count': {'n_missing': 0, 'data': [490, 510], "metadata": {"references": {}, "derived": true, "type": {"integer": true, "class": "numeric", "missing_reasons": {"No Data": -1}, "missing_rules": {}}}}}, "dimensions": [{"references": {"description": "Are you male or female?", "name": "Gender", "format": null, "dichotomous": false, "discarded": false, "alias": "gender_v0", "is_subvar": null, "header_order": null, "view": null}, "derived": false, "type": {"ordinal": false, "class": "categorical", "categories": [{"numeric_value": 1, "missing": false, "id": 1, "name": "Male"}, {"numeric_value": 2, "missing": false, "id": 2, "name": "Female"}]}}], "n": 1000}}}
     var xtab1d = {"element": "shoji:view", "self": "/api/datasets/8aed476b31474552882e3c2e45565857/analyze/?variables_urls=https:%2F%2F%2Fapi%2Fdatasets%2F8aed476b31474552882e3c2e45565857%2Fvariables%2Ffc0540c0a2574758ad191e40bf804474%2F", "value": {"response": {"weighted": false, "subtitle": "Are you male or female?", "input_variables": ["/api/datasets/8aed476b31474552882e3c2e45565857/variables/fc0540c0a2574758ad191e40bf804474/"], "rowtitle": "Gender", "dataFrameTable": [
         {"count": 490.0, "var1": "", "var0": "Male", "cellPct": 49.0, "rowPct": 100.0, "colPct": 49.0}, {"count": 510.0, "var1": "", "var0": "Female", "cellPct": 51.0, "rowPct": 100.0, "colPct": 51.0}], "table": {"values": {"count": [[490.0, 510.0]], "colPct": [[49.0, 51.0]], "cellPct": [[49.0, 51.0]], "rowlabels": ["Male", "Female"], "orient": "col", "rowPct": [[100.0, 100.0]]}}, "collabels": [[""]], "valid_count": 1000.0, "margincols": null, "coltitles": ["Value"], "title": "Gender", "missing_count": 0.0, "marginrows": {"values": {"count": [[100.0], [1000.0]], "labels": ["All (%)", "Valid"], "colPct": [[100.0], [1000.0]], "cellPct": [[100.0], [1000.0]], "rowPct": [[100.0], [1000.0]]}, "orient": "row"}, "displayType": {"valueKey": "count", "graph": "barchart", "format": {"digits": 2, "variables": {}}}}, "analysis": {"query": {"function": "xtab", "named_args": {"variables": ["/api/datasets/8aed476b31474552882e3c2e45565857/variables/fc0540c0a2574758ad191e40bf804474/"]}}, "query_environment": {"filters": [], "weight": null}}}}
@@ -626,7 +592,6 @@ function Fixtures(){
         ,multipleResponseCategorical: multipleResponseCategorical
         ,query: query
         ,multitable_query: multitable_query
-        ,dataset: dataset
         ,statsTestCube: statsTestCube
         ,admitXgender: admitXgender
     }

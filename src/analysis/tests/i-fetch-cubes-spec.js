@@ -6,6 +6,9 @@ module.exports = (function() {
         ,fixtures = require('./fixtures')
         ,mocks = require('angular-mocks')
         ,_ = require('lodash');
+    
+    fixtures.dataset = require('../../test-support/fixtures/dataset-entity')
+    
     describe('IFetchCubes', function() {
         var mod
             , $httpBackend
