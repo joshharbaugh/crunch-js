@@ -46,13 +46,14 @@
       "description":"Would you describe yourself as a \"born-again\" or evangelical Christian, or not?"
     }
   },
-  "views":{
-    "hierarchical_order":"/api/datasets/123/variables/hierarchical/"
-  },
-  "orders":{
-    "hier":"/api/datasets/123/variables/hier"
-  },
-  "catalogs":{
-    "private":"/api/datasets/123/variables/private"
-  }
+   "views":{
+      "search":"/api/datasets/123/variables/search/",
+      "weights":"/api/datasets/123/variables/weights/"
+   },
+   "orders":{
+      "hier":"/api/datasets/123/variables/hier/"
+   },
+   "catalogs":{
+      "private":"/api/datasets/123/variables/private/"
+   }
 }

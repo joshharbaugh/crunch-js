@@ -24,7 +24,7 @@ module.exports = (function() {
             var params = assertQuery(q);
             return iResourceDataset(q)
                 .then(function(dataset) {
-                    return dataset.urls.variables.map({
+                    return dataset.catalogs.variables.map({
                         params: params
                     })
                 })

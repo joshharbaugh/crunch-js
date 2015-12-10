@@ -73,14 +73,7 @@
   "self": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/",
   "element": "shoji:entity",
   "urls": {
-    "cast_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/cast/",
-    "summary_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/summary/",
-    "missing_rules_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/missing_rules/",
-    "values_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/values/",
-    "dataset_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/",
-    "user_settings_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/user_settings/",
-    "frequencies_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/frequencies/",
-    "view_model_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/card_view/"
+    "dataset_url": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/"
   },
   "fragments": {
     "card_view": "/api/datasets/3282f3c571594a6d9c1b7ddd75f97ba3/variables/5de1cda4c27b4ab59129a5aff3828d99/card_view/",

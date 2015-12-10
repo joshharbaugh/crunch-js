@@ -15,7 +15,7 @@ function IFetchHierarchicalVariablesFactory(currentDataset, Shoji, $q, VariableC
     function loadVariables(acc, dataset){
         acc.dataset = dataset
 
-        return dataset.urls.variables.map({
+        return dataset.catalogs.variables.map({
             noCache : true
             , 'params': {
                 'relative':'on'
@@ -28,10 +28,9 @@ function IFetchHierarchicalVariablesFactory(currentDataset, Shoji, $q, VariableC
     }
 
     function loadJoins(acc) {
-        var dataset = acc.dataset
-            ;
+        var dataset = acc.dataset;
 
-        return dataset.urls.joins.map()
+        return dataset.catalogs.joins.map()
     }
 
     function loadSubordinateVariables(acc, joins) {

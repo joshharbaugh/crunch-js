@@ -5,6 +5,7 @@ var mocks = require('angular-mocks')
     , cubeMod = require('../../cube/index')
     , fixtures = require('./shoji-fixtures')
     ;
+fixtures.dataset = require('../../test-support/fixtures/dataset-entity')
 
 describe('iGenerateAnalysisFromCube', function() {
     var sut

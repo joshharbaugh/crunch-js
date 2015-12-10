@@ -1,16 +1,20 @@
 ;
 module.exports = (function() {
     'use strict';
-    var mainModule = require('../index')
-        ,shojiModule = require('../../shoji/index')
-        ,mocks = require('angular-mocks')
-        ,fixtures = require('./i-resource-dataset-fixtures');;
+    var mainModule = require('../index'),
+        shojiModule = require('../../shoji/index'),
+        mocks = require('angular-mocks'),
+        fixtures = {
+            dataset : require('../../test-support/fixtures/dataset-entity'),
+            datasetCatalog : require('../../test-support/fixtures/dataset-catalog')
+        };
+        
     describe('IResourceDataset', function() {
         var $httpBackend
             , headers = {
                 ALLOW: 'GET,POST,PUT,DELETE'
             }
-            , main;;
+            , main;
 
         function GET(fixture, params) {
             $httpBackend.expectGET(fixture.self)
@@ -20,14 +24,8 @@ module.exports = (function() {
         function mockServices(main) {
             main.factory('iResourceDatasets', function(Shoji, $q) {
                 return function() {
-                    var res = Shoji('/api/users/test_user/')
-                        .parse({
-                            self: '/api/users/test_user/datasets/'
-                            , element: 'shoji:catalog'
-                            ,index: {
-                                '/api/datasets/123/':{}
-                            }
-                        });
+                    var res = Shoji(fixtures.datasetCatalog.self)
+                        .parse(fixtures.datasetCatalog);
                     return $q.when(res)
                 }
             })
@@ -62,8 +60,7 @@ module.exports = (function() {
                 })
             });
             it('should fetch dataset', function() {
-                result.self.should.equal(fixtures.dataset
-                    .self)
+                result.self.should.equal(fixtures.dataset.self)
             })
         })
     })

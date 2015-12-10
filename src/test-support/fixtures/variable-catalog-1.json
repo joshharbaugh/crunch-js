@@ -1,0 +1,27 @@
+{
+  "element":"shoji:catalog",
+  "self":"/api/datasets/123/variables/",
+  "specification":"/api/specifications/variables/",
+  "description":"List of Variables of this dataset",
+  "index":{
+    "childrenunder18/":{
+      "name":"ChildrenUnder18",
+      "discarded":false,
+      "alias":"childrenunder18",
+      "is_subvar":null,
+      "type":"categorical",
+      "id":"childrenunder18",
+      "description":"Are you the parent or guardian of any children under the age of 18?"
+    }
+  },
+   "views":{
+      "search":"/api/datasets/123/variables/search/",
+      "weights":"/api/datasets/123/variables/weights/"
+   },
+   "orders":{
+      "hier":"/api/datasets/123/variables/hier/"
+   },
+   "catalogs":{
+      "private":"/api/datasets/123/variables/private/"
+   }
+}

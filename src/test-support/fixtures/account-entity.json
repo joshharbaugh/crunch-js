@@ -1,0 +1,10 @@
+{
+    "body": {},
+    "description": "Details for an account",
+    "element": "shoji:entity",
+    "self": "/api/accounts/00001/",
+    "specification": "/api/specifications/accounts/",
+    "catalogs": {
+        "users": "/api/accounts/00001/users/"
+    }
+}

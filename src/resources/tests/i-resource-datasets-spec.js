@@ -1,8 +1,13 @@
 'use strict';
-var mainModule = require('../index')
-    ,shojiModule = require('../../shoji/index')
-    ,mocks = require('angular-mocks')
-    ,fixtures = require('./i-resource-datasets-fixtures');;
+var mainModule = require('../index'),
+    shojiModule = require('../../shoji/index'),
+    mocks = require('angular-mocks'),
+    fixtures = {
+        api : require('../../test-support/fixtures/root'),
+        datasets : require('../../test-support/fixtures/dataset-catalog'),
+        datasetsOnly123 : require('../../test-support/fixtures/dataset-catalog-1')
+    };
+
 describe('IResourceDatasets', function() {
     var $httpBackend
         , headers = {
@@ -15,28 +20,8 @@ describe('IResourceDatasets', function() {
         .respond(200, fixture, headers)
     }
 
-    function mockServices(main) {
-        main.factory('iResourceUser', function(Shoji, $q) {
-            return {
-                current: function() {
-                    var res = Shoji(
-                        '/api/users/test_user/')
-                        .parse({
-                            self: '/api/users/test_user/'
-                        , element: 'shoji:entity'
-                        , urls: {
-                    datasets_url: fixtures
-                    .datasets.self
-                        }
-                        });
-                        return $q.when(res)
-                }
-            }
-        })
-    }
     beforeEach(function() {
         main = mainModule('resource.test');
-        mockServices(main);
         shojiModule('shoji.test');
         angular.mock.module('resource.test', 'shoji.test')
     });
@@ -48,17 +33,15 @@ describe('IResourceDatasets', function() {
     });
     describe(
         'when fetching datasets catalog for current user', function() {
-        var result;;
+        var result;
         describe('given no dataset_id', function() {
             beforeEach(function() {
+                GET(fixtures.api)
                 GET(fixtures.datasets);
-                inject(function(
-                    iResourceDatasets) {
+                inject(function(iResourceDatasets) {
                     iResourceDatasets()
-                    .then(function(
-                        its) {
-                        result =
-                            its
+                    .then(function(its) {
+                        result = its
                     })
                 });
                 $httpBackend.flush()
@@ -68,25 +51,23 @@ describe('IResourceDatasets', function() {
                 result.self.should.equal(
                     fixtures.datasets.self);
                     result.index.length.should
-                    .equal(2)
+                    .equal(4)
             })
         })
     });
     describe(
         'when fetching specific dataset for current user', function() {
-        var result;;
-        describe('given no dataset_id', function() {
+        var result;
+        describe('given a dataset_id', function() {
             beforeEach(function() {
+                GET(fixtures.api)
                 GET(fixtures.datasetsOnly123, '?dataset_id=123');
-                inject(function(
-                    iResourceDatasets) {
+                inject(function(iResourceDatasets) {
                     iResourceDatasets({
                         datasetId: '123'
                     })
-                    .then(function(
-                        its) {
-                        result =
-                            its
+                    .then(function(its) {
+                        result = its
                     })
                 });
                 $httpBackend.flush()
