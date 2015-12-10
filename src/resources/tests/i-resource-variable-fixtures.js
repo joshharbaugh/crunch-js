@@ -7,7 +7,6 @@ module.exports = (function() {
         , body: {
             id: 'abc'
         }
-        , urls: {}
     };
     return {
         variable: measureDate

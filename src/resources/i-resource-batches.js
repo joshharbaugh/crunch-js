@@ -10,7 +10,7 @@ function IResourceBatchesFactory(iResourceDataset) {
 
     return function(params) {
         return iResourceDataset({ datasetId : params.datasetId }).then(function(dataset){
-            return dataset.urls.batches.map({
+            return dataset.catalogs.batches.map({
                 cache : false
             })
         })

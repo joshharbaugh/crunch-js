@@ -1,0 +1,26 @@
+{
+    "description": "List of users that belong to this account",
+    "element": "shoji:catalog",
+    "index": {
+        "/api/users/00002/": {
+            "account_permissions": {
+                "alter_users": true,
+                "create_datasets": true
+            },
+            "dataset_permissions": {
+                "change_permissions": true,
+                "edit": true,
+                "add_users": true,
+                "view": true
+            },
+            "email": "user@example.test",
+            "first_name": "Jean-Luc",
+            "id_method": "pwhash",
+            "last_name": "Picard"
+        },
+        '/api/users/000001/':{},
+        '/api/users/00005/':{}
+    },
+    "self": "/api/accounts/00001/users/",
+    "specification": "/api/specifications/accounts_users/"
+}

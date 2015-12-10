@@ -1,14 +1,18 @@
 'use strict';
-var mainModule = require('../index')
-    ,shojiModule = require('../../shoji/index')
-    ,mocks = require('angular-mocks')
-    ,fixtures = require('./i-resource-users-fixtures');;
+var mainModule = require('../index'),
+    shojiModule = require('../../shoji/index'),
+    mocks = require('angular-mocks'),
+    fixtures = {
+        account : require('../../test-support/fixtures/account-entity'),
+        users : require('../../test-support/fixtures/account-user-catalog')
+    };
+
 describe('IResourceUsers', function() {
     var $httpBackend
         , headers = {
             ALLOW: 'GET,POST,PUT,DELETE'
         }
-        , main;;
+        , main;
 
     function GET(fixture, params) {
         $httpBackend.expectGET(fixture.self + (params ||
@@ -17,36 +21,12 @@ describe('IResourceUsers', function() {
     }
 
     function mockServices(main) {
-        main.factory('iResourceUser', function(Shoji, $q) {
-            return {
-                current: function() {
-                    var res = Shoji(
-                        '/api/users/test_user/')
-                        .parse({
-                            self: '/api/users/test_user/'
-                            , element: 'shoji:entity'
-                            , urls: {
-                                account_url: fixtures
-                                    .account.self
-                            }
-                        });
-                    return $q.when(res)
-                }
-            }
-        });
         main.factory('iResourceAccount', function(Shoji, $q) {
             return {
                 current: function() {
                     var res = Shoji(
-                        '/api/accounts/00001/')
-                        .parse({
-                            self: '/api/accounts/00001/'
-                            , element: 'shoji:entity'
-                            , urls: {
-                                users_url: fixtures
-                                    .users.self
-                            }
-                        });
+                        fixtures.account.self)
+                        .parse(fixtures.account);
                     return $q.when(res)
                 }
             }
@@ -65,7 +45,7 @@ describe('IResourceUsers', function() {
         })
     });
     describe('when fetching users for an account', function() {
-            var result;;
+            var result;
             describe('given no userid', function() {
                 beforeEach(function() {
                     GET(fixtures.users);

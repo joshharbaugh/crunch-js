@@ -7,14 +7,9 @@ IResourceSourceFactory.$inject = [
 ]
 
 function IResourceSourceFactory(Shoji) {
-
-    function fetchWithId(sourceId) {
-        return Shoji(sourceId).map()
-    }
-
     return function(params) {
         if(params && typeof params.sourceId === 'string') {
-            return fetchWithId(params.sourceId)
+            return Shoji(params.sourceId).map()
         } else {
             throw new Error('You should provide a sourceId')
         }

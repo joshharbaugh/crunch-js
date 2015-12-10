@@ -19,9 +19,10 @@ function IResourceUsers(iResourceAccount) {
 
     function execute(q) {
         q = assertQuery(q);
+        // NPR: do we need to get the account?
         return iResourceAccount.current()
             .then(function(account) {
-                return account.urls.users.map({
+                return account.catalogs.users.map({
                     cache: false
                     , params: q
                 })

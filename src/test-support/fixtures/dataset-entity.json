@@ -1,0 +1,54 @@
+{
+    "body": {
+        "archived": false,
+        "creation_time": "2014-07-21T20:56:34.730398+00:00",
+        "description": "",
+        "name": "oyster.csv",
+        "user_id": "00002",
+        "weight": null,
+        "current_editor": "/api/users/00002/",
+        "permissions": {
+            "change_permissions": true,
+            "edit": true,
+            "add_users": true,
+            "view": true,
+            "change_weight": true
+        }
+    },
+    "catalogs": {
+        "batches": "/api/datasets/123/batches/",
+        "decks": "/api/datasets/123/decks/",
+        "filters": "/api/datasets/123/filters/",
+        "permissions": "/api/datasets/123/permissions/",
+        "sources": "/api/datasets/123/sources/",
+        "variables": "/api/datasets/123/variables/",
+        "actions": "/api/datasets/123/actions/",
+        "savepoints": "/api/datasets/123/savepoints/",
+        "multitables": "/api/datasets/123/multitables/",
+        "comparisons": "/api/datasets/123/comparisons/",
+        "joins": "/api/datasets/123/joins/",
+        "weight_variables": "/api/datasets/123/weight_variables/"
+    },
+    "fragments": {
+        "table": "/api/datasets/123/table/",
+        "state": "/api/datasets/123/state/",
+        "exclusion": "/api/datasets/123/exclusion/",
+        "stream": "/api/datasets/123/stream/",
+        "main_deck": "/api/datasets/123/decks/150519fdf8e5468a8bcd6e7cd5c333ca/"
+    },
+    "views": {
+        "applied_filters": "/api/datasets/123/applied_filters/",
+        "cube": "/api/datasets/123/cube/",
+        "summary": "/api/datasets/123/summary/",
+        "xtab": "/api/datasets/123/xtab/"
+    },
+    "description": [
+        "Detail for a given dataset"
+    ],
+    "element": "shoji:entity",
+    "self": "/api/datasets/123/",
+    "specification": "/api/specifications/datasets/",
+    "urls": {
+        "owner_url": "/api/users/00002/"
+    }
+}

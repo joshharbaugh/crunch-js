@@ -1,0 +1,28 @@
+{
+    "element": "shoji:entity",
+    "self": "/api/users/00002/",
+    "specification": "/api/specifications/users/",
+    "description": "Details for a User",
+    "body": {
+        "name": "Captain",
+        "email": "user@example.test",
+        "id": "00002",
+        "account_permissions": {
+            "alter_users": true,
+            "create_datasets": true
+        },
+        "preferences": {}
+    },
+    "catalogs": {
+        "sources": "/api/sources/",
+        "datasets": "/api/datasets/"
+    },
+    "urls": {
+        "account_role_url": "/api/accounts/00001/user_roles/9999/",
+        "invite_url": "/api/users/00002/invite/",
+        "password_reset_url": "/api/users/00002/password_reset/",
+        "account_url": "/api/accounts/00001/",
+        "password_url": "/api/users/00002/password/",
+        "role_url": "/api/roles/accounts/0001/"
+    }
+}
