@@ -26,12 +26,6 @@ function AnalysisFactory(_
         return _.isString(params.publicAnalysisURL)
     }
 
-    function assertDatasetId(cfg) {
-        if(!cfg.datasetId) {
-            throw new Error('please provide a valid datasetId')
-        }
-    }
-
     function assertSlideId(cfg) {
         if(!_.isString(cfg.slideId)) {
             throw new Error('please provide a valid slideId')
@@ -106,11 +100,6 @@ function AnalysisFactory(_
         , 'measures-count': function(){
             this.measures.clean()
         }
-
-        , 'add-filter' : function(filterIds) {
-            this.filters = this.filters.concat(filtersIds)
-            this.recalculate()
-        }
     }
 
     var Analysis = machina.Fsm.extend({
@@ -118,10 +107,8 @@ function AnalysisFactory(_
         , initialState : 'uninitialized'
         , recalculate : function() {
             var generate = analysisGeneratorFactory.getGenerator({
-                    datasetId : this.datasetId
-                    , variables : this.variables
+                    variables : this.variables
                     , measures: this.measures
-                    , filters : this.filters
                     , currentData : this.data
                 })
                 , self = this
@@ -173,11 +160,9 @@ function AnalysisFactory(_
 
         , states : {
             uninitialized : {
-                initialize : function(params) {
-                    assertDatasetId(params)
-                    this.datasetId = params.datasetId
-                    this.variables = new VariableList(params.datasetId)
-                    this.measures = new MeasureList(params.datasetId)
+                initialize : function() {
+                    this.variables = new VariableList()
+                    this.measures = new MeasureList()
                     this.transition('empty')
                 }
             }
@@ -394,15 +379,13 @@ function AnalysisFactory(_
         states : {
             uninitialized : {
                 initialize : function(params) {
-                    assertDatasetId(params)
                     assertSlideId(params)
 
-                    this.datasetId = params.datasetId
                     this.slideId = params.slideId
                     this.analysis = params.analysis || null
                     this.savedSettings = null
-                    this.variables = new VariableList(params.datasetId)
-                    this.measures = new MeasureList(params.datasetId)
+                    this.variables = new VariableList()
+                    this.measures = new MeasureList()
 
                     this.transition('empty')
                 }
@@ -415,8 +398,7 @@ function AnalysisFactory(_
                         ;
 
                     generate = analysisGeneratorFactory.getGenerator({
-                        datasetId : self.datasetId
-                        , slideId : self.slideId
+                        slideId : self.slideId
                         , analysis : self.analysis
                     })
 
