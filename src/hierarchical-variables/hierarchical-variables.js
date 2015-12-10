@@ -185,7 +185,7 @@ function HierarchicalVariablesFactory(iBuildHierarchicalOrder, iPerformVariableL
 
         ,'weights' : {
             get : function() {
-                return this.catalogs.principal().urls.weights
+                return this.catalogs.principal().views.weights
             }
         }
 

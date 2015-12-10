@@ -1,8 +1,8 @@
 'use strict';
 module.exports = IResourceDatasets
 
-IResourceDatasets.$inject = ['iResourceUser'];
-function IResourceDatasets(iResourceUser) {
+IResourceDatasets.$inject = ['Shoji'];
+function IResourceDatasets(Shoji) {
 
     function execute(q) {
         var catalog
@@ -10,15 +10,11 @@ function IResourceDatasets(iResourceUser) {
 
         if(q && q.datasetId && (q.datasetId[0]==='/' || q.datasetId.indexOf('http') > -1)) {
 
-            //strategy for handling urls directly
-            //@todo refactor upon landing in ui-routerless
-            return iResourceUser.current()
-            .then(function(user){
-                return user.urls.datasets.map()
+            return Shoji.API.map(function(api) {
+                return api.catalogs.datasets.map()
             })
             .then(function(datasets) {
-                var tuple
-                    ;
+                var tuple;
 
                 catalog = datasets.self
                 tuple = datasets.index.tuple(q.datasetId)
@@ -28,9 +24,8 @@ function IResourceDatasets(iResourceUser) {
             })
         }
 
-        return iResourceUser.current()
-        .then(function(user) {
-            return user.urls.datasets.map()
+        return Shoji.API.map(function(api) {
+            return api.catalogs.datasets.map()
         })
     }
 

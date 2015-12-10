@@ -2,17 +2,16 @@
 module.exports = IResourceAccount
 
 IResourceAccount.$inject = [
-    'iResourceUser'
+    'Shoji'
 ];
 
-function IResourceAccount( iResourceUser) {
+function IResourceAccount(Shoji) {
     return {
         current: function() {
-            var account = iResourceUser.current()
-                .then(function(user) {
-                    return user.urls.account.map()
-                });
-            return account
+            console.log(Shoji.API)
+            return Shoji.API.map(function(api) {
+                return api.urls.account.map()
+            })
         }
     }
 }

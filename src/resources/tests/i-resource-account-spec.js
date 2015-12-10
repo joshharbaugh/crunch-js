@@ -4,13 +4,14 @@ module.exports = (function() {
     var mainModule = require('../index')
         ,shojiModule = require('../../shoji/index')
         ,mocks = require('angular-mocks')
-        ,fixtures = require('./i-resource-account-fixtures');;
+        ,fixtures = require('./i-resource-account-fixtures');
+
     describe('IResourceAccount', function() {
         var $httpBackend
             , headers = {
                 ALLOW: 'GET,POST,PUT,DELETE'
             }
-            , main;;
+            , main;
 
         function GET(fixture, params) {
             $httpBackend.expectGET(fixture.self + (params ||
@@ -18,28 +19,28 @@ module.exports = (function() {
                 .respond(200, fixture, headers)
         }
 
-        function mockServices(main) {
-            main.factory('iResourceUser', function(Shoji, $q) {
-                return {
-                    current: function() {
-                        var res = Shoji(
-                            '/api/users/test_user/')
-                            .parse({
-                                self: '/api/users/test_user/'
-                                , element: 'shoji:entity'
-                                , urls: {
-                                    account_url: fixtures
-                                        .account.self
-                                }
-                            });
-                        return $q.when(res)
-                    }
-                }
-            })
-        }
+        // function mockServices(main) {
+        //     main.factory('iResourceUser', function(Shoji, $q) {
+        //         return {
+        //             current: function() {
+        //                 var res = Shoji(
+        //                     '/api/users/test_user/')
+        //                     .parse({
+        //                         self: '/api/users/test_user/'
+        //                         , element: 'shoji:entity'
+        //                         , urls: {
+        //                             account_url: fixtures
+        //                                 .account.self
+        //                         }
+        //                     });
+        //                 return $q.when(res)
+        //             }
+        //         }
+        //     })
+        // }
         beforeEach(function() {
             main = mainModule('resource.test');
-            mockServices(main);
+            // mockServices(main);
             shojiModule('shoji.test');
             angular.mock.module('resource.test', 'shoji.test')
         });
@@ -52,6 +53,7 @@ module.exports = (function() {
         describe('when fetching current account', function() {
             var result;
             beforeEach(function() {
+                GET(fixtures.api)
                 GET(fixtures.account)
             });
             beforeEach(function() {

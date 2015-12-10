@@ -10,7 +10,7 @@ module.exports = (function() {
             , headers = {
                 ALLOW: 'GET,POST,PUT,DELETE'
             }
-            , main;;
+            , main;
 
         function GET(fixture, params) {
             $httpBackend.expectGET(fixture.self + (params ||

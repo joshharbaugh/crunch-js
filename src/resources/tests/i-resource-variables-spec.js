@@ -1,15 +1,20 @@
 'use strict';
-var mainModule = require('../index')
-    ,shojiModule = require('../../shoji/index')
-    ,mocks = require('angular-mocks')
-    ,fixtures = require('./i-resource-variables-fixtures')
-    ,IResourceVariables = require('../i-resource-variables');;
+var mainModule = require('../index'),
+    shojiModule = require('../../shoji/index'),
+    mocks = require('angular-mocks'),
+    fixtures = {
+        variables : require('../../shoji/tests/catalog-fixture'),
+        variablesOnlyMeasureDate : require('../../test-support/fixtures/variable-catalog-1'),
+        dataset : require('../../shoji/tests/entity-fixture')
+    },
+    IResourceVariables = require('../i-resource-variables');
+
 describe('IResourceVariables', function() {
     var $httpBackend
         , headers = {
     ALLOW: 'GET,POST,PUT,DELETE'
         }
-        , main;;
+        , main;
 
     function GET(fixture, params) {
         $httpBackend.expectGET(fixture.self + (params ||
@@ -20,15 +25,8 @@ describe('IResourceVariables', function() {
     function mockServices(main) {
         main.factory('iResourceDataset', function(Shoji, $q) {
             return function(q) {
-                var res = Shoji('/api/datasets/123/')
-                .parse({
-                    self: '/api/datasets/123/'
-                    , element: 'shoji:entity'
-                    , urls: {
-                variables_url: fixtures
-                .variables.self
-                    }
-                });
+                var res = Shoji(fixtures.dataset.self)
+                .parse(fixtures.dataset);
                 return $q.when(res)
             }
         })
@@ -65,7 +63,7 @@ describe('IResourceVariables', function() {
         it('should return all variables', function() {
             result.self.should.equal(fixtures.variables
                                      .self);
-                                     result.index.length.should.equal(5)
+                                     result.index.length.should.equal(4)
         })
     });
     describe('when invoked with query filter', function() {

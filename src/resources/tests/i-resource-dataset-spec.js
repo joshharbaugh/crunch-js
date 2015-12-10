@@ -4,13 +4,13 @@ module.exports = (function() {
     var mainModule = require('../index')
         ,shojiModule = require('../../shoji/index')
         ,mocks = require('angular-mocks')
-        ,fixtures = require('./i-resource-dataset-fixtures');;
+        ,fixtures = require('../../test-support/fixtures/dataset-entity');
     describe('IResourceDataset', function() {
         var $httpBackend
             , headers = {
                 ALLOW: 'GET,POST,PUT,DELETE'
             }
-            , main;;
+            , main;
 
         function GET(fixture, params) {
             $httpBackend.expectGET(fixture.self)

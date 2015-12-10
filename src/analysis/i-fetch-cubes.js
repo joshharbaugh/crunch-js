@@ -10,7 +10,7 @@ module.exports = IFetchCubes
 function IFetchCubes(currentDataset) {
     return function execute(q) {
         return currentDataset.fetch().then(function(ds) {
-                return ds.urls.cube.map({params: {query: (q.query)}
+                return ds.views.cube.map({params: {query: (q.query)}
             }).then(function(it){
                 return it.value
             })
