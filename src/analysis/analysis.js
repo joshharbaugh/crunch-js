@@ -333,6 +333,18 @@ function AnalysisFactory(_
             }
         }
 
+        , unfiltered : {
+            get : function() {
+                return this.filters && this.filters.length === 0
+            }
+        }
+
+        , hasCustomFilters : {
+            get : function() {
+                return this.filters && this.filters.length > 0
+            }
+        }
+
         , variablesCount : {
             get : function() {
                 return this.variables.count()
