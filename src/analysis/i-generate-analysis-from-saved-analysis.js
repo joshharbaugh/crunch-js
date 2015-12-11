@@ -20,7 +20,7 @@ function IGenerateAnalysisFromSavedFactory(_
 
     var acc
         ;
-    
+
     function fetchQuery(acc, dataset) {
         acc.dataset = dataset
         return iFetchCubes({

@@ -19,9 +19,11 @@ describe('iGenerateAnalysisFromSavedAnalysis', function() {
             ;
 
 
-        mod.factory('iResourceDataset', function($q, Shoji) {
-            return function() {
-                return $q.when(Shoji(fixtures.dataset.self).parse(fixtures.dataset))
+        mod.factory('currentDataset', function($q, Shoji) {
+            return {
+                fetch : function() {
+                    return $q.when(Shoji(fixtures.dataset.self).parse(fixtures.dataset))
+                }
             }
         })
 
