@@ -5,7 +5,7 @@ module.exports = IGenerateAnalysisFromSavedFactory
 IGenerateAnalysisFromSavedFactory.$inject = [
     'lodash'
     , 'analysisGenerator'
-    , 'iResourceDataset'
+    , 'currentDataset'
     , 'crFindVariables'
     , 'cube'
     , 'iFetchCubes'
@@ -13,19 +13,13 @@ IGenerateAnalysisFromSavedFactory.$inject = [
 
 function IGenerateAnalysisFromSavedFactory(_
     , analysisGenerator
-    , iResourceDataset
+    , currentDataset
     , findVariables
     , Cube
     , iFetchCubes) {
 
     var acc
         ;
-
-    function assertDataset(params) {
-        if(!_.isObject(params) ||  !_.isString(params.datasetId)) {
-            throw new Error('provide a dataset id')
-        }
-    }
 
     function fetchQuery(acc, dataset) {
         acc.dataset = dataset
@@ -71,10 +65,9 @@ function IGenerateAnalysisFromSavedFactory(_
     }
 
     iGenerateAnalysisFromSaved.execute = function(params) {
-        assertDataset(params)
         acc = {}
         acc.analysis = params.analysis
-        return iResourceDataset({ datasetId : params.datasetId }).then(function(ds){
+        return currentDataset.fetch().then(function(ds){
             var handlers = [
                 fetchQuery
                 , makeWhaamCube
