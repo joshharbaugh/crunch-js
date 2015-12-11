@@ -26,13 +26,23 @@ describe('CategoricalDimension', function() {
     beforeEach(buildModule)
     beforeEach(buildSut)
 
-    describe('when getting labels', function() {
+    describe('when getting valid labels', function() {
         beforeEach(function() {
             sut = new CategoricalDimension(catDimensionFixture)
         })
 
         it('should return an array of category names', function() {
-            sut.labels.should.deep.equal('ABCDEF'.split(''))
+            sut.labels.should.deep.equal(['red', 'green', 'blue', '4', '9'])
+        })
+    })
+
+    describe('when getting missing labels', function() {
+        beforeEach(function() {
+            sut = new CategoricalDimension(catDimensionFixture)
+        })
+
+        it('should return an array of missing category names', function() {
+            sut.missingLabels.should.deep.equal(['8', 'No Data'])
         })
     })
 
@@ -42,7 +52,7 @@ describe('CategoricalDimension', function() {
         })
 
         it('should return the number of categories', function() {
-            sut.length.should.equal('ABCDEF'.length)
+            sut.length.should.equal(['red', 'green', 'blue', '4', '8', '9', 'No Data'].length)
         })
     })
 })

@@ -145,11 +145,12 @@ function StatsFactory(_, Cube, ndarray, ops, gemm, scratch, fill, normalDist, sh
     }
 
     function propTable(cube, axis, marginal, includeMissing){
-        var includeMissing = includeMissing || false
-        var table, tbl, marginal, total;
+        includeMissing = includeMissing || false
+        var table, tbl, total;
         if (cube.hasOwnProperty('count')){ // actual cube, not random array
-            table = cube.count.cube
+            table = includeMissing ? cube.count.rawData : cube.count.cube
             total = margin(cube).get(0,0)
+            total = includeMissing ? total + missing(cube) : total
         } else { // we are reducing an array
             marginal = cube
             table = cube

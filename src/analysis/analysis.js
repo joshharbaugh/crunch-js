@@ -106,6 +106,11 @@ function AnalysisFactory(_
         , 'measures-count': function(){
             this.measures.clean()
         }
+
+        , 'add-filter' : function(filterIds) {
+            this.filters = this.filters.concat(filtersIds)
+            this.recalculate()
+        }
     }
 
     var Analysis = machina.Fsm.extend({
@@ -116,6 +121,7 @@ function AnalysisFactory(_
                     datasetId : this.datasetId
                     , variables : this.variables
                     , measures: this.measures
+                    , filters : this.filters
                     , currentData : this.data
                 })
                 , self = this
