@@ -46,7 +46,12 @@ function AnalysisFactory(_
             this.recalculate()
         }
 
-        , 'clean-filters' : function() {
+        , 'set-unfiltered' : function() {
+            this.filters = []
+            this.recalculate()
+        }
+
+        , 'clean-filter-settings' : function() {
             this.filters = null
         }
 

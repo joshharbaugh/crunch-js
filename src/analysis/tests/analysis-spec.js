@@ -535,12 +535,31 @@ describe('Analysis', function() {
             flush()
             sut.handle('add-filter', '/filters/123')
             flush()
-            sut.handle('clean-filters')
+            sut.handle('clean-filter-settings')
             sut.handle('recalculate')
         })
 
         it('should remove the filters parameter from the analysis generator', function() {
             expect(sut.data.params.filters).to.be.null
+        })
+    })
+
+    describe('setting the analysis unfiltered', function() {
+        var sut
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(buildSut)
+        beforeEach(function() {
+            sut = Sut.create()
+            sut.handle('add-variable', '/var/456')
+            flush()
+            sut.handle('set-unfiltered')
+            flush()
+        })
+
+        it('should remove the filters parameter from the analysis generator', function() {
+            expect(sut.data.params.filters).to.deep.equal([])
         })
     })
 })
