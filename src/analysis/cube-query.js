@@ -7,8 +7,9 @@ CubeQuery.$inject = [
     ,'$q'
 ]
 function CubeQuery(_, $q){
-    function build(variables, measures){
+    function build(variables, measures, filters){
         var types = {}
+            , query
         measures = measures || {"count": {"function": "cube_count"}}
 
         types.categorical = function(varb){
@@ -46,16 +47,24 @@ function CubeQuery(_, $q){
                 , { 'each': varb.self }
             ]
         }
-        var dimensions = _.flatten(variables.map(function(varb){
+        var dimensions = _.flatten(variables.map(function(varb) {
                 return types[varb.type](varb)
-            }, this), true)
+            }), true)
+
         if(!!measures.mean && variables.length > 1){
             delete measures.stddev
         }
-        return $q.when({
+
+        query = {
             dimensions: dimensions
             , measures: measures
-        })
+        }
+
+        if(filters instanceof Array) {
+            query.filters = filters
+        }
+
+        return $q.when(query)
     }
     return {
         build: build

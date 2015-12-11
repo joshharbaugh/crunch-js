@@ -29,16 +29,15 @@ function IGenerateAnalysisFromCube(_
         function buildQuery(params){
             // inconsistent here; measures valueOf is serialized
             // but variables is an array of its 'items'
-            var measures = params.measures.valueOf() || {}
             return cubeQuery.build(
                 params.variables.valueOf()
-                ,measures
+                ,(params.measures.valueOf() || {})
+                ,params.filters
             )
         }
         function fetchCube(q){
             return iFetchCubes({
                 query: q
-                ,datasetId: params.datasetId
             })
         }
         function whaamCube(crunchCube){

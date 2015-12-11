@@ -40,7 +40,17 @@ function AnalysisFactory(_
 
     var analysisOperations = {
 
-        'add-variable' : function(variableId) {
+        'add-filter' : function(filterId) {
+            this.filters = this.filters || []
+            this.filters.push(filterId)
+            this.recalculate()
+        }
+
+        , 'clean-filters' : function() {
+            this.filters = null
+        }
+
+        , 'add-variable' : function(variableId) {
             this.transition('loading')
             this.variables.add(variableId).then(function() {
                 this.recalculate()
@@ -110,6 +120,7 @@ function AnalysisFactory(_
                     variables : this.variables
                     , measures: this.measures
                     , currentData : this.data
+                    , filters : this.filters
                 })
                 , self = this
                 ;

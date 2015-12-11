@@ -13,7 +13,6 @@ describe('Analysis', function() {
     var Sut
         , fakeAnalysis
         , fakeHierarchicalVariables
-        , datasetId = '/datasets/123'
         ;
 
     function buildModule() {
@@ -42,6 +41,7 @@ describe('Analysis', function() {
                         }
                     } else {
                         return function() {
+                            fakeAnalysis.params = params
                             return $q.when(fakeAnalysis)
                         }
                     }
@@ -114,7 +114,7 @@ describe('Analysis', function() {
 
         context('given no parameters', function() {
             beforeEach(function() {
-                sut = Sut.create({ datasetId : datasetId })
+                sut = Sut.create()
                 flush()
             })
 
@@ -126,8 +126,7 @@ describe('Analysis', function() {
         context('given an slide id', function() {
             beforeEach(function() {
                 sut = Sut.create({
-                    datasetId : datasetId
-                    , slideId : '/slide/123'
+                    slideId : '/slide/123'
                 })
                 flush()
             })
@@ -169,8 +168,7 @@ describe('Analysis', function() {
         beforeEach(buildSut)
         beforeEach(function() {
             sut = Sut.create({
-                datasetId : datasetId
-                , slideId : '/slide/123'
+                slideId : '/slide/123'
             })
 
             sut.on('savedAnalysis.loaded', function() {
@@ -256,7 +254,7 @@ describe('Analysis', function() {
         beforeEach(function() {
             fakeAnalysis.variables.length = 0
             fakeAnalysis.variables.push('/variable/123')
-            sut = Sut.create({ datasetId : datasetId })
+            sut = Sut.create()
             sut.on('analysis.loaded', function() {
                 recalculated = true
             })
@@ -285,7 +283,7 @@ describe('Analysis', function() {
             beforeEach(buildModule)
             beforeEach(buildSut)
             beforeEach(function() {
-                sut = Sut.create({ datasetId : datasetId })
+                sut = Sut.create()
                 sut.handle('add-variable', '/variable/123')
                 flush()
             })
@@ -308,7 +306,7 @@ describe('Analysis', function() {
             beforeEach(buildModule)
             beforeEach(buildSut)
             beforeEach(function() {
-                sut = Sut.create({ datasetId : datasetId })
+                sut = Sut.create()
                 sut.handle('add-variable', '/variable/123')
                 sut.handle('add-variable', '/variable/456')
                 flush()
@@ -340,7 +338,7 @@ describe('Analysis', function() {
             beforeEach(buildModule)
             beforeEach(buildSut)
             beforeEach(function() {
-                sut = Sut.create({ datasetId : datasetId })
+                sut = Sut.create()
                 sut.handle('add-variable', ['/variable/123', '/variable/456'])
                 flush()
             })
@@ -359,7 +357,7 @@ describe('Analysis', function() {
             beforeEach(buildModule)
             beforeEach(buildSut)
             beforeEach(function() {
-                sut = Sut.create({ datasetId : datasetId })
+                sut = Sut.create()
                 sut.handle('add-variable', '/variable/123')
                 flush()
             })
@@ -398,7 +396,7 @@ describe('Analysis', function() {
         })
         beforeEach(buildSut)
         beforeEach(function() {
-            sut = Sut.create({ datasetId : datasetId })
+            sut = Sut.create()
             sut.on('analysis.error', function() { triggered = true })
             sut.handle('add-variable', '/var/123')
             flush()
@@ -420,7 +418,7 @@ describe('Analysis', function() {
         beforeEach(buildModule)
         beforeEach(buildSut)
         beforeEach(function() {
-            sut = Sut.create({ datasetId : datasetId })
+            sut = Sut.create()
             fakeHierarchicalVariables.current.setVariableType('categorical_array')
             sut.handle('add-variable', '/var/123')
             flush()
@@ -438,7 +436,7 @@ describe('Analysis', function() {
         beforeEach(buildModule)
         beforeEach(buildSut)
         beforeEach(function() {
-            sut = Sut.create({ datasetId : datasetId })
+            sut = Sut.create()
             fakeHierarchicalVariables.current.setVariableType('categorical')
             sut.handle('add-variable', '/var/456')
             flush()
@@ -459,7 +457,7 @@ describe('Analysis', function() {
         beforeEach(buildModule)
         beforeEach(buildSut)
         beforeEach(function() {
-            sut = Sut.create({ datasetId : datasetId })
+            sut = Sut.create()
         })
 
         context('given a variable list with 1 variable', function() {
@@ -503,6 +501,46 @@ describe('Analysis', function() {
             it('should return variable at index 0', function() {
                 expect(sut.topMostVariable.self).to.equal('/var/456')
             })
+        })
+    })
+
+    describe('adding a filter', function() {
+        var sut
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(buildSut)
+        beforeEach(function() {
+            sut = Sut.create()
+            sut.handle('add-variable', '/var/456')
+            flush()
+            sut.handle('add-filter', '/filters/123')
+            flush()
+        })
+
+        it('should send the filters array as a parameter to the analysis generator', function() {
+            expect(sut.data.params.filters).to.deep.equal(['/filters/123'])
+        })
+    })
+
+    describe('cleaning filters', function() {
+        var sut
+            ;
+
+        beforeEach(buildModule)
+        beforeEach(buildSut)
+        beforeEach(function() {
+            sut = Sut.create()
+            sut.handle('add-variable', '/var/456')
+            flush()
+            sut.handle('add-filter', '/filters/123')
+            flush()
+            sut.handle('clean-filters')
+            sut.handle('recalculate')
+        })
+
+        it('should remove the filters parameter from the analysis generator', function() {
+            expect(sut.data.params.filters).to.be.null
         })
     })
 })
