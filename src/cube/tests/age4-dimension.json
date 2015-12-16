@@ -1,0 +1,40 @@
+{
+    "references": {
+        "discarded": false,
+        "alias": "Age4",
+        "name": "Age4",
+        "header_order": 13,
+        "description": "4 Category Age"
+    },
+    "derived": false,
+    "type": {
+        "ordinal": false,
+        "class": "categorical",
+        "categories": [{
+            "numeric_value": 1,
+            "id": 1,
+            "name": "18-29",
+            "missing": false
+        }, {
+            "numeric_value": 2,
+            "id": 2,
+            "name": "30-44",
+            "missing": false
+        }, {
+            "numeric_value": 3,
+            "id": 3,
+            "name": "45-64",
+            "missing": false
+        }, {
+            "numeric_value": 4,
+            "id": 4,
+            "name": "65+",
+            "missing": false
+        }, {
+            "numeric_value": null,
+            "id": -1,
+            "name": "No Data",
+            "missing": true
+        }]
+    }
+}

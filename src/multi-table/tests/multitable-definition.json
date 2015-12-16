@@ -1,0 +1,64 @@
+{
+    "element": "shoji:entity",
+    "self": "/api/datasets/123/multitables/mt/",
+    "specification": "/api/specifications/multitables/",
+    "description": "Detail information for one multitable definition",
+    "body": {
+        "name": "Core Demographics",
+        "user": "/api/users/m1k3/",
+        "template": [{
+            "variable": "/api/datasets/123/variables/000008/",
+            "query": [{
+                "variable": "/api/datasets/123/variables/000008/"
+            }]
+        }, {
+            "variable": "/api/datasets/123/variables/000004/",
+            "query": [{
+                "variable": "/api/datasets/123/variables/000004/"
+            }],
+            "transform": [
+                {
+                    "id": 2,
+                    "name": "Women",
+                    "missing": false
+                }, {
+                    "id": 1,
+                    "name": "Men",
+                    "missing": false
+                }, {
+                    "id": 8,
+                    "name": "Skipped",
+                    "missing": false
+                }
+            ]
+        }, {
+            "variable": "/api/datasets/123/variables/00000d/",
+            "query": [{
+                "variable": "/api/datasets/123/variables/00000d/"
+            }],
+            "transform": [{
+                    "id": 1,
+                    "name": "18-29",
+                    "missing": false
+                }, {
+                    "id": 2,
+                    "name": "30-44",
+                    "missing": false
+                }, {
+                    "id": 3,
+                    "name": "45-64",
+                    "missing": false
+                }, {
+                    "id": 4,
+                    "missing": false,
+                    "hide": true
+                }
+            ]
+        }],
+        "is_public": true,
+        "display_settings": {
+            "margin_threshold": 25
+        },
+        "id": "mt"
+    }
+}

@@ -2,12 +2,40 @@
 
 module.exports = CategoricalDimensionFactory
 
-CategoricalDimensionFactory.$inject = []
+CategoricalDimensionFactory.$inject = ['lodash']
 
-function CategoricalDimensionFactory() {
+function CategoricalDimensionFactory(_) {
 
     function CategoricalDimension(data) {
+        data.type.categories = data.type.categories.map(function(i){
+            return _.extend(i, {hide: i.missing})
+        })
         this.data = data
+        this.rawData = _.cloneDeep(data)
+        this.applyTransform = function(list){
+            this.data = _.cloneDeep(this.rawData) // reset
+            if(!!!list || !!!list.length) { return }
+            var ext = this.rawData.type.categories
+            var sourceIds = _.map(ext, 'id')
+            var targetIds = _.map(list, 'id')
+            var source = _.object(sourceIds, ext)
+            var target = _.object(targetIds, list)
+            // apply name, missingness, and hide from target
+            targetIds.map(function(i){
+                source[i] = _.assign(source[i], target[i])
+            })
+            // permute order: use target, then source
+            var resultIds = targetIds.concat(sourceIds).filter(function(v, i, self){
+                return self.indexOf(v) === i
+            })
+            this.extents = resultIds.map(function(i){
+                return source[i]
+            })
+            this.targetPermutation = resultIds.map(function(i){
+                return sourceIds.indexOf(i)
+            })
+            return this // targetPermutation must be applied to data
+        }
     }
 
     Object.defineProperties(CategoricalDimension.prototype, {
@@ -63,6 +91,14 @@ function CategoricalDimensionFactory() {
             get : function() {
                 return this.data.type.categories.reduce(function(accum, el, idx) {
                     return el.missing === false ? accum.concat([idx]) : accum
+
+                }, [])
+            }
+        }
+        , shownSubscripts : {
+            get : function() {
+                return this.data.type.categories.reduce(function(accum, el, idx) {
+                    return el.hide === false ? accum.concat([idx]) : accum
 
                 }, [])
             }

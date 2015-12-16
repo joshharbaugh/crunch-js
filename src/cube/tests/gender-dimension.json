@@ -1,0 +1,40 @@
+{
+    "references": {
+        "discarded": false,
+        "alias": "Gender",
+        "name": "Gender",
+        "header_order": 4,
+        "description": "Are you male or female?"
+    },
+    "derived": false,
+    "type": {
+        "ordinal": false,
+        "class": "categorical",
+        "categories": [{
+            "numeric_value": 1,
+            "id": 1,
+            "name": "Male",
+            "missing": false
+        }, {
+            "numeric_value": 2,
+            "id": 2,
+            "name": "Female",
+            "missing": false
+        }, {
+            "numeric_value": 8,
+            "id": 8,
+            "name": "Skipped",
+            "missing": true
+        }, {
+            "numeric_value": 9,
+            "id": 9,
+            "name": "Not Asked",
+            "missing": true
+        }, {
+            "numeric_value": null,
+            "id": -1,
+            "name": "No Data",
+            "missing": true
+        }]
+    }
+}
