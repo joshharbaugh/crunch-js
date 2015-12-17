@@ -3,13 +3,15 @@
 module.exports = MeasureFactory
 
 MeasureFactory.$inject = [
-    'lodash'
-    , 'ndarray'
-    , 'ndarrayScratch'
-    , 'ndarrayUnpack'
+    'lodash',
+    'ndarray',
+    'ndarrayScratch',
+    'ndarrayUnpack',
+    'show'
+
 ]
 
-function MeasureFactory(_, ndarray, scratch, unpack) {
+function MeasureFactory(_, ndarray, scratch, unpack, show) {
     var allowedTypes = ['mean', 'stddev', 'count']
         ;
 
@@ -67,6 +69,37 @@ function MeasureFactory(_, ndarray, scratch, unpack) {
         this.dimensions = dimensions
         this.rawData = rawData
         this.cube = validData
+    }
+
+    Measure.prototype.transform = function(target, spec){
+        var original = this.dimensions[target]
+        var transformed = original.applyTransform(spec)
+        this.dimensions[target] = transformed
+        // update the cube and valid cube. 'raw' is misleading
+        // fill a cube with new shape, in new order
+        var subscripts = this.dimensions.map(function(dim){
+            return dim.subscripts
+        })
+        subscripts[target] = transformed.targetPermutation
+        var getThese = prod.apply(this, subscripts)
+        var newShape = subscripts.map(function(d){ return d.length })
+        var newComplete = scratch.malloc(newShape)
+        newComplete.data = getThese.map(function(d){
+            return this.rawData.get.apply(this.rawData, d)
+        }, this)
+        // now do it for the validcube
+        subscripts = this.dimensions.map(function(dim){
+            return dim.validSubscripts
+        })
+        newShape = subscripts.map(function(d){ return d.length })
+        getThese = prod.apply(this, subscripts)
+        var newValid = scratch.malloc(newShape)
+
+        newValid.data = getThese.map(function(d){
+            return newComplete.get.apply(newComplete, d)
+        })
+        this.rawData = newComplete
+        this.cube = newValid
     }
 
     Object.defineProperties(Measure.prototype, {

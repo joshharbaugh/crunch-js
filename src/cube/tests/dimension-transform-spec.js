@@ -10,25 +10,7 @@ describe('dimension', function() {
         ;
 
     function buildModule() {
-        var main = mainMod()
-            ;
-
-        // main.factory('CategoricalDimension', function() {
-        //     return function CategoricalDimension() {}
-        // })
-        //
-        // main.factory('BinnedDimension', function() {
-        //     return function BinnedDimension() {}
-        // })
-        //
-        // main.factory('CompositeDimension', function() {
-        //     return function CompositeDimension() {}
-        // })
-        //
-        // main.factory('MultiResponseDimension', function() {
-        //     return function MultiResponseDimension() {}
-        // })
-
+        var main = mainMod();
         angular.mock.module(main.name)
     }
 
@@ -47,13 +29,17 @@ describe('dimension', function() {
     describe('applying analysis transforms', function() {
 
         describe('given a categorical dimension metadata', function() {
-            var makeUnmissing = [{"id": 2},{"id": 1}, // otherwise 8 would come first
-                {
-                    "id": 8,
-                    "name": "-Skipped-",
-                    "missing": false,
-                    "hide": false
-                }]
+            var makeUnmissing = {
+                "categories": [
+                    {"id": 2},{"id": 1}, // otherwise 8 would come first
+                    {
+                        "id": 8,
+                        "name": "-Skipped-",
+                        "missing": false,
+                        "hide": false
+                    }
+                ]
+            }
             beforeEach(function() {
                 dimension = sut.fromData(genderDimension).applyTransform(makeUnmissing)
             })

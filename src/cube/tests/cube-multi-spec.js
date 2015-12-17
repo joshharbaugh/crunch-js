@@ -52,6 +52,36 @@ describe('cube', function(){
             sut[1].count.cube.shape.slice().should.eql([5,4])
         })
     })
+    context('basic multi-table result with dimension transformations', function(){
+        beforeEach(function(){
+            inject(function($q, $rootScope, cube){
+                cube.fromMultiCube(multifixture.value)
+                .applyMultiTransforms(1, [
+                    {
+                        "categories": [
+                            {"id": 2},{"id": 1}, // otherwise 8 would come first
+                            {
+                                "id": 8,
+                                "name": "-Skipped-",
+                                "missing": false,
+                                "hide": false
+                            }
+                        ]
+                    }
+                ])
+                .then(function(them){
+                    sut = them
+                })
+            })
+            scope.$digest()
+        })
+        it('should have reordered the elements in the data', function(){
+
+        })
+        it('should have the right labels', function(){
+
+        })
+    })
 
 
 })

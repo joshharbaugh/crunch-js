@@ -3,7 +3,10 @@
 var mocks = require('angular-mocks')
     , mainMod = require('../index')
     , cube3Dimensions = require('./cube-3-dimensions')
-    ;
+    , genderDimension = require('./gender-dimension')
+    , multiFixture = require('./basic-categorical-multi')
+    , show = require('ndarray-show')
+    , scratch = require('ndarray-scratch');
 
 describe('measure', function() {
     var sut
@@ -73,5 +76,71 @@ describe('measure', function() {
             })
         })
     })
-})
+    context('transforming a cube dimension', function(){
+        // using just one of the basic categorical multi fixture
+        var measure
 
+        beforeEach(function() {
+            var dimensions = multiFixture.value[0].result.dimensions.map(function(d) {
+                    return dimension.fromData(d)
+                })
+                ;
+
+            var validShape = dimensions.map(function(d) {
+                return d.validLength
+            })
+
+            var shape = dimensions.map(function(d) {
+                return d.length
+            })
+
+            measure = sut.fromData({
+                type : 'count'
+                , meta : {
+                    dimensions : dimensions
+                    , shape : shape
+                    , validShape : validShape
+                }
+                , data : multiFixture.value[0].result.measures.count.data
+            })
+
+        })
+        it('should transform and store the new result', function(){
+            var myTransform = {
+                "categories": [
+                    {"id": 2, name: "Potatoes"},
+                    {"id": 1, name: "Beets"},
+                    {
+                        "id": 8,
+                        "name": "-Skipped-",
+                        "missing": false,
+                        "hide": false
+                    }
+                ]
+            }
+            var myTargetDim = 1
+            var ids = measure.dimensions[1].extents.map(function(e) {return e.id})
+            var temp = scratch.clone(measure.rawData.pick(-1, 0))
+            var firstRow = Array.prototype.slice.call(temp.data)
+            temp = scratch.clone(measure.rawData.pick(-1, 1))
+            var secondRow = Array.prototype.slice.call(temp.data)
+            ids.should.eql([ 1, 2, 8, 9, -1 ]) // before transform
+            measure.cube.shape.should.eql([5, 2])
+
+            ////////////////////////////////////////////
+            measure.transform(myTargetDim, myTransform)
+
+            measure.dimensions[1].labels.should.eql(['Potatoes', 'Beets', '-Skipped-'])
+            var ids = measure.dimensions[1].extents.map(function(e) {return e.id})
+            ids.should.eql([ 2, 1, 8, 9, -1 ]) // after transform
+            measure.cube.shape.should.eql([5, 3])
+            temp = scratch.clone(measure.rawData.pick(-1, 0))
+            var newFirstRow = Array.prototype.slice.call(temp.data)
+            temp = scratch.clone(measure.rawData.pick(-1, 1))
+            var newSecondRow = Array.prototype.slice.call(temp.data)
+
+            newFirstRow.should.eql(secondRow)
+            newSecondRow.should.eql(firstRow)
+        })
+    })
+})
