@@ -80,8 +80,14 @@ describe('iGenerateMultitableFromCube', function() {
                     sut.execute({
                         datasetId: '/datasets/123/'
                         , columnQueries : [
-                            {variable: '/api/datasets/123/variables/gender/'}
-                            , {variable: '/api/datasets/123/variables/age/'}
+                            {
+                                variable: '/api/datasets/123/variables/gender/',
+                                query: [{variable: '/api/datasets/123/variables/gender/'}]
+                            },
+                            {
+                                variable: '/api/datasets/123/variables/age/',
+                                query: [{variable: '/api/datasets/123/variables/age/'}]
+                            }
                         ]
                         , rowVariable: {
                              self: '/api/datasets/123/variables/row/', type: 'categorical'
@@ -98,8 +104,14 @@ describe('iGenerateMultitableFromCube', function() {
                     sut.execute({
                         datasetId: '/datasets/123/'
                         , columnQueries : [
-                            {variable: '/api/datasets/123/variables/gender/'}
-                            , {variable: '/api/datasets/123/variables/age/'}
+                            {
+                                variable: '/api/datasets/123/variables/gender/',
+                                query: [{variable: '/api/datasets/123/variables/gender/'}]
+                            },
+                            {
+                                variable: '/api/datasets/123/variables/age/',
+                                query: [{variable: '/api/datasets/123/variables/age/'}]
+                            }
                         ]
                         , rowVariable: {
                              self: '/api/datasets/123/variables/row/', type: 'categorical_array'
