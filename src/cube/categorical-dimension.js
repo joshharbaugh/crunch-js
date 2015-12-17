@@ -12,14 +12,14 @@ function CategoricalDimensionFactory(_) {
         })
         this.data = data
         this.rawData = _.cloneDeep(data)
-        this.applyTransform = function(list){
+        this.applyTransform = function(spec){
             this.data = _.cloneDeep(this.rawData) // reset
-            if(!!!list || !!!list.categories.length) { return }
+            if(!!!spec || !!!spec.categories.length) { return }
             var ext = this.rawData.type.categories
             var sourceIds = _.map(ext, 'id')
-            var targetIds = _.map(list.categories, 'id')
+            var targetIds = _.map(spec.categories, 'id')
             var source = _.object(sourceIds, ext)
-            var target = _.object(targetIds, list.categories)
+            var target = _.object(targetIds, spec.categories)
             // apply name, missingness, and hide from target
             targetIds.map(function(i){
                 source[i] = _.assign(source[i], target[i])

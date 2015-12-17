@@ -139,27 +139,24 @@ function CubeFactory($q, _, dimension, measure) {
 
     Cube.fromMultiCube = function(raw) {
         // [ {} , [ {}, {} ]]
-        // console.log(JSON.stringify(raw,null,2))
         return $q.all(_.flatten(raw).map(function(subcube){
             return this.fromCrCube.call(this, subcube) }, this
         ))
     }
 
-    Cube.prototype.applySingleTransform = function(cube, spec, dim){
-        // update the Cube-level metadata
-
+    Cube.prototype.applyTransform = function(dim, spec){
         // update the measures
-    }
-    Cube.prototype.applyMultiTransforms = function(cubes, spec, dim){
-        // Apply a transform to each cube in an array of cubes
-        return $q.all(cubes.map(function(subcube){
-            this.applySingleTransform.call(this, subcube)
-        }, this))
-        cubes.map(function(subcube, i){
-            if(i===0){return subcube}
-            subcube
+        var measureTypes = ['count', 'mean'],
+            self = this
+        ;
+        measureTypes.forEach(function(measure){
+            if (measure in self){
+                self[measure].transform(dim, spec)
+            }
         })
-
+        // update the Cube-level metadata
+        this._dimensions = this.count.dimensions
+        return this
     }
 
     function gatherMetadata(result, dims, meta) {

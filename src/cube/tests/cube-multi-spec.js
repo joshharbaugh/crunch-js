@@ -56,8 +56,8 @@ describe('cube', function(){
         beforeEach(function(){
             inject(function($q, $rootScope, cube){
                 cube.fromMultiCube(multifixture.value)
-                .then(function(them){
-                    return cube.applyMultiTransforms(them, 1, [
+                .then(function(cubes){
+                    sut = cubes[0].applyTransform(1,
                         {
                             "categories": [
                                 {"id": 2},{"id": 1}, // otherwise 8 would come first
@@ -69,18 +69,24 @@ describe('cube', function(){
                                 }
                             ]
                         }
-                    ])
+                    )
                 })
             })
             scope.$digest()
         })
         it('should have reordered the elements in the data', function(){
-
+            unpack(sut.count.cube).should.eql([
+                [129, 156, 0],
+                [199, 197, 0],
+                [141, 101, 0],
+                [4, 2, 0],
+                [42, 26, 0]])
         })
         it('should have the right labels', function(){
-
+            sut._dimensions[1].labels.should.eql([ 'Female', 'Male', '-Skipped-' ])
         })
     })
-
-
+    context('multiple-response dimension transform', function(){
+        it('should reorder the elements instead of categories', function(){})
+    })
 })
