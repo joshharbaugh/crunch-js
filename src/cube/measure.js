@@ -71,6 +71,7 @@ function MeasureFactory(_, ndarray, scratch, unpack, show) {
         this.cube = validData
     }
 
+    // mm: consider separate transform operations. (reorder, combine)
     Measure.prototype.transform = function(target, spec){
         var original = this.dimensions[target]
         var transformed = original.applyTransform(spec)

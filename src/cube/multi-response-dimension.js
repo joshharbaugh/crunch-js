@@ -11,7 +11,37 @@ function MultiResponseDimensionFactory(_, CompositeDimension) {
         ;
 
     function MultiResponseDimension(data) {
+        if(typeof(data)=='undefined'){return}
+        data.type.elements = data.type.elements.map(function(i){
+            return _.extend(i, {hide: i.missing})
+        })
         this.data = data
+        this.rawData = _.cloneDeep(data)
+    }
+
+    MultiResponseDimension.prototype.applyTransform = function(spec){
+        this.data = _.cloneDeep(this.rawData) // reset
+        if(!!!spec || !!!spec.elements.length) { return }
+        var ext = this.rawData.type.elements
+        var sourceIds = _.map(ext, 'id')
+        var targetIds = _.map(spec.categories, 'id')
+        var source = _.object(sourceIds, ext)
+        var target = _.object(targetIds, spec.elements)
+        // apply name, missingness, and hide from target
+        targetIds.map(function(i){
+            source[i] = _.assign(source[i], target[i])
+        })
+        // permute order: use target, then source
+        var resultIds = targetIds.concat(sourceIds).filter(function(v, i, self){
+            return self.indexOf(v) === i
+        })
+        this.extents = resultIds.map(function(i){
+            return source[i]
+        })
+        this.targetPermutation = resultIds.map(function(i){
+            return sourceIds.indexOf(i)
+        })
+        return this // targetPermutation must be applied to data
     }
 
     function byId(data, id) {
@@ -81,9 +111,26 @@ function MultiResponseDimensionFactory(_, CompositeDimension) {
             }
         }
 
+        , shownExtents : {
+            get : function() {
+                return this.extents.filter(function(el) {
+                    var id = el.value && el.value.id || ''
+                    return el.hide === false
+                })
+            }
+        }
+
         , validLabels : {
             get : function() {
                 return this.validExtents.map(function(el) {
+                    return el.value.references.name
+                })
+            }
+        }
+
+        , labels : {
+            get : function() {
+                return this.shownExtents.map(function(el) {
                     return el.value.references.name
                 })
             }

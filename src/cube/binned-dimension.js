@@ -9,7 +9,36 @@ BinnedDimensionFactory.$inject = [
 function BinnedDimensionFactory(_) {
 
     function BinnedDimension(data) {
+        data.type.elements = data.type.elements.map(function(i){
+            return _.extend(i, {hide: i.missing})
+        })
         this.data = data
+        this.rawData = _.cloneDeep(data)
+    }
+
+    BinnedDimension.prototype.applyTransform = function(spec){
+        this.data = _.cloneDeep(this.rawData) // reset
+        if(!!!spec || !!!spec.elements.length) { return }
+        var ext = this.rawData.type.elements
+        var sourceIds = _.map(ext, 'id')
+        var targetIds = _.map(spec.categories, 'id')
+        var source = _.object(sourceIds, ext)
+        var target = _.object(targetIds, spec.elements)
+        // apply name, missingness, and hide from target
+        targetIds.map(function(i){
+            source[i] = _.assign(source[i], target[i])
+        })
+        // permute order: use target, then source
+        var resultIds = targetIds.concat(sourceIds).filter(function(v, i, self){
+            return self.indexOf(v) === i
+        })
+        this.extents = resultIds.map(function(i){
+            return source[i]
+        })
+        this.targetPermutation = resultIds.map(function(i){
+            return sourceIds.indexOf(i)
+        })
+        return this // targetPermutation must be applied to data
     }
 
     Object.defineProperties(BinnedDimension.prototype, {
@@ -31,7 +60,7 @@ function BinnedDimensionFactory(_) {
 
         ,'labels' : {
             get : function() {
-                return this.validExtents.map(function(el) {
+                return this.shownExtents.map(function(el) {
                     return el.value
                 })
             }
@@ -61,6 +90,13 @@ function BinnedDimensionFactory(_) {
             get : function() {
                 return this.data.type.elements.filter(function(el) {
                     return el.missing === false
+                })
+            }
+        }
+        , 'shownExtents' : {
+            get : function() {
+                return this.data.type.elements.filter(function(el) {
+                    return el.hide === false
                 })
             }
         }
@@ -95,12 +131,11 @@ function BinnedDimensionFactory(_) {
                 return out
             }
         }
-        , 'countingSubscripts' : {
+        , 'shownSubscripts' : {
             get : function() {
                 var out = []
                 var elements = this.data.type.elements.filter(function(el, idx) {
-                    var id = el.value && el.value.id || ''
-                    if (el.missing === false){
+                    if (el.hide === false){
                         out.push(idx)
                         return true
                     }
@@ -108,9 +143,16 @@ function BinnedDimensionFactory(_) {
                 return out
             }
         }
-        , 'prunedExtents': {
-            set : function(replacement) {
-                this.data.type.elements = replacement
+        , 'countingSubscripts' : {
+            get : function() {
+                var out = []
+                var elements = this.data.type.elements.filter(function(el, idx) {
+                    if (el.missing === false){
+                        out.push(idx)
+                        return true
+                    }
+                })
+                return out
             }
         }
     })

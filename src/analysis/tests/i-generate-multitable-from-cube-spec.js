@@ -82,7 +82,18 @@ describe('iGenerateMultitableFromCube', function() {
                         , columnQueries : [
                             {
                                 variable: '/api/datasets/123/variables/gender/',
-                                query: [{variable: '/api/datasets/123/variables/gender/'}]
+                                query: [{variable: '/api/datasets/123/variables/gender/'}],
+                                transform: {
+                                    "categories": [
+                                        {"id": 2},{"id": 1},
+                                        {
+                                            "id": 8,
+                                            "name": "-Skipped-",
+                                            "missing": false,
+                                            "hide": false
+                                        }
+                                    ]
+                                }
                             },
                             {
                                 variable: '/api/datasets/123/variables/age/',

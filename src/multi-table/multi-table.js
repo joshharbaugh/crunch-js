@@ -13,8 +13,9 @@ MultiTableFactory.$inject = [
     ,'ndarrayUnpack'
     ,'show'
     ,'labelFormatter'
+    ,'Tabulated'
 ]
-function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, show, labelFormatter){
+function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, show, labelFormatter, Tabulated){
     function MultiTable(params){
     }
     function formatPercentage(a){
@@ -34,16 +35,25 @@ function MultiTableFactory(_, $q, $filter, cube, stats, ops, scratch, unpack, sh
             marginal = scratch.clone(stats.margin(subcubes[0], 0))
             subcubes.shift() // remove the first (row unconditional/univariate)
             var subtables =  subcubes.map(function(subcube){
+                var subscripts = subcube._dimensions.map(function(d){
+                    return d.shownSubscripts
+                })
+                var body;
                 if (settings.countsOrPercents.value === 'percent') {
                     body = formatPercentage(stats.propTable(subcube, 1))
                 } else {
                     body = subcube.count.cube
                 }
+                var tab = new Tabulated({
+                    main: body,
+                    pValues: stats.getPvalues(subcube, 1)
+                })
+                tab.filterPermute(subscripts)
                 return {
                     rowLabels: subcube.labels[0]
                     ,colLabels: subcube.labels[1]
-                    ,body: unpack(body)
-                    ,pValues: unpack(stats.getPvalues(subcube, 1))
+                    ,body: unpack(tab.bodies.main)
+                    ,pValues: unpack(tab.bodies.pValues)
                     ,width: subcube.labels[1].length
                 }
             }, this)

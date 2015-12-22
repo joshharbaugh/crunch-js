@@ -7,6 +7,7 @@ CategoricalDimensionFactory.$inject = ['lodash']
 function CategoricalDimensionFactory(_) {
 
     function CategoricalDimension(data) {
+        if(typeof(data)=='undefined'){return}
         data.type.categories = data.type.categories.map(function(i){
             return _.extend(i, {hide: i.missing})
         })
@@ -38,7 +39,7 @@ function CategoricalDimensionFactory(_) {
         })
         return this // targetPermutation must be applied to data
     }
-    
+
     Object.defineProperties(CategoricalDimension.prototype, {
         name : {
             get : function(){
@@ -50,7 +51,7 @@ function CategoricalDimensionFactory(_) {
         }
         , labels : {
             get : function() {
-                return this.validExtents.map(function(cat) {
+                return this.shownExtents.map(function(cat) {
                     return cat.name
                 })
             }
@@ -141,9 +142,11 @@ function CategoricalDimensionFactory(_) {
                 })
             }
         }
-        , prunedExtents: {
-            set : function(replacement) {
-                this.data.type.categories = replacement
+        , shownExtents : {
+            get : function() {
+                return this.data.type.categories.filter(function(cat) {
+                    return cat.hide === false
+                })
             }
         }
     })
