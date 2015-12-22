@@ -13,7 +13,8 @@ function MultiResponseDimensionFactory(_, CompositeDimension) {
     function MultiResponseDimension(data) {
         if(typeof(data)=='undefined'){return}
         data.type.elements = data.type.elements.map(function(i){
-            return _.extend(i, {hide: i.missing})
+            var hide = i.value && noneOrAny.indexOf(i.value.id) > -1
+            return _.extend(i, {hide: i.missing || hide })
         })
         this.data = data
         this.rawData = _.cloneDeep(data)
