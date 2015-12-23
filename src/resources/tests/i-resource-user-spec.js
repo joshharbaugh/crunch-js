@@ -8,7 +8,7 @@ module.exports = (function() {
             api : require('../../test-support/fixtures/root'),
             user : require('../../test-support/fixtures/user-entity')
         };
-    
+
     describe('IResourceUser', function() {
         var $httpBackend,
             headers = {
@@ -29,13 +29,12 @@ module.exports = (function() {
         beforeEach(function() {
             inject(function(_$httpBackend_, _Shoji_) {
                 $httpBackend = _$httpBackend_;
-                _Shoji_.API = _Shoji_('/api/')
+                _Shoji_.API = _Shoji_('/api/').parse(fixtures.api)
             })
         });
         describe('when fetching current user', function() {
             var result;
             beforeEach(function() {
-                GET(fixtures.api);
                 GET(fixtures.user)
             });
             beforeEach(function() {

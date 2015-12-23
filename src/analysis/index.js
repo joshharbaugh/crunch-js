@@ -2,7 +2,7 @@
 
 module.exports = buildModule
 
-function buildModule(moduleName, cfg) {
+function buildModule(moduleName) {
     var angular = require('angular')
         , mod = angular.module(moduleName || 'analysis', [])
         ;

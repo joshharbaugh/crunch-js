@@ -8,11 +8,15 @@ function ShojiDataOperationsFactory($q, $http, $log, _) {
 
     }
 
-    function createError(message, data) {
+    function createError(message, response) {
         var error = new Error(message)
             ;
 
-        error.data = data
+        error.data = response.data
+        error.status = response.status
+
+        $log.error(error.message)
+
         return error
     }
 
@@ -38,14 +42,9 @@ function ShojiDataOperationsFactory($q, $http, $log, _) {
             .success(function(data) {
                 outer.resolve(data)
             })
-            .error(function(response) {
-                var status = response && response.status
-                    ;
-
+            .catch(function(response) {
                 outer.reject(createError('The shoji object with URI ' + uri +
-                    ' could not be obtained. Error code' + status))
-
-                $log.error(response)
+                    ' could not be obtained. Error code' + response.status, response))
             })
 
         return outer.promise
@@ -59,9 +58,8 @@ function ShojiDataOperationsFactory($q, $http, $log, _) {
             .success(function(data, status, headers) {
                 outer.resolve(headers('Location'))
             })
-            .error(function(response) {
+            .catch(function(response) {
                 outer.reject(createError('The resource could not be saved ' + response.status, response))
-                $log.error(response)
             })
 
         return outer.promise
@@ -75,9 +73,8 @@ function ShojiDataOperationsFactory($q, $http, $log, _) {
             .success(function() {
                 outer.resolve()
             })
-            .error(function(response) {
+            .catch(function(response) {
                 outer.reject(createError('The resource could not be updated ' + response.status, response))
-                $log.error(response)
             })
 
         return outer.promise
@@ -91,9 +88,8 @@ function ShojiDataOperationsFactory($q, $http, $log, _) {
             .success(function() {
                 outer.resolve()
             })
-            .error(function(response) {
+            .catch(function(response) {
                 outer.reject(createError('The resource could not be patched ' + response.status, response))
-                $log.error(response)
             })
 
         return outer.promise
@@ -107,9 +103,8 @@ function ShojiDataOperationsFactory($q, $http, $log, _) {
             .success(function() {
                 outer.resolve()
             })
-            .error(function(response) {
+            .catch(function(response) {
                 outer.reject(createError('The resource could not be deleted ' + response.status, response))
-                $log.error(response)
             })
 
         return outer.promise

@@ -25,7 +25,11 @@ function buildModule(name) {
     })
 
     mod.factory('assert', function() {
-        return console.assert.bind(console)
+        return function assert(assertion, message) {
+            if(!assertion) {
+                throw new Error(message)
+            }
+        }
     })
 
     return mod
