@@ -12,7 +12,7 @@ describe('shojiDataOperations', function() {
         ;
 
     function buildModule() {
-        var mod = mainMod()
+        var mod = mainMod('shoji', { skipInterceptors : true })
             ;
 
         angular.mock.module(mod.name)
