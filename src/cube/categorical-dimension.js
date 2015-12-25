@@ -56,6 +56,13 @@ function CategoricalDimensionFactory(_) {
                 })
             }
         }
+        , allLabels: {
+            get : function() {
+                return this.extents.map(function(cat) {
+                    return cat.name
+                })
+            }
+        }
         , missingLabels : {
             get : function() {
                 return this.missingExtents.map(function(cat) {

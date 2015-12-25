@@ -62,11 +62,24 @@ function CompositeDimensionFactory(_) {
         , labels : {
             get : function() {
                 return this.shownExtents.map(function(el) {
-                    return el.value.references.name
+                    return el.name || el.value ? el.value.references.name || el.value.id : null
                 })
             }
         }
-
+        , allLabels : {
+            get : function() {
+                return this.extents.map(function(el) {
+                    return el.name || el.value ? el.value.references.name || el.value.id : null
+                })
+            }
+        }
+        , validLabels : {
+            get : function() {
+                return this.validExtents.map(function(el) {
+                    return el.name || el.value ? el.value.references.name || el.value.id : null
+                })
+            }
+        }
         , length : {
             get : function() {
                 return this.data.type.elements.length

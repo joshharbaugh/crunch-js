@@ -65,7 +65,13 @@ function BinnedDimensionFactory(_) {
                 })
             }
         }
-
+        ,'allLabels' : {
+            get : function() {
+                return this.extents.map(function(el) {
+                    return el.value
+                })
+            }
+        }
         , 'missing' : {
             get : function() {
                 return this.data.type.elements.map(function(el) {

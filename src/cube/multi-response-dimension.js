@@ -91,6 +91,9 @@ function MultiResponseDimensionFactory(_, CompositeDimension) {
         , extents : {
             get : function() {
                 return this.data.type.elements
+            },
+            set : function(value) {
+                this.data.type.elements = value
             }
         }
 
@@ -124,7 +127,14 @@ function MultiResponseDimensionFactory(_, CompositeDimension) {
         , validLabels : {
             get : function() {
                 return this.validExtents.map(function(el) {
-                    return el.value.references.name
+                    return el.name || el.value ? el.value.references.name || el.value.id : null
+                })
+            }
+        }
+        , allLabels : {
+            get : function() {
+                return this.extents.map(function(el) {
+                    return el.name || el.value ? el.value.references.name || el.value.id : null
                 })
             }
         }
@@ -132,7 +142,7 @@ function MultiResponseDimensionFactory(_, CompositeDimension) {
         , labels : {
             get : function() {
                 return this.shownExtents.map(function(el) {
-                    return el.value.references.name
+                    return el.name || el.value ? el.value.references.name || el.value.id : null
                 })
             }
         }
