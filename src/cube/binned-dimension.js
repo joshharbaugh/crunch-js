@@ -85,7 +85,11 @@ function BinnedDimensionFactory(_) {
                 return this.validExtents.length
             }
         }
-
+        , 'extents' : {
+            get : function() {
+                return this.data.type.elements
+            }
+        }
         , 'validExtents' : {
             get : function() {
                 return this.data.type.elements.filter(function(el) {

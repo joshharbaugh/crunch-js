@@ -3,6 +3,19 @@ module.exports = (function() {
     'use strict';
 
     function LabelFormatter(_, datetimeFormatter, $filter) {
+        function dtypeToStrf(d){
+            var strf = {
+                's': ':%S',
+                'm': '%H:%M',
+                'h': '%H:00',
+                'D': '%d %b %Y',
+                'W': '%Y W%W',
+                'M': '%b %Y',
+                'Y': '%Y',
+            }
+            return strf[d] || "%Y-%m-%d"
+        }
+    
         return function(labels, typeinfo) {
             if (!!!typeinfo){
                 typeinfo = {class: 'default'}
@@ -36,7 +49,7 @@ module.exports = (function() {
             return formatters[typeinfo.class] ?
                 formatters[typeinfo.class](labels) :
                 labels
-        }        
+        }
     }
     LabelFormatter.$inject = ['lodash', 'datetimeFormatter', '$filter'];
     return LabelFormatter
