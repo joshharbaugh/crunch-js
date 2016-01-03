@@ -25,7 +25,7 @@ function MultiResponseDimensionFactory(_, CompositeDimension) {
         if(!!!spec || !!!spec.elements.length) { return }
         var ext = this.rawData.type.elements
         var sourceIds = _.map(ext, 'id')
-        var targetIds = _.map(spec.categories, 'id')
+        var targetIds = _.map(spec.elements, 'id')
         var source = _.object(sourceIds, ext)
         var target = _.object(targetIds, spec.elements)
         // apply name, missingness, and hide from target
